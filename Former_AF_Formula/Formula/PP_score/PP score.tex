@@ -1,0 +1,268 @@
+\documentclass[12pt]{article}
+\usepackage{fullpage,psfrag,amsmath,verbatim}
+\usepackage[small,bf]{caption}
+
+\usepackage{algorithm, algorithmic, amsfonts, amsmath, amssymb, amsthm, graphicx, url}
+
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\usepackage[colorlinks,linkcolor=blue,citecolor=red]{hyperref}
+
+\newcommand{\eq}[1]{\eqref{eq:#1}}
+\newcommand{\eqd}[1]{\eqref{eq:#1}}
+\newcommand{\fig}[1]{Figure~\ref{fig:#1}}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{question}[theorem]{Question}
+\newtheorem{result}[theorem]{Result}
+
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+
+\newcommand{\submit}[2]{\iftoggle{submit}{#1}{#2}}
+
+% math macros
+\newcommand{\R}{\mathbb{R}}  
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\minimize}{\mathrm{minimize}}
+\newcommand{\maximize}{\mathrm{maximize}}
+\newcommand{\st}{\mathrm{subject to}}
+
+\usepackage{listings}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{frame=tb,
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\title{Passion Point - PP Score}
+\author{{\bf Tuan Tran}}
+%\date{} % Activate to display a given date or no date (if empty),
+         % otherwise the current date is printed 
+
+\begin{document}
+\maketitle
+\paragraph{Giới Thiệu} Trong tài liệu này sẽ giới thiệu định nghĩa, ý tưởng và giải thích các scripts dùng để tính toán điểm Passion Point (PP) score.
+
+\section{Giới Thiệu về Pasion Point score}
+
+\paragraph{Định Nghĩa} PP score dùng để Đánh giá mức độ yêu thích của người dùng giúp các doanh nghiệp xác định được những người yêu thích (lovers) đối với thương hiệu, sản phẩm của họ. Từ đó có xác định được khách hàng tiềm năng của các sản phẩm mới cũng như những người có thể có những hoạt động tích cực cho sản phẩm hay đại diện cho thương hiệu [15]. Tùy vào loại người dùng có ảnh hưởng, các người có ảnh hưởng chung trên mạng xã hội thuê để quảng cáo cho nhãn hàng hoặc những người có kiến thức về sản phẩm của nhãn hàng hay có những bài chia sẻ và đánh giá về nhãn hàng, tùy từng mức độ nổi tiếng mà ta có những thang đo và tiêu chí để đo độ yêu thích:
+
+\begin{itemize} 
+
+\item Đối với những người dùng có ảnh hưởng chung trên mạng xã hội có mức độ nổi tiếng rộng được thuê để quảng cáo: chúng ta đánh giá độ yêu thích của họ thông qua tận tâm của họ như thế nào với việc hoàn thành công việc của mình và mức độ lan tỏa sự yêu thích sản phẩm và sự chú ý của cộng đồng theo dõi người nổi tiếng này với sản phẩm.
+
+
+\item Đối với những đối tượng thuộc dạng có mức độ nổi tiếng bình thường hoặc nổi tiếng không phải được thuê để quảng cáo: Họ là những người có những bài viết hay chia sẻ đến cộng đồng về chi tiết sản phẩm của nhãn hàng. Chúng ta cần xác định được mức độ tốt của nội dung họ tạo ra và nội dung hướng tới sản phẩm của họ là khen ngợi hay chê bai, đánh giá sự phản ứng và sự quan tâm của cộng đồng đối với nội dung của họ.
+
+\end{itemize}
+
+
+\paragraph{} Trong dự án này, chúng tôi nghiên cứu việc xác định mức độ yêu thích của một cá nhân thông qua các yếu tố:
+
+\begin{itemize} 
+
+\item Số lượng bài viết tương tác của một cá nhân đó đủ lớn trong một khoảng thời gian nhất định: Điều này giúp chúng ta có đủ cơ sở tin cậy để kết luận cá nhân đó yêu thích sản phẩm.
+
+
+\item Mức độ người đó hoạt động trên một khoảng thời gian nhất định: Điều này thể hiện tính trung thành của người đó đối với sản phẩm. Người dùng càng chuyên cần thực hiện tương tác với sản phẩm sẽ thể hiện được mức độ yêu thích của người đó trong một khoảng thời gian nhất định.
+
+\item Hành vi của người đó khi thực hiện các hoạt động tương tác đến với sản phẩm có đi theo một chu kỳ: Ví dụ, trong một khoảng thời gian nhất định, sự tương tác của người đó có tính chu kỳ trùng với các thời điểm sản phẩm mới được ra mắt của nhãn hàng sẽ thể hiện sự quan tâm và yêu thích của người đó tới nhãn hàng. Điều này sẽ giá trị hơn đối với việc có hành vi tương tác với sản phẩm tại các thời điểm nhãn hàng đang thực hiện chiến dịch tiếp thị.
+
+\end{itemize}
+
+\paragraph{} Theo nghiên cứu của Đắc, Đắc đề suất sử dụng công thức như dưới đây để tính PP score:
+
+\begin{equation}
+PP score = ((p + \frac{z^2{\alpha/2}}{2n}) / (1 + \frac{z^2{\alpha/2}}{n}) - \sqrt{(\frac{p(1-p)}{n} + \frac{z^2_{\alpha/2}}{4n^2})} / (1 + \frac{z^2{\alpha/2}}{n})) * \beta + log_{10}(totalPosts)
+\end{equation}
+
+\begin{itemize}
+\item Với $p=\frac{k}{n}$, p là phần trăm số positive interaction trên tổng số interaction, k là tổng số positive interaction.
+\item $\beta = \frac{Activative.Day}{reporting.Day - start.Day}$, $\beta$ là mức độ chuyên cần.
+\item $k = w_p\sum{Positive Post}$ , $k$ là tổng số positive interactions.
+\item $w_p = 0.86$, trọng số của post.
+\item $w_s = 0.5$, trọng số của Share.
+\item $w_c = 0.64$, trọng số của Comment.
+\item $n = \sum{(Post + Share + Comment)}$, $n$ là tổng số interactions.
+\item $z^2_{\alpha/2} = 1.96$
+\end{itemize}
+
+
+\paragraph{} Tuy nhiên trong quá trình tính PP score với data thực tế thì công thức trên có 1 vài vấn đề. Nên công thức đã được đơn giản hóa đi và cải thiện hơn như sau.
+
+$
+PP score = ( Wilson\ score + \sum \log_{10}(totalPosts+1) + \log_{10}(mean\_like+1))*\beta
+$
+
+\begin{equation}
+Wilson\ score = ((p + \frac{z^4_{\alpha/2}}{2*totalPosts})  - z^2_{\alpha/2}*\sqrt{(\frac{p(1-p)+\frac{z^4_{\alpha/2}}{4totalPosts}}{totalPosts} }) * \frac{1}{1 + \frac{z^4_{\alpha/2}}{totalPosts}}
+\end{equation}
+
+\begin{itemize}
+\item Với $p=\frac{k}{n}$, p là phần trăm số positive interaction trên tổng số interaction, k là tổng số positive interaction.
+\item $\beta = \frac{Activative.Day}{reporting.Day - start.Day}$, $\beta$ là mức độ chuyên cần.
+\item $totalPosts$ là tổng số posts.
+\item $mean\_like$ là trung bình số like của tất cả các bài posts của một người dùng.
+\item $z^2_{\alpha/2} = 1.96$
+\end{itemize}
+
+
+
+\section{Diễn giải về script}
+
+\paragraph{} Trước hết cần phải import các library cần thiết đặc biệt là pymongo bởi vì database là MongoDB. Và sau đó là tạo kết nối với database, trong đây cần phải kết nối 2 database vì sẽ cần sử dụng database đã đánh mentioned.
+
+\begin{lstlisting}
+import pandas as pd
+import numpy as np
+import datetimedatabase
+from pymongo import MongoClient
+
+
+client1 = MongoClient('45.122.223.198:27017',               #IP address of database
+                    username = 'kapiReadOnly',              #Username
+                    password = 'pl2oieAt9#tnWV!Yc0',        #Password
+                    authSource = 'kapi',                    #name of database
+                    authMechanism = 'SCRAM-SHA-1')
+kapi = client1['kapi']
+
+
+client = MongoClient('45.122.223.198:27017',               #IP address of database
+                    username = 'kpi-v2R',                  #Username
+                    password = 'EecvKJxdTQ1JEK8J2FA',      #Password
+                    authSource = 'kpi-v2',                 #name of database
+                    authMechanism = 'SCRAM-SHA-1')
+kpitest = client['kpi-v2']
+
+\end{lstlisting}
+
+\paragraph{} Tiếp đến là query data cần thiết để tính, trong đó cần hai function query data. Function đầu tiên dùng để query thông tin cần thiết có liên quan tới tất cả các bài post của một người dùng trong một khoảng thời gian nhất định.
+
+\begin{lstlisting}
+def get_gnl_pst(user_list, start_date, end_date):
+    cluster = kapi['posts'].find({'to_user': {'$in': user_list},
+        'created_date': {'$gte': start_date, '$lt': end_date},'sentiment':{'$ne':''}
+                                     },{
+        '_id': 0, 'from_user': 1, 'to_user': 1,
+        'created_date': 1, 'user_id': 1, 'likes_count': 1
+    })
+
+    tb = pd.DataFrame()
+    for a in cluster:
+        tmp = pd.DataFrame([a])
+        tb = tb.append(tmp, ignore_index=True)
+
+    gc.collect()
+    return tb
+\end{lstlisting}
+
+\paragraph{} Function thứ hai là dùng để query các post có đánh sentiment. Trong đó, theo Đắc thì chỉ lấy những post có đánh sentiment bằng 1.
+\begin{lstlisting}
+def get_smt_pst(user_list,industry, start_date, end_date):
+    cluster = kpiv2['posts'].find({'to_user': {'$in': user_list},
+        'industry': industry, 'parent_id': None, 'brand': {'$ne': None},
+        'created_date': {'$gte': start_date, '$lt': end_date},'sentiment': {'$ne': ''}
+                                     },{
+        '_id': 0, 'from_user': 1, 'to_user': 1, 'created_date': 1,
+        'brand': 1, 'sentiment': 1,
+    })
+
+    tb = pd.DataFrame()
+    for a in cluster:
+        tmp = pd.DataFrame([a])
+        tb = tb.append(tmp, ignore_index=True)
+
+    gc.collect()
+    return tb
+\end{lstlisting}
+
+\paragraph{} Bước tiếp theo là dùng hai function ở trên để query dat chuẩn bị tính toán. Function query tất cả post của một người dùng đc lưu về "gnl\_tb". Còn Function query những post mà đã được đánh sentiment được lưu về "smt\_tol".
+
+\begin{lstlisting}
+b_list = ["100001997853167", "100003714391961", "567112096",
+
+start_date = datetime.datetime(2018,7,1)   #Year, Month, Day of start date
+end_date = datetime.datetime(2018,12,31)   #Year, Month, Day of end date
+industry = 'baby_milk_powder'
+
+smt_tb = get_smt_pst(b_list, industry, start_date, end_date)
+gnl_tb = get_gnl_pst(b_list, start_date, end_date)
+\end{lstlisting}
+
+\paragraph{} Từ bảng "gnl\_tb" và "smt\_tb", dùng các lệnh aggregate các lệnh để standardize các cột để tạo bảng "cmb\_tb". Trong bảng mới này chứa các thông tin cần thiết để tính PP score theo công thức.
+
+\begin{lstlisting}
+gnl_tb['created_date'] = pd.to_datetime(gnl_tb['created_date'])
+gnl_tb['date'] = [x.strftime('%Y-%m-%d') for x in gnl_tb['created_date']]
+gnl_tb = (gnl_tb.groupby('to_user')
+          .agg({'likes_count':'mean','date': pd.Series.nunique})
+          .reset_index()
+          .rename({'likes_count':'mean_like_cnt','date':'beta'}, axis='columns'))
+gnl_tb['beta'] = gnl_tb['beta']/(end_date - start_date).days
+gc.collect()
+
+
+smt_tb['date'] = [x.strftime('%Y-%m-%d') for x in smt_tb['created_date']]
+smt_tb = (smt_tb.groupby(['to_user', 'brand', 'date'])
+         .agg({'created_date':'count', 'sentiment': lambda x: np.count_nonzero(x == '1')})
+         .reset_index())
+smt_tb = (smt_tb.groupby(['to_user', 'brand'])
+         .agg({'sentiment': 'sum', 'created_date': [lambda x: np.sum(np.log10(x+1)), 'sum']})
+         .reset_index())
+smt_tb.columns = ['to_user', 'brand', 'positive_pst', 'n_adj', 'total_pst']
+
+cmb_tb = smt_tb.join(gnl_tb.set_index('to_user'), on='to_user')
+cmb_tb['p'] = (cmb_tb.positive_pst/cmb_tb.total_pst)
+
+del gnl_tb, smt_tb
+gc.collect()
+\end{lstlisting}
+
+\paragraph{} Tiếp theo là define "pp\_fun" được dùng để tính PP score từ bảng "cmb\_tb" có được ở phía trên.
+
+\begin{lstlisting}
+def pp_fun(total_pst, n_adj, p, mean_like_cnt, beta):
+    return (
+            (((p + 1.96**2/(2*total_pst)) - 1.96*np.sqrt((p*(1-p) + 1.96**2/(4*total_pst))/total_pst))
+            / (1 + 1.96**2/total_pst))
+            + n_adj
+            + np.log10(mean_like_cnt + 1)*p
+           )*beta
+\end{lstlisting}
+
+\paragraph{} Cuối cùng là sử dụng "pp\_fun"" để tính PP score trên bảng "cmb\_tb". Sau đó là lưu kết quả tính toán dưới dạng file csv.
+
+\begin{lstlisting}
+cmb_tb['PP_scr'] = cmb_tb.apply(lambda row: pp_fun(row.total_pst, row.n_adj, row.p,
+                                                   row.mean_like_cnt, row.beta),
+                                      axis=1)
+
+gc.collect()
+cmb_tb.to_csv('PP_scr_new.csv')
+\end{lstlisting}
+
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{refLP}
+
+\end{document}

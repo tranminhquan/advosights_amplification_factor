@@ -1,0 +1,16 @@
+Overview goals:
+* Tiếp tục phát triển tool đánh giá và tìm kiếm Advocate
+* Expand researching on customer journey, how Adv can predict behavior of customer (see Limitations)
+
+Specific goals:
+* NLP:
+	+ Validate content's sentiment
+	+ Long term: build own system (Social commerice)
+	+ 
+
+Limitation:
+* Không dự đoán được từ Purchase --> Loyalty, Advocacy
+* Not able to do multi commerce
+
+Focus:
+* Research on formula
