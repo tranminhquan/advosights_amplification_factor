@@ -1,7 +1,7 @@
 import numpy as np
-import sklearn
+from sklearn import metrics
 
-def get_similarity_2(uid, edge_list, z, node_dict, threshold=0.5, limit=100):
+def get_similarity_2(uid, user_edge_list, z, node_dict, threshold=0.5, limit=100):
     stack = []
     
     af_directions = {}
@@ -20,7 +20,7 @@ def get_similarity_2(uid, edge_list, z, node_dict, threshold=0.5, limit=100):
             
         # look-up in user_edge_list
         try:
-            uids = edge_list[str(node)]
+            uids = user_edge_list[str(node)]
         except KeyError:
             print('- Key ', node, ' finished')
             continue
@@ -41,7 +41,7 @@ def get_similarity_2(uid, edge_list, z, node_dict, threshold=0.5, limit=100):
             t = np.concatenate([np.array([uids[index]]), uids[:index], uids[index+1:]])
 
         atts = np.array([np.array(z[node_dict[int(k)], :]) for k in t])
-        sims = sklearn.metrics.pairwise.cosine_similarity(atts)[0,:]
+        sims = metrics.pairwise.cosine_similarity(atts)[0,:]
         
         edge_list = []
         edge_prob = []
@@ -51,11 +51,11 @@ def get_similarity_2(uid, edge_list, z, node_dict, threshold=0.5, limit=100):
                 
                 edge_list.append(t[i])
                 edge_prob.append(sims[i])
-                if not str(t[i]) in edge_list:
+                if not str(t[i]) in user_edge_list:
                     edge_outdeg.append(1)
                     print('- End at ', str(t[i]))
                 else:
-                    edge_outdeg.append(len(edge_list[str(t[i])]))
+                    edge_outdeg.append(len(user_edge_list[str(t[i])]))
                     # ADD TO STACK
                     stack.append(str(t[i]))
                     
@@ -64,7 +64,7 @@ def get_similarity_2(uid, edge_list, z, node_dict, threshold=0.5, limit=100):
         af_probs[node] = edge_prob
         af_degs[node] = edge_outdeg
         
-        print(af_directions)
+        # print(af_directions)
     
     return af_directions, af_probs, af_degs
 
