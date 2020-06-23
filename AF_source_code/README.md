@@ -69,22 +69,24 @@ Users' attributes contains **their public information** and **behavior** in an s
 
 * version 4.0:  
 The current version is being experimented on Facebook database. As a result, we concern on following $7$ attributes (not including **id** of users:
-    * **total_followers**: number of followers ($0$ if private)
-    * **total_friends**: number of friends of a user ($0$ if private)
-    * **books_count**: number of books user ($0$ if private)
-    * **films_count**: number of films user ($0$ if private)
-    * **music_count**: number of music user ($0$ if private)
-    * **restaurants_count**: number of restaurants user ($0$ if private)
+    * **total_followers**: number of followers
+    * **total_friends**: number of friends of a user
+    * **books_count**: number of books user
+    * **films_count**: number of films user
+    * **music_count**: number of music user
+    * **restaurants_count**: number of restaurants user
     * **sex**: gender ($3$ if private)
+
+*All the missing values were completely filled by mean of the dedicated ones*
 
 
 ### User's relationship
 Is the way we define the relationship among users depending on specific social network.
 
 * version 4.0:  
-The current version is being experimented on Facebook social network. As a result, **we define the relationship when a user reacts, comments or shares on any post from other user** (detail in below figures). Then, we calculate the **weight of relationship** by
+The current version is being experimented on Facebook social network. As a result, **we define the relationship when a user reacts, comments or shares on any post from other user** (detail in below figures). Then, we calculate the **weight of relationship** as below formula. The underlying weights are partly referenced from verson 2.
   
-                              weights = number of reactions + number of comments + number of shares
+                              weights = 0.1*number of reactions + 0.3*number of comments + 0.6*number of shares
 
 ![edge_definition](https://i.imgur.com/l0iqTKO.png)
 
