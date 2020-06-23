@@ -17,16 +17,17 @@ import torch_geometric.transforms as T
 from sklearn.manifold import TSNE
 import sklearn
 from torch_geometric.nn import GCNConv, GAE, VGAE
+from torch_geometric.utils import train_test_split_edges
 
 from afadvo.utils.visualize import visualize_tsne
 
 class VGAEEncoder(torch.nn.Module):
     def __init__(self, n_node_atts, emb_dim):
         super(VGAEEncoder, self).__init__()
-        self.conv1 = GCNConv(n_node_atts, 2 * emb_dim, cached=True)
-        self.conv_mu = GCNConv(2 * emb_dim, emb_dim, cached=True)
-        self.conv_logvar = GCNConv(2 * emb_dim, emb_dim, cached=True)
-        
+        self.conv1 = GCNConv(n_node_atts, 2 * emb_dim)
+        self.conv_mu = GCNConv(2 * emb_dim, emb_dim)
+        self.conv_logvar = GCNConv(2 * emb_dim, emb_dim)
+
     def forward(self, x, edge_index, edge_weight):
         x = F.relu(self.conv1(x, edge_index, edge_weight=edge_weight))
         return self.conv_mu(x, edge_index, edge_weight=edge_weight), self.conv_logvar(x, edge_index, edge_weight=edge_weight)
@@ -46,54 +47,70 @@ class VGAEEmb():
         
         self.scaler = sklearn.preprocessing.StandardScaler()
         
-        # cal edge weight and normalize data
-        self.cal_edge_weight()
-        
         # preprocessing
-        scale = kwargs['scale'] if 'scale' in kwargs else False
-        normalize = kwargs['normalize'] if 'normalize' in kwargs else False
-        print('- Preprocess graph data: ')
-        print('\t * Scale = ', scale)
-        print('\t * Normalize = ', normalize)
+#         scale = kwargs['scale'] if 'scale' in kwargs else False
+#         normalize = kwargs['normalize'] if 'normalize' in kwargs else False
+#         print('- Preprocess graph data: ')
+#         print('\t * Scale = ', scale)
+#         print('\t * Normalize = ', normalize)
         
-        self.preprocess(scale=scale, normalize=normalize)
+#         self.preprocess(scale=scale, normalize=normalize)
         self.data.x = torch.from_numpy(self.scaler.fit_transform(self.data.x))
-    
+        self.original_edge_index = self.data.edge_index
 
         # split test
-#         self.data = train_test_split_edges(self.data)
+        self.data = train_test_split_edges(self.data)
+        
+        # split edge attr in data
+        indices = self.get_edge_attr_indices(self.original_edge_index, self.data.train_pos_edge_index)
+        train_pos_edge_attr = torch.zeros((len(indices), self.n_edge_atts), dtype=torch.float)
+        for counter,i in enumerate(indices):
+            if i != -1:
+                train_pos_edge_attr[counter] = self.data.edge_attr[i]
+                
+        self.data.train_pos_edge_attr = train_pos_edge_attr
+        
+        self.data.edge_attr = self.cal_edge_weight(self.data.edge_attr)
+        self.data.train_pos_edge_attr = self.cal_edge_weight(self.data.train_pos_edge_attr)
         
         # set model
         self.model = torch_geometric.nn.VGAE(VGAEEncoder(self.n_node_atts, self.dim))
         
         
-    def preprocess(self, scale, normalize):
-        # node attribute
-        if scale:
-            self.data.x = torch.from_numpy(sklearn.preprocessing.scale(self.data.x))
-        if normalize:
-            self.data.x = torch.from_numpy(sklearn.preprocessing.normalize(self.data.x))
+#     def preprocess(self, scale, normalize):
+#         # node attribute
+#         if scale:
+#             self.data.x = torch.from_numpy(sklearn.preprocessing.scale(self.data.x))
+#         if normalize:
+#             self.data.x = torch.from_numpy(sklearn.preprocessing.normalize(self.data.x))
             
-    def cal_edge_weight(self):
+    def cal_edge_weight(self, edge_attr):
         '''
         Function defines how to cal weight of edge from reactions, comments and shares
         - current version: f = #reactions + #comments + #shares / 3
         '''
 #         self.data.edge_attr = torch.mean(self.data.edge_attr, axis=1)
-        self.data.edge_attr = 0.6*self.data.edge_attr[:,0] + 0.3*self.data.edge_attr[:,1] + 0.1*self.data.edge_attr[:,2]
+        return (0.6*edge_attr[:,0] + 0.3*edge_attr[:,1] + 0.1*edge_attr[:,2])
+#         self.data.train_pos_edge_attr = 0.6*self.data.train_pos_edge_attr[:,0] + 0.3*self.data.train_pos_edge_attr[:,1] + 0.1*self.data.train_pos_edge_attr[:,2]
         
     
     def train(self, epochs, device, optim='adam', **kwargs):
         
         self.model = self.model.to(device)
-        x, edge_index, edge_att = self.data.x.float().to(device), self.data.edge_index.to(device), self.data.edge_attr.float().to(device)        
-#         x, train_pos_edge_index, edge_att = self.data.x.to(device), self.data.train_pos_edge_index.to(device), self.data.edge_attr.float().to(device)
+#         x, edge_index, edge_att = self.data.x.float().to(device), self.data.edge_index.to(device), self.data.edge_attr.float().to(device)        
+        
+           
+        x, train_pos_edge_index = self.data.x.float().to(device), self.data.train_pos_edge_index.to(device)
+        train_pos_edge_attr = self.data.train_pos_edge_attr.to(device)
+        
         
         lr = kwargs['lr'] if 'lr' in kwargs else 0.001
         if optim == 'adam':
             optim = torch.optim.Adam(self.model.parameters(), lr=lr)
         elif optim == 'sgd':
             optim = torch.optim.SGD(self.model.parameters(), lr=lr)
+            
+        monitor = kwargs['monitor'] if 'monitor' in kwargs else 'loss'
         
         print('Training GAE with epochs= ', epochs, ', optim=', optim, '\n -----------------')
         
@@ -105,33 +122,60 @@ class VGAEEmb():
         # train
         start_time = time.time()
         hloss = []
+        hauc = []
+        hap = []
         min_loss = 1000.
+        max_ap = 0.0
         
         for epoch in range(epochs):
-            loss = self.single_train(x, edge_index, edge_att, optim, device)
+#             loss = self.single_train(x, edge_index, edge_att, optim, device)
 #             loss = self.single_train2(x, train_pos_edge_index, optim, device)
+            loss = self.single_train(x, train_pos_edge_index, train_pos_edge_attr, optim, device)
+            
+            auc, ap = self.test2(x, self.data.test_pos_edge_index, self.data.test_neg_edge_index,
+                                train_pos_edge_index, train_pos_edge_attr)
+            
             hloss.append(loss)
+            hauc.append(auc)
+            hap.append(ap)
             
-#             auc, ap = self.test(x, self.data.test_pos_edge_index, self.data.test_neg_edge_index, train_pos_edge_index)
-            
-            print('- Epoch: {:02d}, Loss: {:.4f}, AUC: {:.4f}, AP: {:.4f}'.format(epoch, loss, 0, 0))
+            print('- Epoch: {:02d}, Loss: {:.4f}, AUC: {:.4f}, AP: {:.4f}'.format(epoch, loss, auc, ap))
             
             if not self.save_path is None:
-                if loss < min_loss:
-                    min_loss = loss
-                    torch.save(self.model, self.save_path)
-                    print('\t **Updated checkpoint**')
+                if monitor == 'loss':
+                    if loss < min_loss:
+                        min_loss = loss
+                        torch.save(self.model, self.save_path)
+                        print('\t **Updated checkpoint**')
+                elif monitor == 'ap':
+                    if ap > max_ap:
+                        max_ap = ap
+                        torch.save(self.model, self.save_path)
+                        print('\t **Updated checkpoint**')
                     
         print('Training complete.')
         print('\n------------------------------\n')
         print('Training time: ', time.time() - start_time)
         
         if not self.save_path is None:
-            print('Minimum loss: ', min_loss)
+            if monitor == 'loss':
+                print('Minimum loss: ', min_loss)
+            elif monitor == 'ap':
+                print('Maximun AP: ', max_ap)
         else:
             print('Latest loss: ', loss)
         
-        return hloss
+        return hloss, hauc, hap
+    
+    def get_edge_attr_indices(self, origin_edge_index, edge_index):
+        indices = []
+        for i in range(edge_index.shape[1]):
+            index = torch.where((origin_edge_index[0,:] == edge_index[0, i]) & (origin_edge_index[1,:] == edge_index[1, i]))[0]
+            if len(index) == 0:
+                indices.append(-1)
+            else:
+                indices.append(int(index[0]))
+        return indices
     
     
     def single_train(self, x, edge_index, edge_att, optim, device):
@@ -168,25 +212,30 @@ class VGAEEmb():
             z = self.model.encode(x, train_pos_edge_index)
         return self.model.test(z, pos_edge_index, neg_edge_index)
     
+    def test2(self, x, pos_edge_index, neg_edge_index, train_pos_edge_index, train_pos_edge_attr):
+        self.model.eval()
+        with torch.no_grad():
+            z = self.model.encode(x, train_pos_edge_index, train_pos_edge_attr)
+        return self.model.test(z, pos_edge_index, neg_edge_index)
+        
     def predict(self, data, device, save_emb_path=None, **kwargs):
         if self.save_path is None:
             test_model = self.model
         else:
             test_model = torch.load(self.save_path)
-            
-        if type(data) is str:
+          
+        if data is None:
+            data = self.data
+        elif type(data) is str:
             data = torch.load(data)
-        
-        scale = kwargs['scale'] if 'scale' in kwargs else False
-        normalize = kwargs['normalize'] if 'normalize' in kwargs else False
-        
-#         if scale:
-#             data.x = torch.from_numpy(sklearn.preprocessing.scale(data.x))
-#         if normalize:
-#             data.x = torch.from_numpy(sklearn.preprocessing.normalize(data.x))
+            print('Normalized')
+            data.x = torch.from_numpy(self.scaler.transform(data.x))
+            data.edge_attr = self.cal_edge_weight(data.edge_attr)
             
-        print('Normalized')
-        self.data.x = torch.from_numpy(self.scaler.transform(self.data.x))
+        elif type(data) is torch_geometric.data.Data:
+            print('Normalized')
+            data.x = torch.from_numpy(self.scaler.transform(data.x))
+            data.edge_attr = self.cal_edge_weight(data.edge_attr)      
             
         z = test_model.encode(data.x.float().to(device), data.edge_index.to(device), data.edge_attr.to(device))
         
@@ -196,12 +245,3 @@ class VGAEEmb():
                 
         return z
     
-    def visualize(self, z, algorithm='tsne', n_dim=2, figsize=(150,150), save_emb_path=None, save_fig_path=None):
-        '''
-        Visualize vector space by given alogrithm
-        '''
-        if type(z) is str:
-            with open(z, 'rb') as dt:
-                z = pickle.load(dt)
-            
-        visualize_tsne(z, n_dim, figsize, save_emb_path, save_fig_path)

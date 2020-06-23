@@ -1,3 +1,5 @@
+'''Calculation AF score'''
+
 import argparse
 from utils.predict import get_similarity_2, cal_af_2 
 import pickle
