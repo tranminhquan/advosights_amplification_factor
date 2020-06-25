@@ -1,7 +1,7 @@
 import numpy as np
 import pickle
 import matplotlib.pyplot as plt
-from afadvo.utils.visualize import visualize_tsne
+from utils.visualize import visualize_tsne
 
 import torch
 from torch_geometric.data import Data

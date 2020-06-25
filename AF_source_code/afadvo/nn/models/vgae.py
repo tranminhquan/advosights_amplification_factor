@@ -19,7 +19,7 @@ import sklearn
 from torch_geometric.nn import GCNConv, GAE, VGAE
 from torch_geometric.utils import train_test_split_edges
 
-from afadvo.utils.visualize import visualize_tsne
+from utils.visualize import visualize_tsne
 
 class VGAEEncoder(torch.nn.Module):
     def __init__(self, n_node_atts, emb_dim):
