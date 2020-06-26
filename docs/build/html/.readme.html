@@ -98,6 +98,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#limitation">5. Limitation</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="#transform-from-raw-data-into-structural-knowledge-graph-data">Transform from raw data into structural knowledge graph data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Package Reference</span></p>
 <ul>
@@ -266,7 +267,7 @@ user and the others in a network.</p></li>
 <img alt="https://i.imgur.com/Ob1a8Q5.png" src="https://i.imgur.com/Ob1a8Q5.png" />
 </div>
 <div class="line-block">
-<div class="line">AF_assumption|</div>
+<div class="line">AF_assumption</div>
 </div>
 <p>Since we defined our problem as a knowledge graph which handles the
 relationship among users, there are <span class="math notranslate nohighlight">\(3\)</span> things need to be
@@ -383,6 +384,230 @@ network.</p></li>
 <li><p>User’s attributes reach affordable number of attributes.</p></li>
 </ul>
 </div>
+</div>
+<div class="section" id="transform-from-raw-data-into-structural-knowledge-graph-data">
+<h1>Transform from raw data into structural knowledge graph data<a class="headerlink" href="#transform-from-raw-data-into-structural-knowledge-graph-data" title="Permalink to this headline">¶</a></h1>
+<p>R: QuanTran</p>
+<p>Modification date: * 25 - May - 2020 (v.2.0) * 1 - Jun - 2020 (v.2.1)</p>
+<p><em>Transfrom from raw data into structural knowledge graph data</em></p>
+<hr class="docutils" />
+<ol class="arabic">
+<li><p><a class="reference external" href="#prerequisite">Prerequisite</a></p></li>
+<li><dl class="simple">
+<dt><a class="reference external" href="#knowledge_graph_data_structure">Knowledge graph data structure</a></dt><dd><p>2.1. <a class="reference external" href="#edge_list">Edge list</a>
+2.2. <a class="reference external" href="#node_attribute">User attribute (Node attribute)</a>
+2.3. <a class="reference external" href="#edge_attribute">Edge attribute</a></p>
+</dd>
+</dl>
+</li>
+<li><div class="line-block">
+<div class="line"><a class="reference external" href="#transformation">Transformation process</a></div>
+<div class="line-block">
+<div class="line">3.1. <a class="reference external" href="#building_edge_list">Building edge list</a></div>
+<div class="line">3.2. <a class="reference external" href="#building_node_attribute">Building node attribute</a></div>
+<div class="line">3.3. <a class="reference external" href="#building_edge_attribute">Building edge attribute</a></div>
+</div>
+</div>
+</li>
+<li><p><a class="reference external" href="#code">Code</a></p></li>
+</ol>
+<p>Two options for Node Embedding * <a class="reference external" href="http://14.161.9.65:9012/tree/Quan/Advosights/adv/sources/AF_scire_GG.ipynb">Node2vec embedding with
+Pytorch</a>
+(<em>Temporary official</em>) * <a class="reference external" href="http://14.161.9.65:9012/notebooks/Quan/Advosights/adv/sources/AF_score%20graph%20autoencoder.ipynb">Graph auto-encoder with
+Pytorch</a>
+(<em>On-going research</em>) —</p>
+<hr class="docutils" />
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">chosen_users.csv</span></code>: Pandas Dataframe of concerned users for graph</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chosen_post_2.csv</span></code>: Pandas Dataframe of concerend posts</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chosen_comment.csv</span></code>: Pandas Dataframe of concerned comments
+related to our knowledge graph</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">chosen_react.csv</span></code>: Pandas Dataframe of concerned reactions related
+to our knowledge graph</p></li>
+</ul>
+<p><em>All files came from `the preprocessing
+script &lt;http://14.161.9.65:9012/notebooks/Quan/Advosights/adv/sources/AF_score_data_analytics.ipynb&gt;`__</em></p>
+<hr class="docutils" />
+<p>Building graph data contains the following data structures: <strong>edge list,
+node attribute, edge attribute</strong>. All are structured by Python
+dictionary type.</p>
+<p>Python dictionary with type</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="n">user_id_A</span><span class="p">:</span> <span class="p">[</span><span class="n">user_id_1</span><span class="p">,</span> <span class="n">user_id_7</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">user_id_B</span><span class="p">:</span> <span class="p">[</span><span class="n">user_id_3</span><span class="p">,</span> <span class="n">user_id_4</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">user_id_C</span><span class="p">:</span> <span class="p">[</span><span class="n">user_id_1</span><span class="p">,</span> <span class="n">user_id_5</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Keys of edge list are all distincted user ids, and the corresponding
+values are those users who are influenced.</p>
+<p><em>For example, ``user_id_A`` influences on those users ``user_id_1``,
+``user_id_2``, ….In particular, we officially defined the influence
+based on whether ``user_id_1``, ``user_id_2``, … react, comment, share
+on posts of ``user_id_A``</em></p>
+<p>Every identical users (nodes) in our graph have their own attributes
+(informations).</p>
+<blockquote>
+<div><p>For the current version, we mostly concern on: <strong>total_follower,
+total_friend, books_count, films_count, music_count,
+restaurants_count, sex</strong></p>
+</div></blockquote>
+<p>Data structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="n">user_id_A</span><span class="p">:</span> <span class="p">[</span> <span class="n">attrA_1</span><span class="p">,</span> <span class="n">attrA_2</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">attrA_n</span><span class="p">],</span>
+    <span class="n">user_id_B</span><span class="p">:</span> <span class="p">[</span> <span class="n">attrB_1</span><span class="p">,</span> <span class="n">attrB_2</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">attrB_n</span><span class="p">],</span>
+    <span class="n">user_id_C</span><span class="p">:</span> <span class="p">[</span> <span class="n">attrC_1</span><span class="p">,</span> <span class="n">attrC_2</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">attrC_n</span><span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Keys are identical user ids, values are numpy array of corresponding
+attributes in numerical data type</p>
+<p>We arm to build weighted knowledge graph which is each edge are weighted
+by their own attributes.</p>
+<blockquote>
+<div><p>For the current version, we offically define the edge attribute
+belongs to the number of reactions, comments and shares</p>
+</div></blockquote>
+<p><em>For example: user B reacted, commented or shared some posts from A, we
+summary that B do :math:`10` shares, :math:`20` comments and :math:`125`
+reactions from some posts of A, then</em></p>
+<div class="math notranslate nohighlight">
+\[A \longrightarrow [20, 20, 125] \longrightarrow B\]</div>
+<p>We finally ends up with the following structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="n">user_id_A</span><span class="p">:</span> <span class="p">[</span> <span class="p">[</span><span class="n">n_shares</span><span class="p">,</span> <span class="n">n_cmts</span><span class="p">,</span> <span class="n">n_reacts</span><span class="p">],</span> <span class="p">[</span><span class="n">n_shares</span><span class="p">,</span> <span class="n">n_cmts</span><span class="p">,</span> <span class="n">n_reacts</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">user_id_B</span><span class="p">:</span> <span class="p">[</span> <span class="p">[</span><span class="n">n_shares</span><span class="p">,</span> <span class="n">n_cmts</span><span class="p">,</span> <span class="n">n_reacts</span><span class="p">],</span> <span class="p">[</span><span class="n">n_shares</span><span class="p">,</span> <span class="n">n_cmts</span><span class="p">,</span> <span class="n">n_reacts</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">user_id_C</span><span class="p">:</span> <span class="p">[</span> <span class="p">[</span><span class="n">n_shares</span><span class="p">,</span> <span class="n">n_cmts</span><span class="p">,</span> <span class="n">n_reacts</span><span class="p">],</span> <span class="p">[</span><span class="n">n_shares</span><span class="p">,</span> <span class="n">n_cmts</span><span class="p">,</span> <span class="n">n_reacts</span><span class="p">],</span> <span class="o">...</span><span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The orders of keys and corresponding values absolutely respect to ones
+of <strong>edge list</strong> data strucutre.</p>
+<p><em>For example, values ``user_id_A`` is a Python list contains multiple
+numpy arrays describing number of shares, comments, reactions
+respectively of corresponding indices from edge list. That is, first
+numpy array belongs to ``user_id_1``, the second one belones to
+``user_id_7``, …</em></p>
+<hr class="docutils" />
+<p>All prerequisited files are csv, the idea to transfer is
+straight-forward as bellows:</p>
+<p>which means we are going to group our post ids by user ids. In other
+words, we want to know <strong>who users commit which posts?</strong></p>
+<p>Data structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="n">user_id_A</span><span class="p">:</span> <span class="p">[</span><span class="n">post_idA_1</span><span class="p">,</span> <span class="n">post_idA_2</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">user_id_B</span><span class="p">:</span> <span class="p">[</span><span class="n">post_idB_1</span><span class="p">,</span> <span class="n">post_idB_2</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">user_id_C</span><span class="p">:</span> <span class="p">[</span><span class="n">post_idC_1</span><span class="p">,</span> <span class="n">post_idC_2</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>which means we group our user ids who share by post ids. <strong>Which posts
+are shared by who users?</strong></p>
+<p>Data structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="n">post_id_A</span><span class="p">:</span> <span class="p">[</span><span class="n">user_id_1</span><span class="p">,</span> <span class="n">user_id_2</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">post_id_B</span><span class="p">:</span> <span class="p">[</span><span class="n">user_id_3</span><span class="p">,</span> <span class="n">user_id_7</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">post_id_C</span><span class="p">:</span> <span class="p">[</span><span class="n">user_id_3</span><span class="p">,</span> <span class="n">user_id_14</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>we means we group our user ids who comment by post_ids. <strong>Which posts
+are commented by who users?</strong></p>
+<p>Data structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="n">post_id_A</span><span class="p">:</span> <span class="p">[</span><span class="n">user_id_1</span><span class="p">,</span> <span class="n">user_id_2</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">post_id_B</span><span class="p">:</span> <span class="p">[</span><span class="n">user_id_3</span><span class="p">,</span> <span class="n">user_id_7</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">post_id_C</span><span class="p">:</span> <span class="p">[</span><span class="n">user_id_3</span><span class="p">,</span> <span class="n">user_id_14</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>we means we group our user ids who react by post_ids. <strong>Which posts are
+reacted by who users?</strong></p>
+<p>Data structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="n">post_id_A</span><span class="p">:</span> <span class="p">[</span><span class="n">user_id_1</span><span class="p">,</span> <span class="n">user_id_2</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">post_id_B</span><span class="p">:</span> <span class="p">[</span><span class="n">user_id_3</span><span class="p">,</span> <span class="n">user_id_7</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">post_id_C</span><span class="p">:</span> <span class="p">[</span><span class="n">user_id_3</span><span class="p">,</span> <span class="n">user_id_14</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For each post id of identical user id, find those users who share,
+comment, react on that post, then we have the edge list of that user id</p>
+<p><code class="docutils literal notranslate"><span class="pre">user_id</span> <span class="pre">-</span> <span class="pre">post_ids</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;02542465&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;01255_21254&#39;</span><span class="p">,</span> <span class="s1">&#39;12354_13244&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;12357846&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;12155_12545&#39;</span><span class="p">,</span> <span class="s1">&#39;12485_54877&#39;</span><span class="p">],</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">post_id</span> <span class="pre">-</span> <span class="pre">user_ids</span> <span class="pre">share</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;01255_21254&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;12357846&#39;</span><span class="p">,</span> <span class="s1">&#39;457851&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;12354_13244&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;124556&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;12155_12545&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;254635&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;12485_54877&#39;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">post_id</span> <span class="pre">-</span> <span class="pre">user_ids</span> <span class="pre">comment</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;01255_21254&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;457851&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;12354_13244&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;12155_12545&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;124556&#39;</span><span class="p">,</span> <span class="s1">&#39;254635&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;12485_54877&#39;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">post_id</span> <span class="pre">-</span> <span class="pre">user_ids</span> <span class="pre">react</span></code></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s1">&#39;01255_21254&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;12354_13244&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;254635&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;12155_12545&#39;</span><span class="p">:</span> <span class="p">[],</span>
+    <span class="s1">&#39;12485_54877&#39;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>As a result, the <strong>edge list</strong> is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;02542465&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;12357846&#39;</span><span class="p">,</span> <span class="s1">&#39;457851&#39;</span><span class="p">],</span>
+<span class="s1">&#39;12357846&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;254635&#39;</span><span class="p">,</span> <span class="s1">&#39;124556&#39;</span><span class="p">,</span> <span class="s1">&#39;254635&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Get all unique user ids from <strong>edge list</strong>, then query from
+<code class="docutils literal notranslate"><span class="pre">chosen_users.csv</span></code> to get final attributes in numeric. As being
+concerned, we focus on <strong>total_follower, total_friend, books_count,
+films_count, music_count, restaurants_count, sex</strong>.</p>
+<p>We build <span class="math notranslate nohighlight">\(3\)</span> data structures: <code class="docutils literal notranslate"><span class="pre">edge_share</span></code>, <code class="docutils literal notranslate"><span class="pre">edge_comment</span></code>,
+<code class="docutils literal notranslate"><span class="pre">edge_react</span></code></p>
+<blockquote>
+<div><p>The main idea to execute: 1. Loop through key- values <code class="docutils literal notranslate"><span class="pre">k,v</span></code> in
+<code class="docutils literal notranslate"><span class="pre">edge_list</span></code> 2. Get all post ids of <code class="docutils literal notranslate"><span class="pre">k</span></code> in <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">id</span> <span class="pre">-</span> <span class="pre">post</span> <span class="pre">ids</span></code>
+3. Query in data frame: depends on particular dataframe (share,
+comment, react), represented by Python dictionary</p>
+</div></blockquote>
+<p>Data structure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="n">user_id_A</span><span class="p">:</span> <span class="p">[</span><span class="n">n_share</span><span class="o">/</span><span class="n">cmt</span><span class="o">/</span><span class="n">react</span> <span class="n">of</span> <span class="n">user_idA_1</span><span class="p">,</span> <span class="n">n_share</span><span class="o">/</span><span class="n">cmt</span><span class="o">/</span><span class="n">react</span> <span class="n">of</span> <span class="n">user_idA_2</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">user_id_B</span><span class="p">:</span> <span class="p">[</span><span class="n">n_share</span><span class="o">/</span><span class="n">cmt</span><span class="o">/</span><span class="n">react</span> <span class="n">of</span> <span class="n">user_idB_1</span><span class="p">,</span> <span class="n">n_share</span><span class="o">/</span><span class="n">cmt</span><span class="o">/</span><span class="n">react</span> <span class="n">of</span> <span class="n">user_idB_2</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="n">user_id_C</span><span class="p">:</span> <span class="p">[</span><span class="n">n_share</span><span class="o">/</span><span class="n">cmt</span><span class="o">/</span><span class="n">react</span> <span class="n">of</span> <span class="n">user_idC_1</span><span class="p">,</span> <span class="n">n_share</span><span class="o">/</span><span class="n">cmt</span><span class="o">/</span><span class="n">react</span> <span class="n">of</span> <span class="n">user_idC_2</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="o">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Query from <code class="docutils literal notranslate"><span class="pre">chosen_post_2.csv</span></code>: <em>from user is in ``v`` and parent id
+is in ``post ids``, group by from user on fid, count</em></p>
+<p>Query from <code class="docutils literal notranslate"><span class="pre">chosen_comment.csv</span></code>: <em>from user is in ``v`` and post id is
+in ``post ids``, group by from user on post id, count</em></p>
+<p>Query from <code class="docutils literal notranslate"><span class="pre">chosen_react.csv</span></code>: <em>from from user id is in ``v`` and fid
+is in ``post ids``, group by from user id on fid, count</em></p>
+<p>From above dictionaries, concatente share, comment and reaction based on
+their indices</p>
 </div>
 
 

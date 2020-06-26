@@ -6,14 +6,14 @@ import pickle
 import sklearn
 
 def group_post_by_user(df_post='../files/chosen_post_2.csv', save_path=None):
-    '''
+    r'''
     Read post.csv collection and return dictionary of user_id - post_ids
-    ---
-    + df_post: str or Pandas Dataframe. If str, df_post should be path to csv file
-    + save_path: path to save. If None, save process is skipped
-    ---
-    Return
-        user_post_dict: dictionary of user_id - post_ids
+    
+    Args:
+        df_post: str or Pandas Dataframe. If str, df_post should be path to csv file
+        save_path: path to save. If None, save process is skipped
+    
+    :rtype: python dictionary (user_post_dict: dictionary of user_id - post_ids)
     '''
     
     if type(df_post) is str:
@@ -28,13 +28,16 @@ def group_post_by_user(df_post='../files/chosen_post_2.csv', save_path=None):
     return user_post_dict
 
 def group_user_by_post(df_path, df_post, collection, save_path=None):
-    '''
+    r'''
     Read df.csv collection and return dictionary of post_id - user_ids
-    ---
-    + df_path: str. Path to DataFrame need to query (share, comment or react), df_path should be path to csv file
-    + df_post: str or Pandas Dataframe. DataFrame of chosen post. If str, df should be path to csv file
-    + collection: str, collection should be one of 'share', 'comment' or 'reaction'
-    + save_path: path to save. If None, save process is skipped
+    
+    Args:
+        df_path: str. Path to DataFrame need to query (share, comment or react), df_path should be path to csv file
+        df_post: str or Pandas Dataframe. DataFrame of chosen post. If str, df should be path to csv file
+        collection: str, collection should be one of 'share', 'comment' or 'reaction'
+        save_path: path to save. If None, save process is skipped
+
+    :rtype: python dictionary
     '''
     
     if type(df_post) is str:
@@ -80,17 +83,17 @@ def generate_edge_list(user_post_dict='../files/group_post_by_user_in_post.hdf5'
                        react_dict='../files/group_user_by_post_in_reaction.hdf5', 
                        save_path=None):
     
-    '''
+    r'''
     Generate edge list dictionary from dedicated dictionary of user_id - post_ids, and post_id - user_ids who share, comment and react
-    ---
-    + user_post_dict: str or python dict, user_id - post_ids dict. If str, it should be available path
-    + share_dict : user_id - post_ids who share
-    + comment_dict: user_id - post_ids who comment
-    + react_dict: user_id - post_ids who react
-    + save_path: str. If None, save process is skipped
-    --
-    Return
-    + user_edge_list
+    
+    Args:
+        user_post_dict: str or python dict, user_id - post_ids dict. If str, it should be available path
+        share_dict : user_id - post_ids who share
+        comment_dict: user_id - post_ids who comment
+        react_dict: user_id - post_ids who react
+        save_path: str. If None, save process is skipped
+    
+    :rtype: python dictionary (user_edge_list)
     '''
     
     # load file
@@ -167,16 +170,16 @@ def count_by_user(df_path, collection, device,
                   user_post_dict='../files/group_post_by_user_in_post.hdf5',
                   chunksize=1e7,
                   save_path=None):
-    '''
+    r'''
     Counter number of shares, comments or reactions by user
-    ---
-    df_path: path to concerned Pandas Dataframe
-    user_edge_list: str or DataFrame. if str, it should be available path
-    user_post_dict: str or dictionary
-    collections: str. one of 'share', 'comment' or 'react'
-    ---
-    Return
-    + dictionary which is number of shares/comments/reacts by user_id
+    
+    Args:
+        df_path: path to concerned Pandas Dataframe
+        user_edge_list: str or DataFrame. if str, it should be available path
+        user_post_dict: str or dictionary
+        collections: str. one of 'share', 'comment' or 'react'
+    
+    :rtype: python dictionary, (number of shares/comments/reacts by user_id)
     '''
     
     if type(user_edge_list) is str:
@@ -307,14 +310,14 @@ def generate_edge_attribute(edge_list = ['../files/edge_share_3.hdf5',
                                          '../files/edge_comment_3.hdf5', 
                                          '../files/edge_react_3.hdf5'], 
                             save_path=None):
-    '''
+    r'''
     Generate edge attribute from list of edges
-    ---
-    + edge_list: [str] or [dictionary]. List of edge attribute count
-    + save_path: str or None.
-    ---
-    Return
-    + feature edge dictionary
+    
+    Args:
+        edge_list: [str] or [dictionary]. List of edge attribute count
+        save_path: str or None.
+
+    :rtype: python dictionary (feature edge dictionary)
     '''
     
     if not type(edge_list) is list or not type(edge_list) is np.ndarray:
@@ -351,16 +354,16 @@ def generate_node_attribute(user_edge_list='../files/user_edge_list_3.hdf5',
                            df_user='../files/chosen_users.csv',
                            attrs=['total_follower', 'total_friend', 'books_count', 'films_count', 'music_count', 'restaurants_count', 'sex'], 
                            save_path=None):
-    '''
+    r'''
     Generate node attributes by given list
-    ---
-    + user_edge_list: str or dict python. If str, it should be path
-    + df_user: str or DataFrame, user dataframe
-    + attrs: list, name of concerned attributes from df_user
-    + save_path: str or None. If None, save process is skipped
-    ---
-    Return:
-    + node_atts_list: dict, key is node_id, values is array of concerned attributes
+    
+    Args:
+        user_edge_list: str or dict python. If str, it should be path
+        df_user: str or DataFrame, user dataframe
+        attrs: list, name of concerned attributes from df_user
+        save_path: str or None. If None, save process is skipped
+
+    :rtype: python dictionary (node_atts_list: dict, key is node_id, values is array of concerned attributes)
     '''
     
     if type(user_edge_list) is str:
