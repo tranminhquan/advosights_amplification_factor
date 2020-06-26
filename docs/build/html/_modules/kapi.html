@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>kapi &mdash; Amplification factor score ADVO  documentation</title>
+  <title>kapi &mdash; Amplification factor score  documentation</title>
   
 
   
@@ -30,6 +30,7 @@
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
@@ -49,7 +50,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Amplification factor score ADVO
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Amplification factor score
           
 
           
@@ -80,7 +81,11 @@
               
             
             
-              <p class="caption"><span class="caption-text">Package Reference</span></p>
+              <p class="caption"><span class="caption-text">Readme</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html">AF score specification - version 4.</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Package Reference</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../docstring/transforms.html">Transforms</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../docstring/models.html">Node Embedding Models</a></li>
@@ -104,7 +109,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Amplification factor score ADVO</a>
+          <a href="../index.html">Amplification factor score</a>
         
       </nav>
 
@@ -161,14 +166,14 @@
 <span class="kn">import</span> <span class="nn">sklearn</span>
 
 <div class="viewcode-block" id="group_post_by_user"><a class="viewcode-back" href="../docstring/kapi.html#kapi.group_post_by_user">[docs]</a><span class="k">def</span> <span class="nf">group_post_by_user</span><span class="p">(</span><span class="n">df_post</span><span class="o">=</span><span class="s1">&#39;../files/chosen_post_2.csv&#39;</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Read post.csv collection and return dictionary of user_id - post_ids</span>
-<span class="sd">    ---</span>
-<span class="sd">    + df_post: str or Pandas Dataframe. If str, df_post should be path to csv file</span>
-<span class="sd">    + save_path: path to save. If None, save process is skipped</span>
-<span class="sd">    ---</span>
-<span class="sd">    Return</span>
-<span class="sd">        user_post_dict: dictionary of user_id - post_ids</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        df_post: str or Pandas Dataframe. If str, df_post should be path to csv file</span>
+<span class="sd">        save_path: path to save. If None, save process is skipped</span>
+<span class="sd">    </span>
+<span class="sd">    :rtype: python dictionary (user_post_dict: dictionary of user_id - post_ids)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">df_post</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
@@ -183,13 +188,16 @@
     <span class="k">return</span> <span class="n">user_post_dict</span></div>
 
 <div class="viewcode-block" id="group_user_by_post"><a class="viewcode-back" href="../docstring/kapi.html#kapi.group_user_by_post">[docs]</a><span class="k">def</span> <span class="nf">group_user_by_post</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">df_post</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Read df.csv collection and return dictionary of post_id - user_ids</span>
-<span class="sd">    ---</span>
-<span class="sd">    + df_path: str. Path to DataFrame need to query (share, comment or react), df_path should be path to csv file</span>
-<span class="sd">    + df_post: str or Pandas Dataframe. DataFrame of chosen post. If str, df should be path to csv file</span>
-<span class="sd">    + collection: str, collection should be one of &#39;share&#39;, &#39;comment&#39; or &#39;reaction&#39;</span>
-<span class="sd">    + save_path: path to save. If None, save process is skipped</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        df_path: str. Path to DataFrame need to query (share, comment or react), df_path should be path to csv file</span>
+<span class="sd">        df_post: str or Pandas Dataframe. DataFrame of chosen post. If str, df should be path to csv file</span>
+<span class="sd">        collection: str, collection should be one of &#39;share&#39;, &#39;comment&#39; or &#39;reaction&#39;</span>
+<span class="sd">        save_path: path to save. If None, save process is skipped</span>
+
+<span class="sd">    :rtype: python dictionary</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">df_post</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
@@ -235,17 +243,17 @@
                        <span class="n">react_dict</span><span class="o">=</span><span class="s1">&#39;../files/group_user_by_post_in_reaction.hdf5&#39;</span><span class="p">,</span> 
                        <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Generate edge list dictionary from dedicated dictionary of user_id - post_ids, and post_id - user_ids who share, comment and react</span>
-<span class="sd">    ---</span>
-<span class="sd">    + user_post_dict: str or python dict, user_id - post_ids dict. If str, it should be available path</span>
-<span class="sd">    + share_dict : user_id - post_ids who share</span>
-<span class="sd">    + comment_dict: user_id - post_ids who comment</span>
-<span class="sd">    + react_dict: user_id - post_ids who react</span>
-<span class="sd">    + save_path: str. If None, save process is skipped</span>
-<span class="sd">    --</span>
-<span class="sd">    Return</span>
-<span class="sd">    + user_edge_list</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        user_post_dict: str or python dict, user_id - post_ids dict. If str, it should be available path</span>
+<span class="sd">        share_dict : user_id - post_ids who share</span>
+<span class="sd">        comment_dict: user_id - post_ids who comment</span>
+<span class="sd">        react_dict: user_id - post_ids who react</span>
+<span class="sd">        save_path: str. If None, save process is skipped</span>
+<span class="sd">    </span>
+<span class="sd">    :rtype: python dictionary (user_edge_list)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     
     <span class="c1"># load file</span>
@@ -322,16 +330,16 @@
                   <span class="n">user_post_dict</span><span class="o">=</span><span class="s1">&#39;../files/group_post_by_user_in_post.hdf5&#39;</span><span class="p">,</span>
                   <span class="n">chunksize</span><span class="o">=</span><span class="mf">1e7</span><span class="p">,</span>
                   <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Counter number of shares, comments or reactions by user</span>
-<span class="sd">    ---</span>
-<span class="sd">    df_path: path to concerned Pandas Dataframe</span>
-<span class="sd">    user_edge_list: str or DataFrame. if str, it should be available path</span>
-<span class="sd">    user_post_dict: str or dictionary</span>
-<span class="sd">    collections: str. one of &#39;share&#39;, &#39;comment&#39; or &#39;react&#39;</span>
-<span class="sd">    ---</span>
-<span class="sd">    Return</span>
-<span class="sd">    + dictionary which is number of shares/comments/reacts by user_id</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        df_path: path to concerned Pandas Dataframe</span>
+<span class="sd">        user_edge_list: str or DataFrame. if str, it should be available path</span>
+<span class="sd">        user_post_dict: str or dictionary</span>
+<span class="sd">        collections: str. one of &#39;share&#39;, &#39;comment&#39; or &#39;react&#39;</span>
+<span class="sd">    </span>
+<span class="sd">    :rtype: python dictionary, (number of shares/comments/reacts by user_id)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">user_edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
@@ -462,14 +470,14 @@
                                          <span class="s1">&#39;../files/edge_comment_3.hdf5&#39;</span><span class="p">,</span> 
                                          <span class="s1">&#39;../files/edge_react_3.hdf5&#39;</span><span class="p">],</span> 
                             <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Generate edge attribute from list of edges</span>
-<span class="sd">    ---</span>
-<span class="sd">    + edge_list: [str] or [dictionary]. List of edge attribute count</span>
-<span class="sd">    + save_path: str or None.</span>
-<span class="sd">    ---</span>
-<span class="sd">    Return</span>
-<span class="sd">    + feature edge dictionary</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        edge_list: [str] or [dictionary]. List of edge attribute count</span>
+<span class="sd">        save_path: str or None.</span>
+
+<span class="sd">    :rtype: python dictionary (feature edge dictionary)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -506,16 +514,16 @@
                            <span class="n">df_user</span><span class="o">=</span><span class="s1">&#39;../files/chosen_users.csv&#39;</span><span class="p">,</span>
                            <span class="n">attrs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;total_follower&#39;</span><span class="p">,</span> <span class="s1">&#39;total_friend&#39;</span><span class="p">,</span> <span class="s1">&#39;books_count&#39;</span><span class="p">,</span> <span class="s1">&#39;films_count&#39;</span><span class="p">,</span> <span class="s1">&#39;music_count&#39;</span><span class="p">,</span> <span class="s1">&#39;restaurants_count&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">],</span> 
                            <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Generate node attributes by given list</span>
-<span class="sd">    ---</span>
-<span class="sd">    + user_edge_list: str or dict python. If str, it should be path</span>
-<span class="sd">    + df_user: str or DataFrame, user dataframe</span>
-<span class="sd">    + attrs: list, name of concerned attributes from df_user</span>
-<span class="sd">    + save_path: str or None. If None, save process is skipped</span>
-<span class="sd">    ---</span>
-<span class="sd">    Return:</span>
-<span class="sd">    + node_atts_list: dict, key is node_id, values is array of concerned attributes</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        user_edge_list: str or dict python. If str, it should be path</span>
+<span class="sd">        df_user: str or DataFrame, user dataframe</span>
+<span class="sd">        attrs: list, name of concerned attributes from df_user</span>
+<span class="sd">        save_path: str or None. If None, save process is skipped</span>
+
+<span class="sd">    :rtype: python dictionary (node_atts_list: dict, key is node_id, values is array of concerned attributes)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">user_edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>

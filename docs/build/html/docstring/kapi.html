@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>kapi module &mdash; Amplification factor score ADVO  documentation</title>
+  <title>kapi module &mdash; Amplification factor score  documentation</title>
   
 
   
@@ -30,12 +30,15 @@
         <script type="text/javascript" src="../_static/underscore.js"></script>
         <script type="text/javascript" src="../_static/doctools.js"></script>
         <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
 
     
     <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" /> 
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Node Embedding Models" href="models.html" />
+    <link rel="prev" title="Transforms" href="transforms.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -49,7 +52,7 @@
           
 
           
-            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Amplification factor score ADVO
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Amplification factor score
           
 
           
@@ -80,9 +83,18 @@
               
             
             
-              <p class="caption"><span class="caption-text">Package Reference</span></p>
+              <p class="caption"><span class="caption-text">Readme</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html">AF score specification - version 4.</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Package Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="transforms.html">Transforms</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">kapi module</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="models.html">Node Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Index</span></p>
 <ul>
@@ -102,7 +114,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="../index.html">Amplification factor score ADVO</a>
+          <a href="../index.html">Amplification factor score</a>
         
       </nav>
 
@@ -133,6 +145,8 @@
     
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
         
+          <li><a href="transforms.html">Transforms</a> &raquo;</li>
+        
       <li>kapi module</li>
     
     
@@ -158,15 +172,20 @@
 <dl class="function">
 <dt id="kapi.count_by_user">
 <code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">count_by_user</code><span class="sig-paren">(</span><em class="sig-param">df_path</em>, <em class="sig-param">collection</em>, <em class="sig-param">device</em>, <em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5'</em>, <em class="sig-param">user_post_dict='../files/group_post_by_user_in_post.hdf5'</em>, <em class="sig-param">chunksize=10000000.0</em>, <em class="sig-param">save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#count_by_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.count_by_user" title="Permalink to this definition">¶</a></dt>
-<dd><p>Counter number of shares, comments or reactions by user
-—
-df_path: path to concerned Pandas Dataframe
-user_edge_list: str or DataFrame. if str, it should be available path
-user_post_dict: str or dictionary
-collections: str. one of ‘share’, ‘comment’ or ‘react’
-—
-Return
-+ dictionary which is number of shares/comments/reacts by user_id</p>
+<dd><p>Counter number of shares, comments or reactions by user</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_path</strong> – path to concerned Pandas Dataframe</p></li>
+<li><p><strong>user_edge_list</strong> – str or DataFrame. if str, it should be available path</p></li>
+<li><p><strong>user_post_dict</strong> – str or dictionary</p></li>
+<li><p><strong>collections</strong> – str. one of ‘share’, ‘comment’ or ‘react’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>python dictionary, (number of shares/comments/reacts by user_id)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -187,67 +206,93 @@ Return
 <dl class="function">
 <dt id="kapi.generate_edge_attribute">
 <code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">generate_edge_attribute</code><span class="sig-paren">(</span><em class="sig-param">edge_list=['../files/edge_share_3.hdf5', '../files/edge_comment_3.hdf5', '../files/edge_react_3.hdf5'], save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#generate_edge_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.generate_edge_attribute" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate edge attribute from list of edges
-—
-+ edge_list: [str] or [dictionary]. List of edge attribute count
-+ save_path: str or None.
-—
-Return
-+ feature edge dictionary</p>
+<dd><p>Generate edge attribute from list of edges</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>edge_list</strong> – [str] or [dictionary]. List of edge attribute count</p></li>
+<li><p><strong>save_path</strong> – str or None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>python dictionary (feature edge dictionary)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="kapi.generate_edge_list">
 <code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">generate_edge_list</code><span class="sig-paren">(</span><em class="sig-param">user_post_dict='../files/group_post_by_user_in_post.hdf5'</em>, <em class="sig-param">share_dict='../files/group_user_by_post_in_share.hdf5'</em>, <em class="sig-param">comment_dict='../files/group_user_by_post_in_comment.hdf5'</em>, <em class="sig-param">react_dict='../files/group_user_by_post_in_reaction.hdf5'</em>, <em class="sig-param">save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#generate_edge_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.generate_edge_list" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate edge list dictionary from dedicated dictionary of user_id - post_ids, and post_id - user_ids who share, comment and react
-—
-+ user_post_dict: str or python dict, user_id - post_ids dict. If str, it should be available path
-+ share_dict : user_id - post_ids who share
-+ comment_dict: user_id - post_ids who comment
-+ react_dict: user_id - post_ids who react
-+ save_path: str. If None, save process is skipped
-–
-Return
-+ user_edge_list</p>
+<dd><p>Generate edge list dictionary from dedicated dictionary of user_id - post_ids, and post_id - user_ids who share, comment and react</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_post_dict</strong> – str or python dict, user_id - post_ids dict. If str, it should be available path</p></li>
+<li><p><strong>share_dict</strong> – user_id - post_ids who share</p></li>
+<li><p><strong>comment_dict</strong> – user_id - post_ids who comment</p></li>
+<li><p><strong>react_dict</strong> – user_id - post_ids who react</p></li>
+<li><p><strong>save_path</strong> – str. If None, save process is skipped</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>python dictionary (user_edge_list)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="kapi.generate_node_attribute">
 <code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">generate_node_attribute</code><span class="sig-paren">(</span><em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5', df_user='../files/chosen_users.csv', attrs=['total_follower', 'total_friend', 'books_count', 'films_count', 'music_count', 'restaurants_count', 'sex'], save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#generate_node_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.generate_node_attribute" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate node attributes by given list
-—
-+ user_edge_list: str or dict python. If str, it should be path
-+ df_user: str or DataFrame, user dataframe
-+ attrs: list, name of concerned attributes from df_user
-+ save_path: str or None. If None, save process is skipped
-—
-Return:
-+ node_atts_list: dict, key is node_id, values is array of concerned attributes</p>
+<dd><p>Generate node attributes by given list</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_edge_list</strong> – str or dict python. If str, it should be path</p></li>
+<li><p><strong>df_user</strong> – str or DataFrame, user dataframe</p></li>
+<li><p><strong>attrs</strong> – list, name of concerned attributes from df_user</p></li>
+<li><p><strong>save_path</strong> – str or None. If None, save process is skipped</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>python dictionary (node_atts_list: dict, key is node_id, values is array of concerned attributes)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="kapi.group_post_by_user">
 <code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">group_post_by_user</code><span class="sig-paren">(</span><em class="sig-param">df_post='../files/chosen_post_2.csv'</em>, <em class="sig-param">save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#group_post_by_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.group_post_by_user" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read post.csv collection and return dictionary of user_id - post_ids
-—
-+ df_post: str or Pandas Dataframe. If str, df_post should be path to csv file
-+ save_path: path to save. If None, save process is skipped
-—
-Return</p>
-<blockquote>
-<div><p>user_post_dict: dictionary of user_id - post_ids</p>
-</div></blockquote>
+<dd><p>Read post.csv collection and return dictionary of user_id - post_ids</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_post</strong> – str or Pandas Dataframe. If str, df_post should be path to csv file</p></li>
+<li><p><strong>save_path</strong> – path to save. If None, save process is skipped</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>python dictionary (user_post_dict: dictionary of user_id - post_ids)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="kapi.group_user_by_post">
 <code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">group_user_by_post</code><span class="sig-paren">(</span><em class="sig-param">df_path</em>, <em class="sig-param">df_post</em>, <em class="sig-param">collection</em>, <em class="sig-param">save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#group_user_by_post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.group_user_by_post" title="Permalink to this definition">¶</a></dt>
-<dd><p>Read df.csv collection and return dictionary of post_id - user_ids
-—
-+ df_path: str. Path to DataFrame need to query (share, comment or react), df_path should be path to csv file
-+ df_post: str or Pandas Dataframe. DataFrame of chosen post. If str, df should be path to csv file
-+ collection: str, collection should be one of ‘share’, ‘comment’ or ‘reaction’
-+ save_path: path to save. If None, save process is skipped</p>
+<dd><p>Read df.csv collection and return dictionary of post_id - user_ids</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df_path</strong> – str. Path to DataFrame need to query (share, comment or react), df_path should be path to csv file</p></li>
+<li><p><strong>df_post</strong> – str or Pandas Dataframe. DataFrame of chosen post. If str, df should be path to csv file</p></li>
+<li><p><strong>collection</strong> – str, collection should be one of ‘share’, ‘comment’ or ‘reaction’</p></li>
+<li><p><strong>save_path</strong> – path to save. If None, save process is skipped</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>python dictionary</p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -257,6 +302,15 @@ Return</p>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="models.html" class="btn btn-neutral float-right" title="Node Embedding Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="transforms.html" class="btn btn-neutral float-left" title="Transforms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

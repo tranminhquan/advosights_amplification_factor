@@ -10,7 +10,7 @@ Amplification factor score ADVO's documentation
    :maxdepth: 2
    :caption: Readme
 
-   readme
+   .readme
 
 .. toctree::
    :maxdepth: 2

@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath('../../AF_source_code/afadvo/utils'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'Amplification factor score ADVO'
+project = 'Amplification factor score'
 copyright = '2020, Quan Tran'
 author = 'Quan Tran'
 
