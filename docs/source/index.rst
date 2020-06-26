@@ -14,9 +14,11 @@ Amplification factor score ADVO's documentation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Docstring
+   :caption: Package Reference
 
-   docstring/modules
+   docstring/transforms
+   docstring/models
+   docstring/utils
 
 .. toctree::
    :maxdepth: 2
