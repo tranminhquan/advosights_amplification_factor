@@ -25,12 +25,42 @@ class VGAEEncoder(torch.nn.Module):
     def __init__(self, n_node_atts, emb_dim):
         super(VGAEEncoder, self).__init__()
         self.conv1 = GCNConv(n_node_atts, 2 * emb_dim)
+        self.conv2 = GCNConv(2 * emb_dim, 4 * emb_dim)
+        self.conv3 = GCNConv(4 * emb_dim, 4 * emb_dim)
+        self.conv4 = GCNConv(4 * emb_dim, 2 * emb_dim)
         self.conv_mu = GCNConv(2 * emb_dim, emb_dim)
         self.conv_logvar = GCNConv(2 * emb_dim, emb_dim)
 
     def forward(self, x, edge_index, edge_weight):
-        x = F.relu(self.conv1(x, edge_index, edge_weight=edge_weight))
+        x = self.conv1(x, edge_index, edge_weight=edge_weight)
+        x = F.leaky_relu(x)
+        x = self.conv2(x, edge_index, edge_weight=edge_weight)
+        x = F.leaky_relu(x)
+        x = self.conv3(x, edge_index, edge_weight=edge_weight)
+        x = F.leaky_relu(x)
+        x = self.conv4(x, edge_index, edge_weight=edge_weight)
+        x = F.leaky_relu(x)
+        
         return self.conv_mu(x, edge_index, edge_weight=edge_weight), self.conv_logvar(x, edge_index, edge_weight=edge_weight)
+    
+class VGAEDecoder(torch.nn.Module):
+    def __init__(self, in_dim, out_dim, edge_weight):
+        super(VGAEDecoder, self).__init__()
+        
+        self.edge_weight = edge_weight
+        
+        self.conv1 = GCNConv(in_dim, 2 * in_dim)
+        self.conv2 = GCNConv(2 * in_dim, 2 * out_dim)
+        self.conv3 = GCNConv(2 * out_dim, out_dim)
+        
+    def forward(self, x, edge_index, sigmoid):
+        x = self.conv1(x, edge_index, edge_weight=self.edge_weight)
+        x = self.conv2(x, edge_index, edge_weight=self.edge_weight)
+        x = self.conv3(x, edge_index, edge_weight=self.edge_weight)
+        
+        if sigmoid:
+            return F.sigmoid(x)
+        return x
 
 class VGAEEmb():
     def __init__(self, data, emb_dim=128, save_path=None, **kwargs):
@@ -75,6 +105,7 @@ class VGAEEmb():
         
         # set model
         self.model = torch_geometric.nn.VGAE(VGAEEncoder(self.n_node_atts, self.dim))
+#         self.model = torch_geometric.nn.VGAE(VGAEEncoder(self.n_node_atts, self.dim), VGAEDecoder(self.dim, self.n_node_atts, edge_weight=))
         
         
 #     def preprocess(self, scale, normalize):
@@ -128,8 +159,7 @@ class VGAEEmb():
         max_ap = 0.0
         
         for epoch in range(epochs):
-#             loss = self.single_train(x, edge_index, edge_att, optim, device)
-#             loss = self.single_train2(x, train_pos_edge_index, optim, device)
+
             loss = self.single_train(x, train_pos_edge_index, train_pos_edge_attr, optim, device)
             
             auc, ap = self.test2(x, self.data.test_pos_edge_index, self.data.test_neg_edge_index,
@@ -186,7 +216,10 @@ class VGAEEmb():
         optim.zero_grad()
         
         z = self.model.encode(x, edge_index, edge_att)
+#         loss = self.model.recon_loss(z, edge_index)
         loss = self.model.recon_loss(z, edge_index)
+        loss = loss + (1 / self.data.num_nodes) * self.model.kl_loss()
+        
         loss.backward()
         optim.step()
         
@@ -237,6 +270,7 @@ class VGAEEmb():
             data.x = torch.from_numpy(self.scaler.transform(data.x))
             data.edge_attr = self.cal_edge_weight(data.edge_attr)      
             
+        test_model = test_model.to(device)
         z = test_model.encode(data.x.float().to(device), data.edge_index.to(device), data.edge_attr.to(device))
         
         if not save_emb_path is None:
@@ -244,4 +278,7 @@ class VGAEEmb():
                 pickle.dump(z, dt)
                 
         return z
+    
+
+
     

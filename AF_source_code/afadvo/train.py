@@ -2,7 +2,9 @@
 import argparse
 import torch
 from nn.models.vgae import VGAEEmb
+from nn.models.gae import GAEEmb
 from nn.models.node2vec import Node2VecEmb
+import pickle
 
 if __name__ == "__main__":
 
@@ -33,13 +35,22 @@ if __name__ == "__main__":
     
 
     print('Type of model: ', args.type)
+    history = None
     if args.type == 'vgae':
         model = VGAEEmb(args.data, args.dim, args.savepath)
         history = model.train(int(args.epochs), device, args.optimizer, lr=args.learningrate, monitor=args.monitor)
     elif args.type == 'gae':
-        pass
+        model = GAEEmb(args.data, args.dim, args.savepath)
+        history = model.train(int(args.epochs), device, args.optimizer, lr=args.learningrate, monitor=args.monitor)
     elif args.type == 'node2vec' or args.type == 'n2v':
         pass
     else:
         print('No matched mode type found')
+
+    if not args.historypath is None and not history is None:
+        print('-- Saving training history')
+        with open(args.historypath, 'wb') as dt:
+            pickle.dump(history, dt)
+
+    
 
