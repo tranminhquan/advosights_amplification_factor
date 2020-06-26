@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>kapi module &mdash; Amplification factor score ADVO  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="node2vec module" href="node2vec.html" />
+    <link rel="prev" title="gae module" href="gae.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Amplification factor score ADVO
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Docstring</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">All APIs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cal_af.html">cal_af module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gae.html">gae module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">kapi module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node2vec.html">node2vec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="predict.html">predict module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="train.html">train module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vgae.html">vgae module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualize.html">visualize module</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Index</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../indices.html">Indices and tables</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Amplification factor score ADVO</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">All APIs</a> &raquo;</li>
+        
+      <li>kapi module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/docstring/kapi.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-kapi">
+<span id="kapi-module"></span><h1>kapi module<a class="headerlink" href="#module-kapi" title="Permalink to this headline">¶</a></h1>
+<p>Transform function for Kapi DB</p>
+<dl class="function">
+<dt id="kapi.count_by_user">
+<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">count_by_user</code><span class="sig-paren">(</span><em class="sig-param">df_path</em>, <em class="sig-param">collection</em>, <em class="sig-param">device</em>, <em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5'</em>, <em class="sig-param">user_post_dict='../files/group_post_by_user_in_post.hdf5'</em>, <em class="sig-param">chunksize=10000000.0</em>, <em class="sig-param">save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#count_by_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.count_by_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Counter number of shares, comments or reactions by user
+—
+df_path: path to concerned Pandas Dataframe
+user_edge_list: str or DataFrame. if str, it should be available path
+user_post_dict: str or dictionary
+collections: str. one of ‘share’, ‘comment’ or ‘react’
+—
+Return
++ dictionary which is number of shares/comments/reacts by user_id</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="kapi.count_by_user_comment">
+<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">count_by_user_comment</code><span class="sig-paren">(</span><em class="sig-param">df_path</em>, <em class="sig-param">device</em>, <em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5'</em>, <em class="sig-param">user_post_dict='../files/group_post_by_user_in_post.hdf5'</em>, <em class="sig-param">chunksize=10000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#count_by_user_comment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.count_by_user_comment" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="kapi.count_by_user_react">
+<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">count_by_user_react</code><span class="sig-paren">(</span><em class="sig-param">df_path</em>, <em class="sig-param">device</em>, <em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5'</em>, <em class="sig-param">user_post_dict='../files/group_post_by_user_in_post.hdf5'</em>, <em class="sig-param">chunksize=10000000.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#count_by_user_react"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.count_by_user_react" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="kapi.count_by_user_share">
+<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">count_by_user_share</code><span class="sig-paren">(</span><em class="sig-param">df_path</em>, <em class="sig-param">device</em>, <em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5'</em>, <em class="sig-param">user_post_dict='../files/group_post_by_user_in_post.hdf5'</em>, <em class="sig-param">chunksize=10000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#count_by_user_share"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.count_by_user_share" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="kapi.generate_edge_attribute">
+<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">generate_edge_attribute</code><span class="sig-paren">(</span><em class="sig-param">edge_list=['../files/edge_share_3.hdf5', '../files/edge_comment_3.hdf5', '../files/edge_react_3.hdf5'], save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#generate_edge_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.generate_edge_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate edge attribute from list of edges
+—
++ edge_list: [str] or [dictionary]. List of edge attribute count
++ save_path: str or None.
+—
+Return
++ feature edge dictionary</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="kapi.generate_edge_list">
+<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">generate_edge_list</code><span class="sig-paren">(</span><em class="sig-param">user_post_dict='../files/group_post_by_user_in_post.hdf5'</em>, <em class="sig-param">share_dict='../files/group_user_by_post_in_share.hdf5'</em>, <em class="sig-param">comment_dict='../files/group_user_by_post_in_comment.hdf5'</em>, <em class="sig-param">react_dict='../files/group_user_by_post_in_reaction.hdf5'</em>, <em class="sig-param">save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#generate_edge_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.generate_edge_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate edge list dictionary from dedicated dictionary of user_id - post_ids, and post_id - user_ids who share, comment and react
+—
++ user_post_dict: str or python dict, user_id - post_ids dict. If str, it should be available path
++ share_dict : user_id - post_ids who share
++ comment_dict: user_id - post_ids who comment
++ react_dict: user_id - post_ids who react
++ save_path: str. If None, save process is skipped
+–
+Return
++ user_edge_list</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="kapi.generate_node_attribute">
+<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">generate_node_attribute</code><span class="sig-paren">(</span><em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5', df_user='../files/chosen_users.csv', attrs=['total_follower', 'total_friend', 'books_count', 'films_count', 'music_count', 'restaurants_count', 'sex'], save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#generate_node_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.generate_node_attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate node attributes by given list
+—
++ user_edge_list: str or dict python. If str, it should be path
++ df_user: str or DataFrame, user dataframe
++ attrs: list, name of concerned attributes from df_user
++ save_path: str or None. If None, save process is skipped
+—
+Return:
++ node_atts_list: dict, key is node_id, values is array of concerned attributes</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="kapi.group_post_by_user">
+<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">group_post_by_user</code><span class="sig-paren">(</span><em class="sig-param">df_post='../files/chosen_post_2.csv'</em>, <em class="sig-param">save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#group_post_by_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.group_post_by_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read post.csv collection and return dictionary of user_id - post_ids
+—
++ df_post: str or Pandas Dataframe. If str, df_post should be path to csv file
++ save_path: path to save. If None, save process is skipped
+—
+Return</p>
+<blockquote>
+<div><p>user_post_dict: dictionary of user_id - post_ids</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="kapi.group_user_by_post">
+<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">group_user_by_post</code><span class="sig-paren">(</span><em class="sig-param">df_path</em>, <em class="sig-param">df_post</em>, <em class="sig-param">collection</em>, <em class="sig-param">save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#group_user_by_post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.group_user_by_post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read df.csv collection and return dictionary of post_id - user_ids
+—
++ df_path: str. Path to DataFrame need to query (share, comment or react), df_path should be path to csv file
++ df_post: str or Pandas Dataframe. DataFrame of chosen post. If str, df should be path to csv file
++ collection: str, collection should be one of ‘share’, ‘comment’ or ‘reaction’
++ save_path: path to save. If None, save process is skipped</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="node2vec.html" class="btn btn-neutral float-right" title="node2vec module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="gae.html" class="btn btn-neutral float-left" title="gae module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, ADVO S-Commerce Solutions
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

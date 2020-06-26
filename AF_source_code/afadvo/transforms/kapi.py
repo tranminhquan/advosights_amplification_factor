@@ -6,7 +6,7 @@ import pickle
 import sklearn
 
 def group_post_by_user(df_post='../files/chosen_post_2.csv', save_path=None):
-    r'''
+    '''
     Read post.csv collection and return dictionary of user_id - post_ids
     ---
     + df_post: str or Pandas Dataframe. If str, df_post should be path to csv file

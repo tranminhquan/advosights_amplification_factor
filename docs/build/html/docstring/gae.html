@@ -1,0 +1,299 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>gae module &mdash; Amplification factor score ADVO  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="kapi module" href="kapi.html" />
+    <link rel="prev" title="cal_af module" href="cal_af.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Amplification factor score ADVO
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Docstring</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">All APIs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cal_af.html">cal_af module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">gae module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kapi.html">kapi module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node2vec.html">node2vec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="predict.html">predict module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="train.html">train module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vgae.html">vgae module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="visualize.html">visualize module</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Index</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../indices.html">Indices and tables</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Amplification factor score ADVO</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">All APIs</a> &raquo;</li>
+        
+      <li>gae module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/docstring/gae.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-gae">
+<span id="gae-module"></span><h1>gae module<a class="headerlink" href="#module-gae" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="gae.GAEEmb">
+<em class="property">class </em><code class="sig-prename descclassname">gae.</code><code class="sig-name descname">GAEEmb</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">emb_dim=128</em>, <em class="sig-param">save_path=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gae.html#GAEEmb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gae.GAEEmb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="gae.GAEEmb.cal_edge_weight">
+<code class="sig-name descname">cal_edge_weight</code><span class="sig-paren">(</span><em class="sig-param">edge_attr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gae.html#GAEEmb.cal_edge_weight"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gae.GAEEmb.cal_edge_weight" title="Permalink to this definition">¶</a></dt>
+<dd><p>Function defines how to cal weight of edge from reactions, comments and shares
+- current version: f = #reactions + #comments + #shares / 3</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gae.GAEEmb.get_edge_attr_indices">
+<code class="sig-name descname">get_edge_attr_indices</code><span class="sig-paren">(</span><em class="sig-param">origin_edge_index</em>, <em class="sig-param">edge_index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gae.html#GAEEmb.get_edge_attr_indices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gae.GAEEmb.get_edge_attr_indices" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gae.GAEEmb.predict">
+<code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">device</em>, <em class="sig-param">save_emb_path=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gae.html#GAEEmb.predict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gae.GAEEmb.predict" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gae.GAEEmb.single_train">
+<code class="sig-name descname">single_train</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">edge_index</em>, <em class="sig-param">edge_att</em>, <em class="sig-param">optim</em>, <em class="sig-param">device</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gae.html#GAEEmb.single_train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gae.GAEEmb.single_train" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train Node2Vec in a single epoch</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gae.GAEEmb.single_train2">
+<code class="sig-name descname">single_train2</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">edge_index</em>, <em class="sig-param">optim</em>, <em class="sig-param">device</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gae.html#GAEEmb.single_train2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gae.GAEEmb.single_train2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Train Node2Vec in a single epoch</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="gae.GAEEmb.test">
+<code class="sig-name descname">test</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">pos_edge_index</em>, <em class="sig-param">neg_edge_index</em>, <em class="sig-param">train_pos_edge_index</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gae.html#GAEEmb.test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gae.GAEEmb.test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gae.GAEEmb.test2">
+<code class="sig-name descname">test2</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">pos_edge_index</em>, <em class="sig-param">neg_edge_index</em>, <em class="sig-param">train_pos_edge_index</em>, <em class="sig-param">train_pos_edge_attr</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gae.html#GAEEmb.test2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gae.GAEEmb.test2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="gae.GAEEmb.train">
+<code class="sig-name descname">train</code><span class="sig-paren">(</span><em class="sig-param">epochs</em>, <em class="sig-param">device</em>, <em class="sig-param">optim='adam'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gae.html#GAEEmb.train"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gae.GAEEmb.train" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="gae.GAEEncoder">
+<em class="property">class </em><code class="sig-prename descclassname">gae.</code><code class="sig-name descname">GAEEncoder</code><span class="sig-paren">(</span><em class="sig-param">n_node_atts</em>, <em class="sig-param">emb_dim</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gae.html#GAEEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gae.GAEEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.nn.modules.module.Module</span></code></p>
+<dl class="method">
+<dt id="gae.GAEEncoder.forward">
+<code class="sig-name descname">forward</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">edge_index</em>, <em class="sig-param">edge_weight</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/gae.html#GAEEncoder.forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#gae.GAEEncoder.forward" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines the computation performed at every call.</p>
+<p>Should be overridden by all subclasses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Although the recipe for forward pass needs to be defined within
+this function, one should call the <code class="xref py py-class docutils literal notranslate"><span class="pre">Module</span></code> instance afterwards
+instead of this since the former takes care of running the
+registered hooks while the latter silently ignores them.</p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="kapi.html" class="btn btn-neutral float-right" title="kapi module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cal_af.html" class="btn btn-neutral float-left" title="cal_af module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, ADVO S-Commerce Solutions
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

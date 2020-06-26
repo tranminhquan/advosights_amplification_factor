@@ -1,0 +1,241 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>visualize module &mdash; Amplification factor score ADVO  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Indices and tables" href="../indices.html" />
+    <link rel="prev" title="vgae module" href="vgae.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Amplification factor score ADVO
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Docstring</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">All APIs</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="cal_af.html">cal_af module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gae.html">gae module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kapi.html">kapi module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="node2vec.html">node2vec module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="predict.html">predict module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="train.html">train module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vgae.html">vgae module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">visualize module</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Index</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../indices.html">Indices and tables</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Amplification factor score ADVO</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">All APIs</a> &raquo;</li>
+        
+      <li>visualize module</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/docstring/visualize.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-visualize">
+<span id="visualize-module"></span><h1>visualize module<a class="headerlink" href="#module-visualize" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="visualize.plot_af_user">
+<code class="sig-prename descclassname">visualize.</code><code class="sig-name descname">plot_af_user</code><span class="sig-paren">(</span><em class="sig-param">uid</em>, <em class="sig-param">af_directions</em>, <em class="sig-param">tsne_emb</em>, <em class="sig-param">node_dict</em>, <em class="sig-param">s=20</em>, <em class="sig-param">figsize=(50</em>, <em class="sig-param">50)</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/visualize.html#plot_af_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#visualize.plot_af_user" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the influencer and their “fans”</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="visualize.visualize_tsne">
+<code class="sig-prename descclassname">visualize.</code><code class="sig-name descname">visualize_tsne</code><span class="sig-paren">(</span><em class="sig-param">z</em>, <em class="sig-param">n_dim=2</em>, <em class="sig-param">label_dict=None</em>, <em class="sig-param">figsize=(150</em>, <em class="sig-param">150)</em>, <em class="sig-param">s=20</em>, <em class="sig-param">save_emb_path=None</em>, <em class="sig-param">save_fig_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/visualize.html#visualize_tsne"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#visualize.visualize_tsne" title="Permalink to this definition">¶</a></dt>
+<dd><p>Visualize vector space by given alogrithm, if label_dict is given, then plot scatter by their colors</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../indices.html" class="btn btn-neutral float-right" title="Indices and tables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="vgae.html" class="btn btn-neutral float-left" title="vgae module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, ADVO S-Commerce Solutions
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

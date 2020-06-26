@@ -1,0 +1,618 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>kapi &mdash; Amplification factor score ADVO  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Amplification factor score ADVO
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Docstring</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../docstring/modules.html">All APIs</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Index</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../indices.html">Indices and tables</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Amplification factor score ADVO</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>kapi</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for kapi</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;Transform function for Kapi DB&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">sklearn</span>
+
+<div class="viewcode-block" id="group_post_by_user"><a class="viewcode-back" href="../docstring/kapi.html#kapi.group_post_by_user">[docs]</a><span class="k">def</span> <span class="nf">group_post_by_user</span><span class="p">(</span><span class="n">df_post</span><span class="o">=</span><span class="s1">&#39;../files/chosen_post_2.csv&#39;</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Read post.csv collection and return dictionary of user_id - post_ids</span>
+<span class="sd">    ---</span>
+<span class="sd">    + df_post: str or Pandas Dataframe. If str, df_post should be path to csv file</span>
+<span class="sd">    + save_path: path to save. If None, save process is skipped</span>
+<span class="sd">    ---</span>
+<span class="sd">    Return</span>
+<span class="sd">        user_post_dict: dictionary of user_id - post_ids</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">df_post</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">df_post</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">df_post</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fid&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;from_user&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;to_user&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;parent_id&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">})</span>
+        
+    <span class="n">user_post_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">df_post</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df_post</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;from_user&#39;</span><span class="p">,</span> <span class="s1">&#39;fid&#39;</span><span class="p">]),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;from_user&#39;</span><span class="p">)[</span><span class="s1">&#39;fid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">list</span><span class="p">))</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">save_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">user_post_dict</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">user_post_dict</span></div>
+
+<div class="viewcode-block" id="group_user_by_post"><a class="viewcode-back" href="../docstring/kapi.html#kapi.group_user_by_post">[docs]</a><span class="k">def</span> <span class="nf">group_user_by_post</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">df_post</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Read df.csv collection and return dictionary of post_id - user_ids</span>
+<span class="sd">    ---</span>
+<span class="sd">    + df_path: str. Path to DataFrame need to query (share, comment or react), df_path should be path to csv file</span>
+<span class="sd">    + df_post: str or Pandas Dataframe. DataFrame of chosen post. If str, df should be path to csv file</span>
+<span class="sd">    + collection: str, collection should be one of &#39;share&#39;, &#39;comment&#39; or &#39;reaction&#39;</span>
+<span class="sd">    + save_path: path to save. If None, save process is skipped</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">df_post</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">df_post</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">df_post</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fid&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;from_user&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;to_user&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;parent_id&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">})</span>
+        
+    <span class="k">if</span> <span class="n">collection</span> <span class="o">==</span> <span class="s1">&#39;share&#39;</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;parent_id&#39;</span><span class="p">,</span> <span class="s1">&#39;from_user&#39;</span><span class="p">])</span>
+        <span class="n">post_user_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;fid&#39;</span><span class="p">)[</span><span class="s1">&#39;from_user&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">list</span><span class="p">))</span>
+        
+    <span class="c1"># Due to over size of comment and react, these csv file should be read in chunk</span>
+    <span class="k">elif</span> <span class="n">collection</span> <span class="o">==</span> <span class="s1">&#39;comment&#39;</span><span class="p">:</span>
+        <span class="c1"># get all user ids who comments on those posts</span>
+        <span class="n">chunksize</span> <span class="o">=</span> <span class="mf">1e7</span>
+        <span class="n">post_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_post</span><span class="o">.</span><span class="n">fid</span><span class="p">)</span>
+        <span class="n">cmt_user_ids</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">df</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fid&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;post_id&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;from_user&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;to_user&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">},</span> <span class="n">chunksize</span><span class="o">=</span><span class="n">chunksize</span><span class="p">)):</span>
+            <span class="n">df_temp</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">post_id</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">post_ids</span><span class="p">)]</span>
+            <span class="n">cmt_user_ids</span> <span class="o">=</span> <span class="n">cmt_user_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df_temp</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            
+        <span class="n">post_user_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">cmt_user_ids</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">cmt_user_ids</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;from_user&#39;</span><span class="p">,</span><span class="s1">&#39;post_id&#39;</span><span class="p">]),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;post_id&#39;</span><span class="p">)[</span><span class="s1">&#39;from_user&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">list</span><span class="p">))</span>
+        
+    <span class="k">elif</span> <span class="n">collection</span> <span class="o">==</span> <span class="s1">&#39;react&#39;</span> <span class="ow">or</span> <span class="n">collection</span> <span class="o">==</span> <span class="s1">&#39;reaction&#39;</span><span class="p">:</span>
+        <span class="c1"># get all user ids who comments on those posts</span>
+        <span class="n">chunksize</span> <span class="o">=</span> <span class="mf">1e7</span>
+        <span class="n">post_ids</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_post</span><span class="o">.</span><span class="n">fid</span><span class="p">)</span>
+        <span class="n">react_user_ids</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">df</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fid&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;from_user_id&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">},</span> <span class="n">chunksize</span><span class="o">=</span><span class="n">chunksize</span><span class="p">)):</span>
+            <span class="n">df_temp</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">fid</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">post_ids</span><span class="p">)]</span>
+            <span class="n">react_user_ids</span> <span class="o">=</span> <span class="n">react_user_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df_temp</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">react_user_ids</span> <span class="o">=</span> <span class="n">react_user_ids</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">react_user_ids</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">([</span><span class="s1">&#39;fid&#39;</span><span class="p">,</span><span class="s1">&#39;from_user_id&#39;</span><span class="p">]),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+        
+        <span class="n">post_user_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">react_user_ids</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;fid&#39;</span><span class="p">)[</span><span class="s1">&#39;from_user_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">list</span><span class="p">))</span>
+     
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">save_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">post_user_dict</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+            
+    <span class="k">return</span> <span class="n">post_user_dict</span></div>
+
+<div class="viewcode-block" id="generate_edge_list"><a class="viewcode-back" href="../docstring/kapi.html#kapi.generate_edge_list">[docs]</a><span class="k">def</span> <span class="nf">generate_edge_list</span><span class="p">(</span><span class="n">user_post_dict</span><span class="o">=</span><span class="s1">&#39;../files/group_post_by_user_in_post.hdf5&#39;</span><span class="p">,</span> 
+                       <span class="n">share_dict</span><span class="o">=</span><span class="s1">&#39;../files/group_user_by_post_in_share.hdf5&#39;</span><span class="p">,</span> 
+                       <span class="n">comment_dict</span><span class="o">=</span><span class="s1">&#39;../files/group_user_by_post_in_comment.hdf5&#39;</span><span class="p">,</span> 
+                       <span class="n">react_dict</span><span class="o">=</span><span class="s1">&#39;../files/group_user_by_post_in_reaction.hdf5&#39;</span><span class="p">,</span> 
+                       <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Generate edge list dictionary from dedicated dictionary of user_id - post_ids, and post_id - user_ids who share, comment and react</span>
+<span class="sd">    ---</span>
+<span class="sd">    + user_post_dict: str or python dict, user_id - post_ids dict. If str, it should be available path</span>
+<span class="sd">    + share_dict : user_id - post_ids who share</span>
+<span class="sd">    + comment_dict: user_id - post_ids who comment</span>
+<span class="sd">    + react_dict: user_id - post_ids who react</span>
+<span class="sd">    + save_path: str. If None, save process is skipped</span>
+<span class="sd">    --</span>
+<span class="sd">    Return</span>
+<span class="sd">    + user_edge_list</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="c1"># load file</span>
+    
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">share_dict</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">share_dict</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">share_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">user_post_dict</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">user_post_dict</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">user_post_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">comment_dict</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">comment_dict</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">comment_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">react_dict</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">react_dict</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">react_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+            
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;- user_post_dict records: &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">user_post_dict</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;- share_dict records: &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">share_dict</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;- comment_dict records: &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">comment_dict</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;- react_dict records: &#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">react_dict</span><span class="p">))</span>
+    
+            
+    <span class="n">user_edge_list</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">user_post_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+        <span class="k">for</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+            <span class="c1"># share</span>
+            <span class="k">if</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">share_dict</span><span class="p">:</span>
+                <span class="c1"># user id is first part of &#39;_&#39; in parent_id</span>
+                <span class="n">_share</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">share_dict</span><span class="p">[</span><span class="n">pid</span><span class="p">]]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">_share</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="c1"># comment</span>
+            <span class="k">if</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">comment_dict</span><span class="p">:</span>
+                <span class="n">_comment</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">comment_dict</span><span class="p">[</span><span class="n">pid</span><span class="p">]]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">_comment</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="c1"># reaction</span>
+            <span class="k">if</span> <span class="n">pid</span> <span class="ow">in</span> <span class="n">react_dict</span><span class="p">:</span>
+                <span class="n">_react</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">react_dict</span><span class="p">[</span><span class="n">pid</span><span class="p">]]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">_react</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="c1"># concat list</span>
+            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_share</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">_comment</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">_react</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">uids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">_share</span> <span class="o">+</span> <span class="n">_comment</span> <span class="o">+</span> <span class="n">_react</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">))</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">uids</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+                
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">uids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">uids</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+                    
+                    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">uids</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                
+                <span class="n">user_edge_list</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span> <span class="o">=</span> <span class="n">uids</span>
+                
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;- Number of isolated nodes: &#39;</span><span class="p">,</span> <span class="n">counter</span><span class="p">,</span> <span class="s1">&#39; | Percentage: &#39;</span><span class="p">,</span> <span class="p">(</span><span class="n">counter</span><span class="o">/</span><span class="n">n</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">user_edge_list</span></div>
+
+<div class="viewcode-block" id="count_by_user"><a class="viewcode-back" href="../docstring/kapi.html#kapi.count_by_user">[docs]</a><span class="k">def</span> <span class="nf">count_by_user</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span>
+                  <span class="n">user_edge_list</span><span class="o">=</span><span class="s1">&#39;../files/user_edge_list_3.hdf5&#39;</span><span class="p">,</span> 
+                  <span class="n">user_post_dict</span><span class="o">=</span><span class="s1">&#39;../files/group_post_by_user_in_post.hdf5&#39;</span><span class="p">,</span>
+                  <span class="n">chunksize</span><span class="o">=</span><span class="mf">1e7</span><span class="p">,</span>
+                  <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Counter number of shares, comments or reactions by user</span>
+<span class="sd">    ---</span>
+<span class="sd">    df_path: path to concerned Pandas Dataframe</span>
+<span class="sd">    user_edge_list: str or DataFrame. if str, it should be available path</span>
+<span class="sd">    user_post_dict: str or dictionary</span>
+<span class="sd">    collections: str. one of &#39;share&#39;, &#39;comment&#39; or &#39;react&#39;</span>
+<span class="sd">    ---</span>
+<span class="sd">    Return</span>
+<span class="sd">    + dictionary which is number of shares/comments/reacts by user_id</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">user_edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">user_edge_list</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">user_edge_list</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">user_post_dict</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">user_post_dict</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">user_post_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+    
+    <span class="n">edge_count</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">n_counter</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">if</span> <span class="n">collection</span> <span class="o">==</span> <span class="s1">&#39;share&#39;</span><span class="p">:</span>
+        <span class="n">edge_count</span> <span class="o">=</span> <span class="n">count_by_user_share</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">user_edge_list</span><span class="p">,</span> <span class="n">user_post_dict</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">collection</span> <span class="o">==</span> <span class="s1">&#39;comment&#39;</span><span class="p">:</span>
+        <span class="n">edge_count</span> <span class="o">=</span> <span class="n">count_by_user_comment</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">user_edge_list</span><span class="p">,</span> <span class="n">user_post_dict</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">collection</span> <span class="o">==</span> <span class="s1">&#39;react&#39;</span> <span class="ow">or</span> <span class="n">collection</span> <span class="o">==</span> <span class="s1">&#39;reaction&#39;</span><span class="p">:</span>
+        <span class="n">edge_count</span> <span class="o">=</span> <span class="n">count_by_user_react</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">user_edge_list</span><span class="p">,</span> <span class="n">user_post_dict</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">save_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">edge_count</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+            
+    <span class="k">return</span> <span class="n">edge_count</span></div>
+                          
+
+<div class="viewcode-block" id="count_by_user_share"><a class="viewcode-back" href="../docstring/kapi.html#kapi.count_by_user_share">[docs]</a><span class="k">def</span> <span class="nf">count_by_user_share</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span>
+                  <span class="n">user_edge_list</span><span class="o">=</span><span class="s1">&#39;../files/user_edge_list_3.hdf5&#39;</span><span class="p">,</span> 
+                  <span class="n">user_post_dict</span><span class="o">=</span><span class="s1">&#39;../files/group_post_by_user_in_post.hdf5&#39;</span><span class="p">,</span>
+                  <span class="n">chunksize</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">user_edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">user_edge_list</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">user_edge_list</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">user_post_dict</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">user_post_dict</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">user_post_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+    
+    <span class="n">edge_count</span> <span class="o">=</span> <span class="p">{}</span>
+                          
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">df</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fid&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;from_user&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;parent_id&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">},</span> <span class="n">chunksize</span><span class="o">=</span><span class="n">chunksize</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">user_edge_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                          
+            <span class="n">pids</span> <span class="o">=</span> <span class="n">user_post_dict</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
+            <span class="n">_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">df</span><span class="o">.</span><span class="n">parent_id</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">pids</span><span class="p">)]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;from_user&#39;</span><span class="p">)[</span><span class="s1">&#39;fid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">edge_count</span><span class="p">:</span>
+                <span class="n">edge_count</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">n_counts</span> <span class="o">=</span> <span class="n">edge_count</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">u</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="n">_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="p">))[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">n_counts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span>
+
+                <span class="n">edge_count</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_counts</span>
+                          
+    <span class="k">return</span> <span class="n">edge_count</span></div>
+                          
+<div class="viewcode-block" id="count_by_user_comment"><a class="viewcode-back" href="../docstring/kapi.html#kapi.count_by_user_comment">[docs]</a><span class="k">def</span> <span class="nf">count_by_user_comment</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span>
+                  <span class="n">user_edge_list</span><span class="o">=</span><span class="s1">&#39;../files/user_edge_list_3.hdf5&#39;</span><span class="p">,</span> 
+                  <span class="n">user_post_dict</span><span class="o">=</span><span class="s1">&#39;../files/group_post_by_user_in_post.hdf5&#39;</span><span class="p">,</span>
+                  <span class="n">chunksize</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">user_edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">user_edge_list</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">user_edge_list</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">user_post_dict</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">user_post_dict</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">user_post_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+    
+    <span class="n">edge_count</span> <span class="o">=</span> <span class="p">{}</span>
+                          
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">df</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fid&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;post_id&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;from_user&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;to_user&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">},</span> 
+                                      <span class="n">chunksize</span><span class="o">=</span><span class="n">chunksize</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">user_edge_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                          
+            <span class="n">pids</span> <span class="o">=</span> <span class="n">user_post_dict</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
+            <span class="n">_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">df</span><span class="o">.</span><span class="n">post_id</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">pids</span><span class="p">)]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;from_user&#39;</span><span class="p">)[</span><span class="s1">&#39;post_id&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">edge_count</span><span class="p">:</span>
+                <span class="n">edge_count</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">n_counts</span> <span class="o">=</span> <span class="n">edge_count</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">u</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="n">_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="p">))[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">n_counts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span>
+
+                <span class="n">edge_count</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_counts</span>
+                          
+    <span class="k">return</span> <span class="n">edge_count</span></div>
+                          
+<div class="viewcode-block" id="count_by_user_react"><a class="viewcode-back" href="../docstring/kapi.html#kapi.count_by_user_react">[docs]</a><span class="k">def</span> <span class="nf">count_by_user_react</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span>
+                  <span class="n">user_edge_list</span><span class="o">=</span><span class="s1">&#39;../files/user_edge_list_3.hdf5&#39;</span><span class="p">,</span> 
+                  <span class="n">user_post_dict</span><span class="o">=</span><span class="s1">&#39;../files/group_post_by_user_in_post.hdf5&#39;</span><span class="p">,</span>
+                  <span class="n">chunksize</span><span class="o">=</span><span class="mf">1e7</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">user_edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">user_edge_list</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">user_edge_list</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">user_post_dict</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">user_post_dict</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">user_post_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+    
+    <span class="n">edge_count</span> <span class="o">=</span> <span class="p">{}</span>
+                          
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">df</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;fid&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;from_user_id&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">},</span> 
+                                      <span class="n">chunksize</span><span class="o">=</span><span class="n">chunksize</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">user_edge_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                          
+            <span class="n">pids</span> <span class="o">=</span> <span class="n">user_post_dict</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
+            <span class="n">_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">from_user_id</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&amp;</span> <span class="n">df</span><span class="o">.</span><span class="n">fid</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">pids</span><span class="p">)]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;from_user_id&#39;</span><span class="p">)[</span><span class="s1">&#39;fid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">())</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">edge_count</span><span class="p">:</span>
+                <span class="n">edge_count</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">n_counts</span> <span class="o">=</span> <span class="n">edge_count</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+                <span class="k">for</span> <span class="n">u</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="n">_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">v</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">u</span><span class="p">))[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">n_counts</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">j</span>
+
+                <span class="n">edge_count</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">n_counts</span>
+                          
+    <span class="k">return</span> <span class="n">edge_count</span></div>
+
+
+<div class="viewcode-block" id="generate_edge_attribute"><a class="viewcode-back" href="../docstring/kapi.html#kapi.generate_edge_attribute">[docs]</a><span class="k">def</span> <span class="nf">generate_edge_attribute</span><span class="p">(</span><span class="n">edge_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;../files/edge_share_3.hdf5&#39;</span><span class="p">,</span> 
+                                         <span class="s1">&#39;../files/edge_comment_3.hdf5&#39;</span><span class="p">,</span> 
+                                         <span class="s1">&#39;../files/edge_react_3.hdf5&#39;</span><span class="p">],</span> 
+                            <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Generate edge attribute from list of edges</span>
+<span class="sd">    ---</span>
+<span class="sd">    + edge_list: [str] or [dictionary]. List of edge attribute count</span>
+<span class="sd">    + save_path: str or None.</span>
+<span class="sd">    ---</span>
+<span class="sd">    Return</span>
+<span class="sd">    + feature edge dictionary</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="n">edge_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span>
+        
+    <span class="nb">print</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span>
+    
+    <span class="n">edge_attrs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">edge_list</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+            <span class="n">edge_attrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">edge_attrs</span><span class="p">)</span>
+
+
+    <span class="n">edge_feature</span> <span class="o">=</span> <span class="p">{}</span>
+    
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">edge_attrs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">atts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)):</span>
+            <span class="n">_att</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">d</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">edge_attrs</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">atts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_att</span><span class="p">)</span>
+        
+        <span class="n">edge_feature</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">atts</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">save_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">edge_feature</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">edge_feature</span></div>
+
+<div class="viewcode-block" id="generate_node_attribute"><a class="viewcode-back" href="../docstring/kapi.html#kapi.generate_node_attribute">[docs]</a><span class="k">def</span> <span class="nf">generate_node_attribute</span><span class="p">(</span><span class="n">user_edge_list</span><span class="o">=</span><span class="s1">&#39;../files/user_edge_list_3.hdf5&#39;</span><span class="p">,</span> 
+                           <span class="n">df_user</span><span class="o">=</span><span class="s1">&#39;../files/chosen_users.csv&#39;</span><span class="p">,</span>
+                           <span class="n">attrs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;total_follower&#39;</span><span class="p">,</span> <span class="s1">&#39;total_friend&#39;</span><span class="p">,</span> <span class="s1">&#39;books_count&#39;</span><span class="p">,</span> <span class="s1">&#39;films_count&#39;</span><span class="p">,</span> <span class="s1">&#39;music_count&#39;</span><span class="p">,</span> <span class="s1">&#39;restaurants_count&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">],</span> 
+                           <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Generate node attributes by given list</span>
+<span class="sd">    ---</span>
+<span class="sd">    + user_edge_list: str or dict python. If str, it should be path</span>
+<span class="sd">    + df_user: str or DataFrame, user dataframe</span>
+<span class="sd">    + attrs: list, name of concerned attributes from df_user</span>
+<span class="sd">    + save_path: str or None. If None, save process is skipped</span>
+<span class="sd">    ---</span>
+<span class="sd">    Return:</span>
+<span class="sd">    + node_atts_list: dict, key is node_id, values is array of concerned attributes</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">user_edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">user_edge_list</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">user_edge_list</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+            
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">df_user</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">df_user</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">df_user</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fid&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">})</span>
+        
+    <span class="c1"># get all distinct uids</span>
+    <span class="n">unique_uid_keys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">user_edge_list</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+    <span class="n">unique_uid_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">user_edge_list</span><span class="o">.</span><span class="n">values</span><span class="p">())))</span>
+    <span class="n">uids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">unique_uid_keys</span><span class="p">,</span> <span class="n">unique_uid_values</span><span class="p">]))</span>
+    
+    <span class="c1"># filtered in df_user</span>
+    <span class="n">df_filtered_user</span> <span class="o">=</span> <span class="n">df_user</span><span class="p">[</span><span class="n">df_user</span><span class="o">.</span><span class="n">fid</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">uids</span><span class="p">)]</span>
+    
+    <span class="c1"># fill na data, all are 0.0 as default excepts sex is 3.0</span>
+<span class="c1">#     fill_data = {&#39;total_follower&#39;: 0.0, &#39;total_friend&#39;: 0.0, &#39;books_count&#39;: 0.0, &#39;films_count&#39;: 0.0, &#39;music_count&#39;: 0.0, &#39;restaurants_count&#39;: 0.0}</span>
+<span class="c1">#     for att in attrs:</span>
+<span class="c1">#         if att == &#39;sex&#39;:</span>
+<span class="c1">#             fill_data[att] = 3.0</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             fill_data[att] = 0.0</span>
+            
+    <span class="k">if</span> <span class="s1">&#39;sex&#39;</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+        <span class="n">df_filtered_user</span><span class="o">.</span><span class="n">sex</span> <span class="o">=</span> <span class="n">df_filtered_user</span><span class="o">.</span><span class="n">sex</span><span class="o">.</span><span class="n">map</span><span class="p">({</span><span class="mf">3.0</span><span class="p">:</span><span class="mf">3.0</span><span class="p">,</span> <span class="s1">&#39;Nam&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;Nữ&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;Gay&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;Mộc Nhiên&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">})</span>
+    
+    <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
+        <span class="n">imputer</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">impute</span><span class="o">.</span><span class="n">SimpleImputer</span><span class="p">(</span><span class="n">missing_values</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+        <span class="n">imputer</span> <span class="o">=</span> <span class="n">imputer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_filtered_user</span><span class="p">[[</span><span class="n">att</span><span class="p">]])</span>
+        <span class="n">df_filtered_user</span><span class="p">[</span><span class="n">att</span><span class="p">]</span> <span class="o">=</span> <span class="n">imputer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df_filtered_user</span><span class="p">[[</span><span class="n">att</span><span class="p">]])</span>
+    
+    
+    <span class="n">attrs</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;fid&#39;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span>
+<span class="c1">#     df_filtered_user = df_filtered_user.fillna(value=fill_data).drop(df_filtered_user.columns.difference(attrs), 1, inplace=False)</span>
+    <span class="n">df_filtered_user</span> <span class="o">=</span> <span class="n">df_filtered_user</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df_filtered_user</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">attrs</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    
+    
+        
+    <span class="c1"># create node_atts_list dictionary</span>
+    <span class="n">values_att</span> <span class="o">=</span> <span class="n">df_filtered_user</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;fid&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">key_att</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df_filtered_user</span><span class="p">[</span><span class="s1">&#39;fid&#39;</span><span class="p">])</span>
+    <span class="n">node_atts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">key_att</span><span class="p">,</span> <span class="n">values_att</span><span class="p">))</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">save_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">node_atts</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">node_atts</span></div>
+    
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, ADVO S-Commerce Solutions
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

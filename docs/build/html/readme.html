@@ -1,0 +1,315 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>&lt;no title&gt; &mdash; Amplification factor score ADVO  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="transforms" href="docstring/modules.html" />
+    <link rel="prev" title="Amplification factor score ADVO’s documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> Amplification factor score ADVO
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Docstring</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docstring/modules.html">transforms</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Index</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="indices.html">Indices and tables</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Amplification factor score ADVO</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>&lt;no title&gt;</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/readme.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <p># AF score specification - version 4.
+—
+R: Quan Tran</p>
+<p>Modification date:
+* 2 - June - 2020 (v4.0)
+* 3 - June - 2020 (v4.0)
+—</p>
+<p># Agenda
+1. [Introduction](#introduction)
+2. [Context](#context)
+3. [Scope](#scope)
+4. [KPIs](#kpis)
+5. [Limitation](#limitation)
+&lt;!– 6. Improvement –&gt;</p>
+<p>—</p>
+<p># 1. Introduction &lt;a id= ‘introduction’ /&gt;</p>
+<p>Amplifcation factor (AF) is one of $3$ metrics of Advosights used to measure the <strong>amplification of an individual in a specific network where compagin are launched</strong>.</p>
+<p>Generally, AF score requires $3$ kinds of data: <em>User attributes</em>, <em>User behaviors</em> and <em>Posts</em> (Figure below). These data forms the structural data called <strong>Directed Knowledge Graph</strong>.</p>
+<p>![af_input_output](<a class="reference external" href="https://i.imgur.com/yTB518v.png">https://i.imgur.com/yTB518v.png</a>)</p>
+<p>## For a brand</p>
+<p>Generally, the purpose of AF is to increase sale of business. In particular, by measuring the AF of users, we can find out:
+* Which users are the most influencers in a specific network
+* Predict how many users are influenced by one given user
+* Predict which direction of information when a user submit a new post</p>
+<p>&gt; <em>For example, brand X owns a small community in Facebook (e.g, a FB group of X). They aim to find out which users are most influencers among ones to make them as potential KOLs. Thanks to their large and fast diffusion, when they submit posts mentioning to X, other users are able to easily get the information very quickly.</em></p>
+<p>## For a specific user</p>
+<p>When taking part in an advocated community of a brand, a user intents to increase the amplication factor as much as possible due to:
+* The user are going to be more potential to be hired by the brand
+* AF model is able to predict how much user’s new post will be amplified in his community
+* By monitoring the AF score, users are able to know things needs to improve
+* User can directly measure AF to an other specific users</p>
+<p>&gt; <em>For example, user Y is in an advocated member in group G of brand X. AF score is calculated by attributes of Y and others users in G. When user Y intents to submit a new post, Y is able to be predicted who users are likely to be influenced by that post. Y is also able to measure AF to a specific user Z in G to know whether Z are influenced by Y or not</em></p>
+<p># 2. Context &lt;a id=’context’ /&gt;</p>
+<p>AF score requires the commuinty networks among users. In particular, it acquires <strong>set of users which some of them connected to each others</strong> to form a <strong>graph network</strong> (see below figures).</p>
+<p>![graph_example](<a class="reference external" href="https://i.imgur.com/IxqBzxn.gif">https://i.imgur.com/IxqBzxn.gif</a>)</p>
+<p>Therfore, our AF score is assumpted to formulated by <em>user’s attributes</em>, <em>user’s relationship</em> and <em>the corresponding posts</em>:
+* <strong>User’s attributes</strong> are behavior of a user, these includes their public information and their interaction on some specific social networks in our purpose.</p>
+<ul class="simple">
+<li><p><strong>User’s relationship</strong> are the relationships between the concerned user and the others in a network.</p></li>
+<li><p><strong>User’s posts</strong> are the content of previous posts has been submited.</p></li>
+</ul>
+<p>The figure below visualizes the dependence of AF on user’s relationship (user’s attributes) and posts.
+![AF_assumption](<a class="reference external" href="https://i.imgur.com/Ob1a8Q5.png">https://i.imgur.com/Ob1a8Q5.png</a>)</p>
+<p>Since we defined our problem as a knowledge graph which handles the relationship among users, there are $3$ things need to be concerened: <em>users’ attributes</em>, <em>users’ relationship</em> and <em>their corresponding posts</em>.</p>
+<p>### User’s attributes
+Users’ attributes contains <strong>their public information</strong> and <strong>behavior</strong> in an social network. For a specific social context, these attributes can vary depends on the supplied services of that social network</p>
+<ul class="simple">
+<li><p>version 4.0:</p></li>
+</ul>
+<dl class="simple">
+<dt>The current version is being experimented on Facebook database. As a result, we concern on following $7$ attributes (not including <strong>id</strong> of users:</dt><dd><ul class="simple">
+<li><p><strong>total_followers</strong>: number of followers</p></li>
+<li><p><strong>total_friends</strong>: number of friends of a user</p></li>
+<li><p><strong>books_count</strong>: number of books user</p></li>
+<li><p><strong>films_count</strong>: number of films user</p></li>
+<li><p><strong>music_count</strong>: number of music user</p></li>
+<li><p><strong>restaurants_count</strong>: number of restaurants user</p></li>
+<li><p><strong>sex</strong>: gender ($3$ if private)</p></li>
+</ul>
+</dd>
+</dl>
+<p><em>All the missing values were completely filled by mean of the dedicated ones</em></p>
+<p>### User’s relationship
+Is the way we define the relationship among users depending on specific social network.</p>
+<ul class="simple">
+<li><p>version 4.0:</p></li>
+</ul>
+<p>The current version is being experimented on Facebook social network. As a result, <strong>we define the relationship when a user reacts, comments or shares on any post from other user</strong> (detail in below figures). Then, we calculate the <strong>weight of relationship</strong> as below formula. The underlying weights are partly referenced from version 2.</p>
+<blockquote>
+<div><p>weights = 0.1*number of reactions + 0.3*number of comments + 0.6*number of shares</p>
+</div></blockquote>
+<p>![edge_definition](<a class="reference external" href="https://i.imgur.com/l0iqTKO.png">https://i.imgur.com/l0iqTKO.png</a>)</p>
+<p>### User’s posts
+Are all the attributes of a specific user’s posts depending on specific social netork. <strong>By crawling posts of users, we are able to analyse useful features such as which topics user interested in, writing style of user, etc</strong>. This also helps us know which style of post that user can be easily influenced, since each user will prefer a specific one.
+* version 4.0:
+We currently focus on posts’ contents that user submited</p>
+<p>## 3. Scope &lt;a id=’scope’ /&gt;
+Below is all attributes requirements and their corresponding scope</p>
+<div class="line-block">
+<div class="line">Name | Scope | Requirement |</div>
+</div>
+<p><a href="#id1"><span class="problematic" id="id2">|:------|</span></a>:——<a href="#id3"><span class="problematic" id="id4">|:------|</span></a>
+| Number of users | $&gt; 100$ | - Including KOLs and users who interact with them. &lt;br&gt; - All users must have at least $1$ connection with other user (avoid isolated user) |
+| User attributes | $7$ attributes: total_followers, total_friends, &lt;br&gt; books_count, films_count, music_count, restaurants_count, sex | |
+| Number of posts per user | $&gt; 10$ | Posts have: &lt;br&gt; - Content &lt;br&gt; - Number of reactions, shares, comments &lt;br&gt; - Range of time: at least $&gt; 10$ posts $1$ latest month  &lt;br&gt; - Information of corrsponding user ids who interact|</p>
+<p>&lt;!– # 3. Main approach –&gt;</p>
+<p># 4. KPIs &lt;a id=’kapis’ /&gt;</p>
+<ul class="simple">
+<li><p>[x] AF score version 4. proposal</p></li>
+<li><p>[x] Overall data analytics</p></li>
+<li><p>[x] Data preprocessing and transformation</p></li>
+<li><p>[x] Training user embedding model</p></li>
+<li><p>[ ] Training post embedding model</p></li>
+<li><p>[ ] Preparing training data for AF model</p></li>
+<li><p>[ ] Training AF model</p></li>
+<li><p>[ ] Release</p></li>
+</ul>
+<p># 5. Limitation &lt;a id=’limitation’ /&gt;
+* Since AF score takes <strong>deep learning</strong> into account, the efficency of AF score depends on the quality of data source and preprocessing method. <em>For the current version (4.), we just take very simple preprocessing method.</em>
+* User’s attributes are invariance, depends on specific kind of social network.
+* User’s attributes reach affordable number of attributes.</p>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="docstring/modules.html" class="btn btn-neutral float-right" title="transforms" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Amplification factor score ADVO’s documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Quan Tran
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -84,7 +84,7 @@ The current version is being experimented on Facebook database. As a result, we 
 Is the way we define the relationship among users depending on specific social network.
 
 * version 4.0:  
-The current version is being experimented on Facebook social network. As a result, **we define the relationship when a user reacts, comments or shares on any post from other user** (detail in below figures). Then, we calculate the **weight of relationship** as below formula. The underlying weights are partly referenced from verson 2.
+The current version is being experimented on Facebook social network. As a result, **we define the relationship when a user reacts, comments or shares on any post from other user** (detail in below figures). Then, we calculate the **weight of relationship** as below formula. The underlying weights are partly referenced from version 2.
   
                               weights = 0.1*number of reactions + 0.3*number of comments + 0.6*number of shares
 
@@ -104,7 +104,6 @@ Below is all attributes requirements and their corresponding scope
 | Number of users | $> 100$ | - Including KOLs and users who interact with them. <br> - All users must have at least $1$ connection with other user (avoid isolated user) |
 | User attributes | $7$ attributes: total_followers, total_friends, <br> books_count, films_count, music_count, restaurants_count, sex | |
 | Number of posts per user | $> 10$ | Posts have: <br> - Content <br> - Number of reactions, shares, comments <br> - Range of time: at least $> 10$ posts $1$ latest month  <br> - Information of corrsponding user ids who interact|
-
 
 
 <!-- # 3. Main approach -->
