@@ -326,7 +326,7 @@
     
     <span class="k">return</span> <span class="n">user_edge_list</span></div>
 
-<div class="viewcode-block" id="count_by_user"><a class="viewcode-back" href="../docstring/kapi.html#kapi.count_by_user">[docs]</a><span class="k">def</span> <span class="nf">count_by_user</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span>
+<div class="viewcode-block" id="count_by_user"><a class="viewcode-back" href="../docstring/kapi.html#kapi.count_by_user">[docs]</a><span class="k">def</span> <span class="nf">count_by_user</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">collection</span><span class="p">,</span>
                   <span class="n">user_edge_list</span><span class="o">=</span><span class="s1">&#39;../files/user_edge_list_3.hdf5&#39;</span><span class="p">,</span> 
                   <span class="n">user_post_dict</span><span class="o">=</span><span class="s1">&#39;../files/group_post_by_user_in_post.hdf5&#39;</span><span class="p">,</span>
                   <span class="n">chunksize</span><span class="o">=</span><span class="mf">1e7</span><span class="p">,</span>
@@ -355,11 +355,11 @@
     <span class="n">n_counter</span> <span class="o">=</span> <span class="mi">0</span>
     
     <span class="k">if</span> <span class="n">collection</span> <span class="o">==</span> <span class="s1">&#39;share&#39;</span><span class="p">:</span>
-        <span class="n">edge_count</span> <span class="o">=</span> <span class="n">count_by_user_share</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">user_edge_list</span><span class="p">,</span> <span class="n">user_post_dict</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">)</span>
+        <span class="n">edge_count</span> <span class="o">=</span> <span class="n">count_by_user_share</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">user_edge_list</span><span class="p">,</span> <span class="n">user_post_dict</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">collection</span> <span class="o">==</span> <span class="s1">&#39;comment&#39;</span><span class="p">:</span>
-        <span class="n">edge_count</span> <span class="o">=</span> <span class="n">count_by_user_comment</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">user_edge_list</span><span class="p">,</span> <span class="n">user_post_dict</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">)</span>
+        <span class="n">edge_count</span> <span class="o">=</span> <span class="n">count_by_user_comment</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">user_edge_list</span><span class="p">,</span> <span class="n">user_post_dict</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">collection</span> <span class="o">==</span> <span class="s1">&#39;react&#39;</span> <span class="ow">or</span> <span class="n">collection</span> <span class="o">==</span> <span class="s1">&#39;reaction&#39;</span><span class="p">:</span>
-        <span class="n">edge_count</span> <span class="o">=</span> <span class="n">count_by_user_react</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">user_edge_list</span><span class="p">,</span> <span class="n">user_post_dict</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">)</span>
+        <span class="n">edge_count</span> <span class="o">=</span> <span class="n">count_by_user_react</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">user_edge_list</span><span class="p">,</span> <span class="n">user_post_dict</span><span class="p">,</span> <span class="n">chunksize</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">save_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
@@ -368,7 +368,7 @@
     <span class="k">return</span> <span class="n">edge_count</span></div>
                           
 
-<div class="viewcode-block" id="count_by_user_share"><a class="viewcode-back" href="../docstring/kapi.html#kapi.count_by_user_share">[docs]</a><span class="k">def</span> <span class="nf">count_by_user_share</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span>
+<div class="viewcode-block" id="count_by_user_share"><a class="viewcode-back" href="../docstring/kapi.html#kapi.count_by_user_share">[docs]</a><span class="k">def</span> <span class="nf">count_by_user_share</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span>
                   <span class="n">user_edge_list</span><span class="o">=</span><span class="s1">&#39;../files/user_edge_list_3.hdf5&#39;</span><span class="p">,</span> 
                   <span class="n">user_post_dict</span><span class="o">=</span><span class="s1">&#39;../files/group_post_by_user_in_post.hdf5&#39;</span><span class="p">,</span>
                   <span class="n">chunksize</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
@@ -400,7 +400,7 @@
                           
     <span class="k">return</span> <span class="n">edge_count</span></div>
                           
-<div class="viewcode-block" id="count_by_user_comment"><a class="viewcode-back" href="../docstring/kapi.html#kapi.count_by_user_comment">[docs]</a><span class="k">def</span> <span class="nf">count_by_user_comment</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span>
+<div class="viewcode-block" id="count_by_user_comment"><a class="viewcode-back" href="../docstring/kapi.html#kapi.count_by_user_comment">[docs]</a><span class="k">def</span> <span class="nf">count_by_user_comment</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span>
                   <span class="n">user_edge_list</span><span class="o">=</span><span class="s1">&#39;../files/user_edge_list_3.hdf5&#39;</span><span class="p">,</span> 
                   <span class="n">user_post_dict</span><span class="o">=</span><span class="s1">&#39;../files/group_post_by_user_in_post.hdf5&#39;</span><span class="p">,</span>
                   <span class="n">chunksize</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
@@ -433,7 +433,7 @@
                           
     <span class="k">return</span> <span class="n">edge_count</span></div>
                           
-<div class="viewcode-block" id="count_by_user_react"><a class="viewcode-back" href="../docstring/kapi.html#kapi.count_by_user_react">[docs]</a><span class="k">def</span> <span class="nf">count_by_user_react</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span>
+<div class="viewcode-block" id="count_by_user_react"><a class="viewcode-back" href="../docstring/kapi.html#kapi.count_by_user_react">[docs]</a><span class="k">def</span> <span class="nf">count_by_user_react</span><span class="p">(</span><span class="n">df_path</span><span class="p">,</span>
                   <span class="n">user_edge_list</span><span class="o">=</span><span class="s1">&#39;../files/user_edge_list_3.hdf5&#39;</span><span class="p">,</span> 
                   <span class="n">user_post_dict</span><span class="o">=</span><span class="s1">&#39;../files/group_post_by_user_in_post.hdf5&#39;</span><span class="p">,</span>
                   <span class="n">chunksize</span><span class="o">=</span><span class="mf">1e7</span><span class="p">):</span>
@@ -484,15 +484,18 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">list</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="n">edge_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span>
         
-    <span class="nb">print</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span>
+    <span class="c1"># print(edge_list)</span>
     
-    <span class="n">edge_attrs</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">edge_list</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
-            <span class="n">temp</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
-            <span class="n">edge_attrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">edge_attrs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">edge_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">edge_attrs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">edge_list</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+                <span class="n">temp</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+                <span class="n">edge_attrs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">temp</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">edge_attrs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">edge_attrs</span> <span class="o">=</span> <span class="n">edge_list</span>
 
 
     <span class="n">edge_feature</span> <span class="o">=</span> <span class="p">{}</span>
@@ -576,6 +579,105 @@
             <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">node_atts</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
     
     <span class="k">return</span> <span class="n">node_atts</span></div>
+
+<div class="viewcode-block" id="generate_data_torchgeo"><a class="viewcode-back" href="../docstring/kapi.html#kapi.generate_data_torchgeo">[docs]</a><span class="k">def</span> <span class="nf">generate_data_torchgeo</span><span class="p">(</span><span class="n">edge_list</span><span class="o">=</span><span class="s1">&#39;/tf/data/adv/node_embedding/release_v20/graph_data/user_edge_list_3.hdf5&#39;</span><span class="p">,</span> 
+                           <span class="n">node_atts</span><span class="o">=</span><span class="s1">&#39;/tf/data/adv/node_embedding/release_v20/graph_data/node_atts_3.hdf5&#39;</span><span class="p">,</span> 
+                           <span class="n">edge_atts</span><span class="o">=</span><span class="s1">&#39;/tf/data/adv/node_embedding/release_v20/graph_data/edge_feature_3.hdf5&#39;</span><span class="p">,</span> 
+                           <span class="n">reindex</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Generate torch-geometric Data type</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        edge_list: python dict or str.</span>
+<span class="sd">        node_atts: python dict or str.</span>
+<span class="sd">        edge_atts: python dict or str.</span>
+<span class="sd">        reindex: bool. If True, re-index all nodes start from 0</span>
+<span class="sd">        save_path</span>
+<span class="sd">    ---</span>
+<span class="sd">    :rtype: :class:`torch_geometric.data.Data`</span>
+<span class="sd">    :rtype: python dictionary (re-indexing)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">edge_list</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">edge_list</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+            
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">node_atts</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">node_atts</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">node_atts</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+            
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">edge_atts</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">edge_atts</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">edge_atts</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+
+    <span class="c1"># ordering dict</span>
+    <span class="n">edge_list</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">edge_list</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+    <span class="n">node_atts</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">node_atts</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+    <span class="n">edge_atts</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">edge_atts</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+            
+        
+    <span class="c1"># calculate number of edges</span>
+    <span class="n">n_edge</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">edge_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">n_edge</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+        
+    
+    <span class="c1"># --------create edge_indicies to fit torch-geo data----------</span>
+    <span class="c1"># print(&#39;- Create edge indices to fit torch-geo data from edge list&#39;)</span>
+    <span class="n">edge_indices</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_edge</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">edge_list</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">v</span><span class="p">:</span>
+            <span class="n">edge_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            <span class="n">edge_indices</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+    
+    <span class="k">if</span> <span class="n">reindex</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">node_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">edge_indices</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">edge_indices</span><span class="p">)))</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
+        
+        <span class="n">t_edge_indices</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_edge</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">long</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">edge_indices</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+                <span class="n">t_edge_indices</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">node_dict</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">c</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">node_dict</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">t_edge_indices</span> <span class="o">=</span> <span class="n">edge_indices</span>
+        
+    <span class="c1"># -----create feature matrix to fit torch-geo data, convert to pytorch structe [num_nodes, num_node_features]-----</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">node_atts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">n_node_atts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">node_atts</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">n_node_atts</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="n">feature_matrix</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">node_atts</span><span class="p">),</span> <span class="n">n_node_atts</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;feature matrix: &#39;</span><span class="p">,</span> <span class="n">feature_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">node_atts</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">feature_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+    <span class="c1"># ----- create edge attributes to fit torch-geo data----------</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">edge_atts</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">n_edge_atts</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">edge_atts</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">n_edge_atts</span> <span class="o">=</span> <span class="mi">0</span>
+        
+    <span class="n">edge_features</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_edge</span><span class="p">,</span> <span class="n">n_edge_atts</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;edge_features: &#39;</span><span class="p">,</span> <span class="n">edge_features</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">edge_atts</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)):</span>
+            <span class="n">edge_features</span><span class="p">[</span><span class="n">counter</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">v</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+    
+<span class="c1">#     for i, (k,v) in enumerate(edge_atts.items()):</span>
+<span class="c1">#         edge_features[i, :] = torch.from_numpy(v[0])</span>
+        
+    <span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">feature_matrix</span><span class="p">,</span> <span class="n">edge_index</span><span class="o">=</span><span class="n">t_edge_indices</span><span class="p">,</span> <span class="n">edge_attr</span><span class="o">=</span><span class="n">edge_features</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">save_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">save_path</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">data</span><span class="p">,</span> <span class="n">node_dict</span></div>
     
     
 </pre></div>

@@ -86,6 +86,7 @@
               <p class="caption"><span class="caption-text">Readme</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../.readme.html">AF score specification - version 4.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html#transform-from-raw-data-into-structural-knowledge-graph-data">Transform from raw data into structural knowledge graph data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Package Reference</span></p>
 <ul class="current">
@@ -171,7 +172,7 @@
 <p>Transform function for Kapi DB</p>
 <dl class="function">
 <dt id="kapi.count_by_user">
-<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">count_by_user</code><span class="sig-paren">(</span><em class="sig-param">df_path</em>, <em class="sig-param">collection</em>, <em class="sig-param">device</em>, <em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5'</em>, <em class="sig-param">user_post_dict='../files/group_post_by_user_in_post.hdf5'</em>, <em class="sig-param">chunksize=10000000.0</em>, <em class="sig-param">save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#count_by_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.count_by_user" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">count_by_user</code><span class="sig-paren">(</span><em class="sig-param">df_path</em>, <em class="sig-param">collection</em>, <em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5'</em>, <em class="sig-param">user_post_dict='../files/group_post_by_user_in_post.hdf5'</em>, <em class="sig-param">chunksize=10000000.0</em>, <em class="sig-param">save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#count_by_user"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.count_by_user" title="Permalink to this definition">¶</a></dt>
 <dd><p>Counter number of shares, comments or reactions by user</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -190,18 +191,38 @@
 
 <dl class="function">
 <dt id="kapi.count_by_user_comment">
-<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">count_by_user_comment</code><span class="sig-paren">(</span><em class="sig-param">df_path</em>, <em class="sig-param">device</em>, <em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5'</em>, <em class="sig-param">user_post_dict='../files/group_post_by_user_in_post.hdf5'</em>, <em class="sig-param">chunksize=10000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#count_by_user_comment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.count_by_user_comment" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">count_by_user_comment</code><span class="sig-paren">(</span><em class="sig-param">df_path</em>, <em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5'</em>, <em class="sig-param">user_post_dict='../files/group_post_by_user_in_post.hdf5'</em>, <em class="sig-param">chunksize=10000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#count_by_user_comment"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.count_by_user_comment" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="kapi.count_by_user_react">
-<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">count_by_user_react</code><span class="sig-paren">(</span><em class="sig-param">df_path</em>, <em class="sig-param">device</em>, <em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5'</em>, <em class="sig-param">user_post_dict='../files/group_post_by_user_in_post.hdf5'</em>, <em class="sig-param">chunksize=10000000.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#count_by_user_react"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.count_by_user_react" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">count_by_user_react</code><span class="sig-paren">(</span><em class="sig-param">df_path</em>, <em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5'</em>, <em class="sig-param">user_post_dict='../files/group_post_by_user_in_post.hdf5'</em>, <em class="sig-param">chunksize=10000000.0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#count_by_user_react"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.count_by_user_react" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="kapi.count_by_user_share">
-<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">count_by_user_share</code><span class="sig-paren">(</span><em class="sig-param">df_path</em>, <em class="sig-param">device</em>, <em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5'</em>, <em class="sig-param">user_post_dict='../files/group_post_by_user_in_post.hdf5'</em>, <em class="sig-param">chunksize=10000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#count_by_user_share"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.count_by_user_share" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">count_by_user_share</code><span class="sig-paren">(</span><em class="sig-param">df_path</em>, <em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5'</em>, <em class="sig-param">user_post_dict='../files/group_post_by_user_in_post.hdf5'</em>, <em class="sig-param">chunksize=10000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#count_by_user_share"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.count_by_user_share" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="function">
+<dt id="kapi.generate_data_torchgeo">
+<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">generate_data_torchgeo</code><span class="sig-paren">(</span><em class="sig-param">edge_list='/tf/data/adv/node_embedding/release_v20/graph_data/user_edge_list_3.hdf5'</em>, <em class="sig-param">node_atts='/tf/data/adv/node_embedding/release_v20/graph_data/node_atts_3.hdf5'</em>, <em class="sig-param">edge_atts='/tf/data/adv/node_embedding/release_v20/graph_data/edge_feature_3.hdf5'</em>, <em class="sig-param">reindex=True</em>, <em class="sig-param">save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#generate_data_torchgeo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.generate_data_torchgeo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate torch-geometric Data type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>edge_list</strong> – python dict or str.</p></li>
+<li><p><strong>node_atts</strong> – python dict or str.</p></li>
+<li><p><strong>edge_atts</strong> – python dict or str.</p></li>
+<li><p><strong>reindex</strong> – bool. If True, re-index all nodes start from 0</p></li>
+<li><p><strong>save_path</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+<p>—
+:rtype: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch_geometric.data.Data</span></code>
+:rtype: python dictionary (re-indexing)</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="kapi.generate_edge_attribute">

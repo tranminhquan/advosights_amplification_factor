@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import pickle
 import sklearn
+from sklearn import impute
 
 def group_post_by_user(df_post='../files/chosen_post_2.csv', save_path=None):
     r'''
@@ -44,7 +45,8 @@ def group_user_by_post(df_path, df_post, collection, save_path=None):
         df_post = pd.read_csv(df_post, dtype={'fid': str, 'from_user': str, 'to_user': str, 'parent_id': str})
         
     if collection == 'share':
-        df = df.dropna(subset=['parent_id', 'from_user'])
+
+        df = df_post.dropna(subset=['parent_id', 'from_user'])
         post_user_dict = dict(df.groupby('fid')['from_user'].apply(list))
         
     # Due to over size of comment and react, these csv file should be read in chunk
@@ -165,7 +167,7 @@ def generate_edge_list(user_post_dict='../files/group_post_by_user_in_post.hdf5'
     
     return user_edge_list
 
-def count_by_user(df_path, collection, device,
+def count_by_user(df_path, collection,
                   user_edge_list='../files/user_edge_list_3.hdf5', 
                   user_post_dict='../files/group_post_by_user_in_post.hdf5',
                   chunksize=1e7,
@@ -194,11 +196,11 @@ def count_by_user(df_path, collection, device,
     n_counter = 0
     
     if collection == 'share':
-        edge_count = count_by_user_share(df_path, device, user_edge_list, user_post_dict, chunksize)
+        edge_count = count_by_user_share(df_path, user_edge_list, user_post_dict, chunksize)
     elif collection == 'comment':
-        edge_count = count_by_user_comment(df_path, device, user_edge_list, user_post_dict, chunksize)
+        edge_count = count_by_user_comment(df_path, user_edge_list, user_post_dict, chunksize)
     elif collection == 'react' or collection == 'reaction':
-        edge_count = count_by_user_react(df_path, device, user_edge_list, user_post_dict, chunksize)
+        edge_count = count_by_user_react(df_path, user_edge_list, user_post_dict, chunksize)
 
     if not save_path is None:
         with open(save_path, 'wb') as dt:
@@ -207,7 +209,7 @@ def count_by_user(df_path, collection, device,
     return edge_count
                           
 
-def count_by_user_share(df_path, device,
+def count_by_user_share(df_path,
                   user_edge_list='../files/user_edge_list_3.hdf5', 
                   user_post_dict='../files/group_post_by_user_in_post.hdf5',
                   chunksize=10000):
@@ -239,7 +241,7 @@ def count_by_user_share(df_path, device,
                           
     return edge_count
                           
-def count_by_user_comment(df_path, device,
+def count_by_user_comment(df_path,
                   user_edge_list='../files/user_edge_list_3.hdf5', 
                   user_post_dict='../files/group_post_by_user_in_post.hdf5',
                   chunksize=10000):
@@ -272,7 +274,7 @@ def count_by_user_comment(df_path, device,
                           
     return edge_count
                           
-def count_by_user_react(df_path, device,
+def count_by_user_react(df_path,
                   user_edge_list='../files/user_edge_list_3.hdf5', 
                   user_post_dict='../files/group_post_by_user_in_post.hdf5',
                   chunksize=1e7):
@@ -323,15 +325,18 @@ def generate_edge_attribute(edge_list = ['../files/edge_share_3.hdf5',
     if not type(edge_list) is list or not type(edge_list) is np.ndarray:
         edge_list = np.asarray(edge_list)
         
-    print(edge_list)
+    # print(edge_list)
     
-    edge_attrs = []
-    for path in edge_list:
-        with open(path, 'rb') as dt:
-            temp = pickle.load(dt)
-            print(temp)
-            edge_attrs.append(temp)
-            print(edge_attrs)
+    if type(edge_list[0]) is str:
+        edge_attrs = []
+        for path in edge_list:
+            with open(path, 'rb') as dt:
+                temp = pickle.load(dt)
+                print(temp)
+                edge_attrs.append(temp)
+                print(edge_attrs)
+    else:
+        edge_attrs = edge_list
 
 
     edge_feature = {}
@@ -380,30 +385,25 @@ def generate_node_attribute(user_edge_list='../files/user_edge_list_3.hdf5',
     
     # filtered in df_user
     df_filtered_user = df_user[df_user.fid.isin(uids)]
-    
-    # fill na data, all are 0.0 as default excepts sex is 3.0
-#     fill_data = {'total_follower': 0.0, 'total_friend': 0.0, 'books_count': 0.0, 'films_count': 0.0, 'music_count': 0.0, 'restaurants_count': 0.0}
-#     for att in attrs:
-#         if att == 'sex':
-#             fill_data[att] = 3.0
-#         else:
-#             fill_data[att] = 0.0
+    print(len(df_user))
             
     if 'sex' in attrs:
-        df_filtered_user.sex = df_filtered_user.sex.map({3.0:3.0, 'Nam': 0.0, 'Nữ': 1.0, 'Gay': 2.0, 'Mộc Nhiên': 1.0})
+        df_filtered_user.sex = df_filtered_user.sex.fillna(0.0)
+        df_filtered_user.sex = df_filtered_user.sex.map({'Nam': 1.0, 'Nữ': 2.0, 'Gay': 3.0, 'Mộc Nhiên': 2.0, 'Đàn Ông (Tính Thì Đàn Bà)': 1.0})
     
+
+    # fillna series
     for att in attrs:
-        imputer = sklearn.impute.SimpleImputer(missing_values=np.nan, strategy='mean')
-        imputer = imputer.fit(df_filtered_user[[att]])
-        df_filtered_user[att] = imputer.transform(df_filtered_user[[att]])
+        # print(df_filtered_user[[att]])
+        impt = impute.SimpleImputer(missing_values=np.nan, strategy='mean')
+        impt = impt.fit(df_filtered_user[[att]])
+        df_filtered_user[att] = impt.transform(df_filtered_user[[att]])
     
     
     attrs += ['fid']
     print(attrs)
 #     df_filtered_user = df_filtered_user.fillna(value=fill_data).drop(df_filtered_user.columns.difference(attrs), 1, inplace=False)
     df_filtered_user = df_filtered_user.drop(df_filtered_user.columns.difference(attrs), 1, inplace=False)
-    
-    
         
     # create node_atts_list dictionary
     values_att = df_filtered_user.drop('fid', axis=1).values
@@ -415,5 +415,105 @@ def generate_node_attribute(user_edge_list='../files/user_edge_list_3.hdf5',
             pickle.dump(node_atts, dt)
     
     return node_atts
+
+def generate_data_torchgeo(edge_list='/tf/data/adv/node_embedding/release_v20/graph_data/user_edge_list_3.hdf5', 
+                           node_atts='/tf/data/adv/node_embedding/release_v20/graph_data/node_atts_3.hdf5', 
+                           edge_atts='/tf/data/adv/node_embedding/release_v20/graph_data/edge_feature_3.hdf5', 
+                           reindex=True, save_path=None):
+    '''
+    Generate torch-geometric Data type
+    
+    Args:
+        edge_list: python dict or str.
+        node_atts: python dict or str.
+        edge_atts: python dict or str.
+        reindex: bool. If True, re-index all nodes start from 0
+        save_path
+    ---
+    :rtype:
+        :class:`torch_geometric.data.Data`
+        python dictionary (re-indexing)
+    '''
+    
+    if type(edge_list) is str:
+        with open(edge_list, 'rb') as dt:
+            edge_list = pickle.load(dt)
+            
+    if type(node_atts) is str:
+        with open(node_atts, 'rb') as dt:
+            node_atts = pickle.load(dt)
+            
+    if type(edge_atts) is str:
+        with open(edge_atts, 'rb') as dt:
+            edge_atts = pickle.load(dt)
+
+    # ordering dict
+    edge_list = OrderedDict(sorted(edge_list.items()))
+    node_atts = OrderedDict(sorted(node_atts.items()))
+    edge_atts = OrderedDict(sorted(edge_atts.items()))
+            
+        
+    # calculate number of edges
+    n_edge = 0
+    for k,v in edge_list.items():
+        n_edge += len(v)
+        
+    
+    # --------create edge_indicies to fit torch-geo data----------
+    # print('- Create edge indices to fit torch-geo data from edge list')
+    edge_indices = torch.zeros((2, n_edge), dtype=torch.long)
+
+    i = 0
+    for k,v in edge_list.items():
+        for j in v:
+            edge_indices[0,i] = int(k)
+            edge_indices[1,i] = int(j)
+            i += 1
+    
+    if reindex is True:
+        node_dict = dict(zip(torch.unique(edge_indices).tolist(), torch.arange(len(torch.unique(edge_indices))).tolist()))
+        
+        t_edge_indices = torch.zeros((2, n_edge), dtype=torch.long)
+        for i, r in enumerate(edge_indices):
+            for j, c in enumerate(r):
+                t_edge_indices[i,j] = node_dict[int(c)]
+    else:
+        node_dict = None
+        t_edge_indices = edge_indices
+        
+    # -----create feature matrix to fit torch-geo data, convert to pytorch structe [num_nodes, num_node_features]-----
+    if not node_atts is None:
+        n_node_atts = len(list(node_atts.values())[0])
+    else:
+        n_node_atts = 0
+    
+    feature_matrix = torch.zeros((len(node_atts), n_node_atts), dtype=torch.float)
+    print('feature matrix: ', feature_matrix.shape)
+    for i, (k,v) in enumerate(node_atts.items()):
+        feature_matrix[i, :] = torch.from_numpy(v)
+
+    # ----- create edge attributes to fit torch-geo data----------
+    if not edge_atts is None:
+        n_edge_atts = len(list(edge_atts.values())[0][0])
+    else:
+        n_edge_atts = 0
+        
+    edge_features = torch.zeros((n_edge, n_edge_atts), dtype=torch.float)
+    print('edge_features: ', edge_features.shape)
+    counter = 0
+    for i, (k,v) in enumerate(edge_atts.items()):
+        for j in range(len(v)):
+            edge_features[counter,:] = torch.from_numpy(v[j])
+            counter += 1
+    
+#     for i, (k,v) in enumerate(edge_atts.items()):
+#         edge_features[i, :] = torch.from_numpy(v[0])
+        
+    data = Data(x=feature_matrix, edge_index=t_edge_indices, edge_attr=edge_features)
+    
+    if not save_path is None:
+        torch.save(data, save_path)
+    
+    return data, node_dict
     
     

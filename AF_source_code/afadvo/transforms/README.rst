@@ -5,7 +5,9 @@ Transform from raw data into structural knowledge graph data
 
 R: QuanTran
 
-Modification date: \* 25 - May - 2020 (v.2.0) \* 1 - Jun - 2020 (v.2.1)
+Modification date: 
+    * 25 - May - 2020 (v.2.0) 
+    * 1 - Jun - 2020 (v.2.1)
 
 *Transfrom from raw data into structural knowledge graph data*
 
@@ -14,15 +16,15 @@ Modification date: \* 25 - May - 2020 (v.2.0) \* 1 - Jun - 2020 (v.2.1)
 Agenda
 ------
 
-1. `Prerequisite <#prerequisite>`__
-2. `Knowledge graph data structure <#knowledge_graph_data_structure>`__
-    2.1. `Edge list <#edge_list>`__
-    2.2. `User attribute (Node attribute) <#node_attribute>`__
-    2.3. `Edge attribute <#edge_attribute>`__
-3. | `Transformation process <#transformation>`__
-   |  3.1. `Building edge list <#building_edge_list>`__
-   |  3.2. `Building node attribute <#building_node_attribute>`__
-   |  3.3. `Building edge attribute <#building_edge_attribute>`__
+1. `Prerequisite <#prerequisite>`
+2. `Knowledge graph data structure <#knowledge_graph_data_structure>`
+    2.1. `Edge list <#edge_list>`
+    2.2. `User attribute (Node attribute) <#node_attribute>`
+    2.3. `Edge attribute <#edge_attribute>`
+3. `Transformation process <#transformation>`
+    3.1. `Building edge list <#building_edge_list>`
+    3.2. `Building node attribute <#building_node_attribute>`
+    3.3. `Building edge attribute <#building_edge_attribute>`
 
 4. `Code <#code>`__
 

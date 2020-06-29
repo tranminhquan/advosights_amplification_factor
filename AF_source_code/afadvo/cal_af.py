@@ -31,7 +31,7 @@ if __name__ == "__main__":
 
     if type(z) is str:
         with open(z, 'rb') as dt:
-            z = pickle.load(dt)
+            z = pickle.load(dt) 
     # z = z.cpu().detach().numpy()
 
     if type(node_dict) is str:
