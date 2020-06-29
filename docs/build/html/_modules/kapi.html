@@ -83,8 +83,15 @@
             
               <p class="caption"><span class="caption-text">Readme</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html">AF score specification - version 4.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#transform-from-raw-data-into-structural-knowledge-graph-data">Transform from raw data into structural knowledge graph data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html"># AF score specification - version 4.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html#for-a-brand">For a brand</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html#for-a-specific-user">For a specific user</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html#scope">3. Scope</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html#id13">Agenda</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html#nextstep">Nextstep:</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html#prerequisite">1. Prerequisite</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html#knowledge-graph-data-structure">2. Knowledge graph data structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html#transformation-process">3. Transformation process</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Package Reference</span></p>
 <ul>
@@ -165,6 +172,7 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">sklearn</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">impute</span>
 
 <div class="viewcode-block" id="group_post_by_user"><a class="viewcode-back" href="../docstring/kapi.html#kapi.group_post_by_user">[docs]</a><span class="k">def</span> <span class="nf">group_post_by_user</span><span class="p">(</span><span class="n">df_post</span><span class="o">=</span><span class="s1">&#39;../files/chosen_post_2.csv&#39;</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
@@ -205,7 +213,8 @@
         <span class="n">df_post</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">df_post</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fid&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;from_user&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;to_user&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;parent_id&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">})</span>
         
     <span class="k">if</span> <span class="n">collection</span> <span class="o">==</span> <span class="s1">&#39;share&#39;</span><span class="p">:</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;parent_id&#39;</span><span class="p">,</span> <span class="s1">&#39;from_user&#39;</span><span class="p">])</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df_post</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;parent_id&#39;</span><span class="p">,</span> <span class="s1">&#39;from_user&#39;</span><span class="p">])</span>
         <span class="n">post_user_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;fid&#39;</span><span class="p">)[</span><span class="s1">&#39;from_user&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">list</span><span class="p">))</span>
         
     <span class="c1"># Due to over size of comment and react, these csv file should be read in chunk</span>
@@ -544,30 +553,25 @@
     
     <span class="c1"># filtered in df_user</span>
     <span class="n">df_filtered_user</span> <span class="o">=</span> <span class="n">df_user</span><span class="p">[</span><span class="n">df_user</span><span class="o">.</span><span class="n">fid</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">uids</span><span class="p">)]</span>
-    
-    <span class="c1"># fill na data, all are 0.0 as default excepts sex is 3.0</span>
-<span class="c1">#     fill_data = {&#39;total_follower&#39;: 0.0, &#39;total_friend&#39;: 0.0, &#39;books_count&#39;: 0.0, &#39;films_count&#39;: 0.0, &#39;music_count&#39;: 0.0, &#39;restaurants_count&#39;: 0.0}</span>
-<span class="c1">#     for att in attrs:</span>
-<span class="c1">#         if att == &#39;sex&#39;:</span>
-<span class="c1">#             fill_data[att] = 3.0</span>
-<span class="c1">#         else:</span>
-<span class="c1">#             fill_data[att] = 0.0</span>
+    <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_user</span><span class="p">))</span>
             
     <span class="k">if</span> <span class="s1">&#39;sex&#39;</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
-        <span class="n">df_filtered_user</span><span class="o">.</span><span class="n">sex</span> <span class="o">=</span> <span class="n">df_filtered_user</span><span class="o">.</span><span class="n">sex</span><span class="o">.</span><span class="n">map</span><span class="p">({</span><span class="mf">3.0</span><span class="p">:</span><span class="mf">3.0</span><span class="p">,</span> <span class="s1">&#39;Nam&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;Nữ&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;Gay&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;Mộc Nhiên&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">})</span>
+        <span class="n">df_filtered_user</span><span class="o">.</span><span class="n">sex</span> <span class="o">=</span> <span class="n">df_filtered_user</span><span class="o">.</span><span class="n">sex</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">df_filtered_user</span><span class="o">.</span><span class="n">sex</span> <span class="o">=</span> <span class="n">df_filtered_user</span><span class="o">.</span><span class="n">sex</span><span class="o">.</span><span class="n">map</span><span class="p">({</span><span class="s1">&#39;Nam&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;Nữ&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;Gay&#39;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">&#39;Mộc Nhiên&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;Đàn Ông (Tính Thì Đàn Bà)&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">})</span>
     
+
+    <span class="c1"># fillna series</span>
     <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
-        <span class="n">imputer</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">impute</span><span class="o">.</span><span class="n">SimpleImputer</span><span class="p">(</span><span class="n">missing_values</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
-        <span class="n">imputer</span> <span class="o">=</span> <span class="n">imputer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_filtered_user</span><span class="p">[[</span><span class="n">att</span><span class="p">]])</span>
-        <span class="n">df_filtered_user</span><span class="p">[</span><span class="n">att</span><span class="p">]</span> <span class="o">=</span> <span class="n">imputer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df_filtered_user</span><span class="p">[[</span><span class="n">att</span><span class="p">]])</span>
+        <span class="c1"># print(df_filtered_user[[att]])</span>
+        <span class="n">impt</span> <span class="o">=</span> <span class="n">impute</span><span class="o">.</span><span class="n">SimpleImputer</span><span class="p">(</span><span class="n">missing_values</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+        <span class="n">impt</span> <span class="o">=</span> <span class="n">impt</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_filtered_user</span><span class="p">[[</span><span class="n">att</span><span class="p">]])</span>
+        <span class="n">df_filtered_user</span><span class="p">[</span><span class="n">att</span><span class="p">]</span> <span class="o">=</span> <span class="n">impt</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df_filtered_user</span><span class="p">[[</span><span class="n">att</span><span class="p">]])</span>
     
     
     <span class="n">attrs</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;fid&#39;</span><span class="p">]</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">attrs</span><span class="p">)</span>
 <span class="c1">#     df_filtered_user = df_filtered_user.fillna(value=fill_data).drop(df_filtered_user.columns.difference(attrs), 1, inplace=False)</span>
     <span class="n">df_filtered_user</span> <span class="o">=</span> <span class="n">df_filtered_user</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">df_filtered_user</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="n">attrs</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    
-    
         
     <span class="c1"># create node_atts_list dictionary</span>
     <span class="n">values_att</span> <span class="o">=</span> <span class="n">df_filtered_user</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;fid&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
@@ -594,8 +598,9 @@
 <span class="sd">        reindex: bool. If True, re-index all nodes start from 0</span>
 <span class="sd">        save_path</span>
 <span class="sd">    ---</span>
-<span class="sd">    :rtype: :class:`torch_geometric.data.Data`</span>
-<span class="sd">    :rtype: python dictionary (re-indexing)</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">        :class:`torch_geometric.data.Data`</span>
+<span class="sd">        python dictionary (re-indexing)</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>

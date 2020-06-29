@@ -34,7 +34,7 @@ if __name__ == "__main__":
     post_react = group_user_by_post(df_path=args.reactions, df_post=args.posts, collection='react', save_path=None) if not args.reactions is None else None
 
     edge_list = generate_edge_list(user_post_dict=user_post_dict, share_dict=post_share, comment_dict=post_comment, react_dict=post_react, save_path=None)
-    print(edge_list)
+    
     if not args.edgelist is None:
         with open(args.edgelist, 'wb') as dt:
             pickle.dump(edge_list, dt)
@@ -62,5 +62,3 @@ if __name__ == "__main__":
     start_torchgeodata = time.time()
     torch_data = generate_data_torchgeo(edge_list=edge_list, node_atts=node_attr, edge_atts=edge_attr, reindex=True, save_path=args.torchdata)
     print('* Torch-geo data done: ', time.time() - start_torchgeodata)
-
-

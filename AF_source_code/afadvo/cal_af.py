@@ -38,8 +38,6 @@ if __name__ == "__main__":
         with open(node_dict, 'rb') as dt:
             node_dict = pickle.load(dt)
 
-    
-
     dirs, probs, degs = get_similarity_2(uid, edge_list, z, node_dict, threshold, limit)
     af_score = cal_af_2(uid, dirs, probs, degs)
 

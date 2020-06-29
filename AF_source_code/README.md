@@ -105,11 +105,17 @@ Below is all attributes requirements and their corresponding scope
 | User attributes | $7$ attributes: total_followers, total_friends, <br> books_count, films_count, music_count, restaurants_count, sex | |
 | Number of posts per user | $> 10$ | Posts have: <br> - Content <br> - Number of reactions, shares, comments <br> - Range of time: at least $> 10$ posts $1$ latest month  <br> - Information of corrsponding user ids who interact|
 
+# 4. Scenarios
+Due to the variance of data provided by customers in compagins that they are unable to sufficently supply full of requested information. We provide $3$ different scenarios that efficiently support for the customer, vary from *non-information* to *full-information*. As a consequence, there is a tradeoff among scenerios. The below table will provide in detail:
 
-<!-- # 3. Main approach -->
+| Scenerio | Used method | Attribute needed | Accuracy | Dedicated version |
+|:---------|:------------|:-----------------|:---------|:------------------|
+| $1$ | Node2vec | Only relationship among users needed | Low | v4.0 |
+| $2$ | GAE or VGAE | User's relationship and attribute | Medium | v4.1 |
+| $3$ | GAE, VGAE + Word embedding | Above + Post content of user | High | v4.2 |
 
 
-# 4. KPIs <a id='kapis' />
+# 5. KPIs <a id='kapis' />
 
 * [x] AF score version 4. proposal
 * [x] Overall data analytics
