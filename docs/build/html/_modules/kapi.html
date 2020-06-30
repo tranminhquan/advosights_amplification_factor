@@ -83,7 +83,7 @@
             
               <p class="caption"><span class="caption-text">Readme</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html"># AF score specification - version 4.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html">AF score specification - version 4.</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../.readme.html#for-a-brand">For a brand</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../.readme.html#for-a-specific-user">For a specific user</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../.readme.html#scope">3. Scope</a></li>
@@ -173,6 +173,8 @@
 <span class="kn">import</span> <span class="nn">pickle</span>
 <span class="kn">import</span> <span class="nn">sklearn</span>
 <span class="kn">from</span> <span class="nn">sklearn</span> <span class="k">import</span> <span class="n">impute</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch_geometric.data</span> <span class="k">import</span> <span class="n">Data</span>
 
 <div class="viewcode-block" id="group_post_by_user"><a class="viewcode-back" href="../docstring/kapi.html#kapi.group_post_by_user">[docs]</a><span class="k">def</span> <span class="nf">group_post_by_user</span><span class="p">(</span><span class="n">df_post</span><span class="o">=</span><span class="s1">&#39;../files/chosen_post_2.csv&#39;</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
@@ -583,6 +585,38 @@
             <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">node_atts</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
     
     <span class="k">return</span> <span class="n">node_atts</span></div>
+
+<div class="viewcode-block" id="get_frequency_by_user"><a class="viewcode-back" href="../docstring/kapi.html#kapi.get_frequency_by_user">[docs]</a><span class="k">def</span> <span class="nf">get_frequency_by_user</span><span class="p">(</span><span class="n">df_post</span><span class="o">=</span><span class="s1">&#39;/tf/data/adv/node_embedding/chosen_post_2.csv&#39;</span><span class="p">,</span> 
+                          <span class="n">post_count</span><span class="o">=</span><span class="s1">&#39;/tf/data/adv/node_embedding/count_post_by_user.hdf5&#39;</span><span class="p">):</span>
+
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Get the active day of users.</span>
+<span class="sd">        active day = range of min - max day - days having posts</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df_post: dataframe contains posts data</span>
+<span class="sd">        post_count: python dictionary, post counting by user</span>
+<span class="sd">    </span>
+<span class="sd">    :rtype: python dictionary</span>
+<span class="sd">    </span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">df_post</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">df_post</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">df_post</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fid&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;from_user&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;to_user&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">})</span>
+        
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">post_count</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">post_count</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">post_count</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+
+    <span class="n">df_post</span><span class="p">[</span><span class="s1">&#39;created_date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_post</span><span class="o">.</span><span class="n">created_date</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;datetime64[ns]&#39;</span><span class="p">)</span>
+    
+    <span class="n">active_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">df_post</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;from_user&#39;</span><span class="p">)[</span><span class="s1">&#39;created_date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">df_post</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;from_user&#39;</span><span class="p">)[</span><span class="s1">&#39;created_date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">active_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">active_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">/</span> <span class="n">post_count</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
+    
+    <span class="k">return</span> <span class="n">active_dict</span></div>
+
 
 <div class="viewcode-block" id="generate_data_torchgeo"><a class="viewcode-back" href="../docstring/kapi.html#kapi.generate_data_torchgeo">[docs]</a><span class="k">def</span> <span class="nf">generate_data_torchgeo</span><span class="p">(</span><span class="n">edge_list</span><span class="o">=</span><span class="s1">&#39;/tf/data/adv/node_embedding/release_v20/graph_data/user_edge_list_3.hdf5&#39;</span><span class="p">,</span> 
                            <span class="n">node_atts</span><span class="o">=</span><span class="s1">&#39;/tf/data/adv/node_embedding/release_v20/graph_data/node_atts_3.hdf5&#39;</span><span class="p">,</span> 

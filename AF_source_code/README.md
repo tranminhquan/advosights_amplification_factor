@@ -127,7 +127,7 @@ Due to the variance of data provided by customers in compagins that they are una
 * [ ] Release
 
 
-# 5. Limitation <a id='limitation' />
+# 6. Limitation <a id='limitation' />
 * Since AF score takes **deep learning** into account, the efficency of AF score depends on the quality of data source and preprocessing method. *For the current version (4.), we just take very simple preprocessing method.*
 * User's attributes are invariance, depends on specific kind of social network.
 * User's attributes reach affordable number of attributes.

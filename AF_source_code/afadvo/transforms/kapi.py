@@ -5,6 +5,8 @@ import pandas as pd
 import pickle
 import sklearn
 from sklearn import impute
+import torch
+from torch_geometric.data import Data
 
 def group_post_by_user(df_post='../files/chosen_post_2.csv', save_path=None):
     r'''
@@ -357,7 +359,7 @@ def generate_edge_attribute(edge_list = ['../files/edge_share_3.hdf5',
 
 def generate_node_attribute(user_edge_list='../files/user_edge_list_3.hdf5', 
                            df_user='../files/chosen_users.csv',
-                           attrs=['total_follower', 'total_friend', 'books_count', 'films_count', 'music_count', 'restaurants_count', 'sex'], 
+                           attrs=['total_follower', 'total_friend', 'books_count', 'films_count', 'music_count', 'restaurants_count', 'sex', 'active', 'post_fame'], 
                            save_path=None):
     r'''
     Generate node attributes by given list
@@ -415,6 +417,66 @@ def generate_node_attribute(user_edge_list='../files/user_edge_list_3.hdf5',
             pickle.dump(node_atts, dt)
     
     return node_atts
+
+def get_frequency_by_user(df_post='/tf/data/adv/node_embedding/chosen_post_2.csv', 
+                          post_count='/tf/data/adv/node_embedding/count_post_by_user.hdf5'):
+
+    r'''
+    Get the active day of users.
+        active day = range of min - max day - days having posts
+
+    Args:
+        df_post: dataframe contains posts data
+        post_count: python dictionary, post counting by user
+    
+    :rtype: python dictionary
+
+    '''
+    
+    if type(df_post) is str:
+        df_post = pd.read_csv(df_post, dtype={'fid': str, 'from_user': str, 'to_user': str})
+        
+    if type(post_count) is str:
+        with open(post_count, 'rb') as dt:
+            post_count = pickle.load(dt)
+
+    df_post['created_date'] = df_post.created_date.astype('datetime64[ns]')
+    
+    active_dict = dict((df_post.groupby('from_user')['created_date'].max() - df_post.groupby('from_user')['created_date'].min()).dt.days)
+    
+    for k,v in active_dict.items():
+        active_dict[k] = float(v) / post_count[int(k)]
+    
+    return active_dict
+
+
+def get_post_fame(user_edge_list, df_post):
+    r'''
+    Calculating fame of posts by users
+    fame of post per user = (0.1*reactions + 0.3*comments + 0.6*shares) / number of posts per
+    
+    Args:
+        user_edge_list: user edge list hdf5 file
+        df_post: str or dataframe
+        
+    :rtype: python dictionary
+    '''
+    
+    if type(user_edge_list) is str:
+        with open(user_edge_list, 'rb') as dt:
+            user_edge_list = pickle.load(dt)
+            
+    if type(df_post) is str:
+        df_post = pd.read_csv(df_post, dtype={'fid':str, 'from_user': str, 'likes_count': float, 'comments_count': float, 'shares_count': float})
+    
+    unique_uid_keys = np.unique(list(user_edge_list.keys()))
+    unique_uid_values = np.unique(np.concatenate(list(user_edge_list.values())))
+    uids = np.unique(np.concatenate([unique_uid_keys, unique_uid_values]))
+    
+    dicts = dict(df_post[df_post.from_user.isin(uids)].groupby('from_user')['likes_count', 'comments_count', 'shares_count'].count().apply(dict))
+    
+    return dicts
+
 
 def generate_data_torchgeo(edge_list='/tf/data/adv/node_embedding/release_v20/graph_data/user_edge_list_3.hdf5', 
                            node_atts='/tf/data/adv/node_embedding/release_v20/graph_data/node_atts_3.hdf5', 
