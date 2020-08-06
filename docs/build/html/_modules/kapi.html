@@ -84,14 +84,7 @@
               <p class="caption"><span class="caption-text">Readme</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../.readme.html">AF score specification - version 4.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#for-a-brand">For a brand</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#for-a-specific-user">For a specific user</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#scope">3. Scope</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#id13">Agenda</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#nextstep">Nextstep:</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#prerequisite">1. Prerequisite</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#knowledge-graph-data-structure">2. Knowledge graph data structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#transformation-process">3. Transformation process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html#transform-from-raw-data-into-structural-knowledge-graph-data">Transform from raw data into structural knowledge graph data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Package Reference</span></p>
 <ul>
@@ -527,7 +520,7 @@
 
 <div class="viewcode-block" id="generate_node_attribute"><a class="viewcode-back" href="../docstring/kapi.html#kapi.generate_node_attribute">[docs]</a><span class="k">def</span> <span class="nf">generate_node_attribute</span><span class="p">(</span><span class="n">user_edge_list</span><span class="o">=</span><span class="s1">&#39;../files/user_edge_list_3.hdf5&#39;</span><span class="p">,</span> 
                            <span class="n">df_user</span><span class="o">=</span><span class="s1">&#39;../files/chosen_users.csv&#39;</span><span class="p">,</span>
-                           <span class="n">attrs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;total_follower&#39;</span><span class="p">,</span> <span class="s1">&#39;total_friend&#39;</span><span class="p">,</span> <span class="s1">&#39;books_count&#39;</span><span class="p">,</span> <span class="s1">&#39;films_count&#39;</span><span class="p">,</span> <span class="s1">&#39;music_count&#39;</span><span class="p">,</span> <span class="s1">&#39;restaurants_count&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">],</span> 
+                           <span class="n">attrs</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;total_follower&#39;</span><span class="p">,</span> <span class="s1">&#39;total_friend&#39;</span><span class="p">,</span> <span class="s1">&#39;books_count&#39;</span><span class="p">,</span> <span class="s1">&#39;films_count&#39;</span><span class="p">,</span> <span class="s1">&#39;music_count&#39;</span><span class="p">,</span> <span class="s1">&#39;restaurants_count&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">,</span> <span class="s1">&#39;active&#39;</span><span class="p">,</span> <span class="s1">&#39;post_fame&#39;</span><span class="p">],</span> 
                            <span class="n">save_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Generate node attributes by given list</span>
@@ -552,15 +545,14 @@
     <span class="n">unique_uid_keys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">user_edge_list</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
     <span class="n">unique_uid_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">user_edge_list</span><span class="o">.</span><span class="n">values</span><span class="p">())))</span>
     <span class="n">uids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">unique_uid_keys</span><span class="p">,</span> <span class="n">unique_uid_values</span><span class="p">]))</span>
-    
+
     <span class="c1"># filtered in df_user</span>
     <span class="n">df_filtered_user</span> <span class="o">=</span> <span class="n">df_user</span><span class="p">[</span><span class="n">df_user</span><span class="o">.</span><span class="n">fid</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">uids</span><span class="p">)]</span>
     <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_user</span><span class="p">))</span>
-            
+
     <span class="k">if</span> <span class="s1">&#39;sex&#39;</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
         <span class="n">df_filtered_user</span><span class="o">.</span><span class="n">sex</span> <span class="o">=</span> <span class="n">df_filtered_user</span><span class="o">.</span><span class="n">sex</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mf">0.0</span><span class="p">)</span>
         <span class="n">df_filtered_user</span><span class="o">.</span><span class="n">sex</span> <span class="o">=</span> <span class="n">df_filtered_user</span><span class="o">.</span><span class="n">sex</span><span class="o">.</span><span class="n">map</span><span class="p">({</span><span class="s1">&#39;Nam&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;Nữ&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;Gay&#39;</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">,</span> <span class="s1">&#39;Mộc Nhiên&#39;</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s1">&#39;Đàn Ông (Tính Thì Đàn Bà)&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">})</span>
-    
 
     <span class="c1"># fillna series</span>
     <span class="k">for</span> <span class="n">att</span> <span class="ow">in</span> <span class="n">attrs</span><span class="p">:</span>
@@ -598,7 +590,7 @@
 <span class="sd">        post_count: python dictionary, post counting by user</span>
 <span class="sd">    </span>
 <span class="sd">    :rtype: python dictionary</span>
-<span class="sd">    </span>
+
 <span class="sd">    &#39;&#39;&#39;</span>
     
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">df_post</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
@@ -616,6 +608,34 @@
         <span class="n">active_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">/</span> <span class="n">post_count</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">k</span><span class="p">)]</span>
     
     <span class="k">return</span> <span class="n">active_dict</span></div>
+
+
+<div class="viewcode-block" id="get_post_fame"><a class="viewcode-back" href="../docstring/kapi.html#kapi.get_post_fame">[docs]</a><span class="k">def</span> <span class="nf">get_post_fame</span><span class="p">(</span><span class="n">user_edge_list</span><span class="p">,</span> <span class="n">df_post</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Calculating fame of posts by users</span>
+<span class="sd">    fame of post per user = (0.1*reactions + 0.3*comments + 0.6*shares) / number of posts per</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">        user_edge_list: user edge list hdf5 file</span>
+<span class="sd">        df_post: str or dataframe</span>
+<span class="sd">        </span>
+<span class="sd">    :rtype: python dictionary</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">user_edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">user_edge_list</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">user_edge_list</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+            
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">df_post</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">df_post</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">df_post</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;fid&#39;</span><span class="p">:</span><span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;from_user&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="s1">&#39;likes_count&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="s1">&#39;comments_count&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="s1">&#39;shares_count&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">})</span>
+    
+    <span class="n">unique_uid_keys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">user_edge_list</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
+    <span class="n">unique_uid_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">user_edge_list</span><span class="o">.</span><span class="n">values</span><span class="p">())))</span>
+    <span class="n">uids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">unique_uid_keys</span><span class="p">,</span> <span class="n">unique_uid_values</span><span class="p">]))</span>
+    
+    <span class="n">dicts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">df_post</span><span class="p">[</span><span class="n">df_post</span><span class="o">.</span><span class="n">from_user</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">uids</span><span class="p">)]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;from_user&#39;</span><span class="p">)[</span><span class="s1">&#39;likes_count&#39;</span><span class="p">,</span> <span class="s1">&#39;comments_count&#39;</span><span class="p">,</span> <span class="s1">&#39;shares_count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">dict</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">dicts</span></div>
 
 
 <div class="viewcode-block" id="generate_data_torchgeo"><a class="viewcode-back" href="../docstring/kapi.html#kapi.generate_data_torchgeo">[docs]</a><span class="k">def</span> <span class="nf">generate_data_torchgeo</span><span class="p">(</span><span class="n">edge_list</span><span class="o">=</span><span class="s1">&#39;/tf/data/adv/node_embedding/release_v20/graph_data/user_edge_list_3.hdf5&#39;</span><span class="p">,</span> 

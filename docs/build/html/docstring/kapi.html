@@ -86,14 +86,7 @@
               <p class="caption"><span class="caption-text">Readme</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../.readme.html">AF score specification - version 4.</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#for-a-brand">For a brand</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#for-a-specific-user">For a specific user</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#scope">3. Scope</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#id13">Agenda</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#nextstep">Nextstep:</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#prerequisite">1. Prerequisite</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#knowledge-graph-data-structure">2. Knowledge graph data structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../.readme.html#transformation-process">3. Transformation process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html#transform-from-raw-data-into-structural-knowledge-graph-data">Transform from raw data into structural knowledge graph data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Package Reference</span></p>
 <ul class="current">
@@ -273,7 +266,7 @@ python dictionary (re-indexing)</p>
 
 <dl class="function">
 <dt id="kapi.generate_node_attribute">
-<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">generate_node_attribute</code><span class="sig-paren">(</span><em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5', df_user='../files/chosen_users.csv', attrs=['total_follower', 'total_friend', 'books_count', 'films_count', 'music_count', 'restaurants_count', 'sex'], save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#generate_node_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.generate_node_attribute" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">generate_node_attribute</code><span class="sig-paren">(</span><em class="sig-param">user_edge_list='../files/user_edge_list_3.hdf5', df_user='../files/chosen_users.csv', attrs=['total_follower', 'total_friend', 'books_count', 'films_count', 'music_count', 'restaurants_count', 'sex', 'active', 'post_fame'], save_path=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#generate_node_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.generate_node_attribute" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate node attributes by given list</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -302,6 +295,24 @@ python dictionary (re-indexing)</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>df_post</strong> – dataframe contains posts data</p></li>
 <li><p><strong>post_count</strong> – python dictionary, post counting by user</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>python dictionary</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="kapi.get_post_fame">
+<code class="sig-prename descclassname">kapi.</code><code class="sig-name descname">get_post_fame</code><span class="sig-paren">(</span><em class="sig-param">user_edge_list</em>, <em class="sig-param">df_post</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/kapi.html#get_post_fame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#kapi.get_post_fame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculating fame of posts by users
+fame of post per user = (0.1*reactions + 0.3*comments + 0.6*shares) / number of posts per</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>user_edge_list</strong> – user edge list hdf5 file</p></li>
+<li><p><strong>df_post</strong> – str or dataframe</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>

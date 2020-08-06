@@ -14,17 +14,17 @@ Modification date:
 --------------
 
 Agenda
-------
+========
 
-1. `Prerequisite <#prerequisite>`
-2. `Knowledge graph data structure <#knowledge_graph_data_structure>`
-    2.1. `Edge list <#edge_list>`
-    2.2. `User attribute (Node attribute) <#node_attribute>`
-    2.3. `Edge attribute <#edge_attribute>`
-3. `Transformation process <#transformation>`
-    3.1. `Building edge list <#building_edge_list>`
-    3.2. `Building node attribute <#building_node_attribute>`
-    3.3. `Building edge attribute <#building_edge_attribute>`
+1. `Prerequisite <#prerequisite>`__
+2. `Knowledge graph data structure <#knowledge_graph_data_structure>`__
+    | 2.1. `Edge list <#edge_list>`__
+    | 2.2. `User attribute (Node attribute) <#node_attribute>`__
+    | 2.3. `Edge attribute <#edge_attribute>`__
+3. `Transformation process <#transformation>`__
+    | 3.1. `Building edge list <#building_edge_list>`__
+    | 3.2. `Building node attribute <#building_node_attribute>`__
+    | 3.3. `Building edge attribute <#building_edge_attribute>`__
 
 4. `Code <#code>`__
 
@@ -40,7 +40,7 @@ Pytorch <http://14.161.9.65:9012/notebooks/Quan/Advosights/adv/sources/AF_score%
 --------------
 
 1. Prerequisite 
-----------------
+================
 
 -  ``chosen_users.csv``: Pandas Dataframe of concerned users for graph
 -  ``chosen_post_2.csv``: Pandas Dataframe of concerend posts
@@ -55,7 +55,7 @@ script <http://14.161.9.65:9012/notebooks/Quan/Advosights/adv/sources/AF_score_d
 --------------
 
 2. Knowledge graph data structure  
-----------------------------------
+====================================
 
 Building graph data contains the following data structures: **edge list,
 node attribute, edge attribute**. All are structured by Python
@@ -150,7 +150,7 @@ numpy array belongs to ``user_id_1``, the second one belones to
 --------------
 
 3. Transformation process 
---------------------------
+===========================
 
 All prerequisited files are csv, the idea to transfer is
 straight-forward as bellows:
@@ -298,10 +298,10 @@ Building edge attriubte
 We build :math:`3` data structures: ``edge_share``, ``edge_comment``,
 ``edge_react``
 
-    The main idea to execute: 1. Loop through key- values ``k,v`` in
-    ``edge_list`` 2. Get all post ids of ``k`` in ``user id - post ids``
-    3. Query in data frame: depends on particular dataframe (share,
-    comment, react), represented by Python dictionary
+    The main idea to execute:
+        | 1. Loop through key- values ``k,v`` in ``edge_list``
+        | 2. Get all post ids of ``k`` in ``user id - post ids``
+        | 3. Query in data frame: depends on particular dataframe (share, comment, react), represented by Python dictionary
 
 Data structure:
 

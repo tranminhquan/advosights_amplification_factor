@@ -87,30 +87,28 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">AF score specification - version 4.</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#agenda">Agenda</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#introduction">1. Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">1. Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#for-a-brand">For a brand</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#for-a-specific-user">For a specific user</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#for-a-brand">For a brand</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#for-a-specific-user">For a specific user</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#context">2. Context</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#user-s-attributes">User’s attributes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#user-s-relationship">User’s relationship</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#user-s-posts">User’s posts</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="#scope">3. Scope</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#context">2. Context</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#scope">3. Scope</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#scenarios">4. Scenarios</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#kpis">5. KPIs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#limitation">6. Limitation</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#id13">Agenda</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#nextstep">Nextstep:</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#prerequisite">1. Prerequisite</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#knowledge-graph-data-structure">2. Knowledge graph data structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#transformation-process">3. Transformation process</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#transform-from-raw-data-into-structural-knowledge-graph-data">Transform from raw data into structural knowledge graph data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Agenda</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#nextstep">Nextstep:</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisite">1. Prerequisite</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#knowledge-graph-data-structure">2. Knowledge graph data structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#transformation-process">3. Transformation process</a></li>
+</ul>
+</li>
 </ul>
 <p class="caption"><span class="caption-text">Package Reference</span></p>
 <ul>
@@ -216,14 +214,12 @@ where compagin are launched</strong>.</p>
 <p>Generally, AF score requires <span class="math notranslate nohighlight">\(3\)</span> kinds of data: <em>User attributes</em>,
 <em>User behaviors</em> and <em>Posts</em> (Figure below). These data forms the
 structural data called <strong>Directed Knowledge Graph</strong>.</p>
-<div class="figure align-default" id="id14">
+<div class="figure align-default" id="id2">
 <img alt="af\_input\_output" src="https://i.imgur.com/yTB518v.png" />
-<p class="caption"><span class="caption-text">af_input_output</span><a class="headerlink" href="#id14" title="Permalink to this image">¶</a></p>
-</div>
-</div>
+<p class="caption"><span class="caption-text">af_input_output</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 <div class="section" id="for-a-brand">
-<h1>For a brand<a class="headerlink" href="#for-a-brand" title="Permalink to this headline">¶</a></h1>
+<h3>For a brand<a class="headerlink" href="#for-a-brand" title="Permalink to this headline">¶</a></h3>
 <p>Generally, the purpose of AF is to increase sale of business. In
 particular, by measuring the AF of users, we can find out: * Which
 users are the most influencers in a specific network * Predict how many
@@ -238,7 +234,7 @@ are able to easily get the information very quickly.</em></p>
 </div></blockquote>
 </div>
 <div class="section" id="for-a-specific-user">
-<h1>For a specific user<a class="headerlink" href="#for-a-specific-user" title="Permalink to this headline">¶</a></h1>
+<h3>For a specific user<a class="headerlink" href="#for-a-specific-user" title="Permalink to this headline">¶</a></h3>
 <p>When taking part in an advocated community of a brand, a user intents to
 increase the amplication factor as much as possible due to: * The user
 are going to be more potential to be hired by the brand * AF model is
@@ -254,14 +250,16 @@ who users are likely to be influenced by that post. Y is also able
 to measure AF to a specific user Z in G to know whether Z are
 influenced by Y or not</em></p>
 </div></blockquote>
+</div>
+</div>
 <div class="section" id="context">
 <h2>2. Context<a class="headerlink" href="#context" title="Permalink to this headline">¶</a></h2>
 <p>AF score requires the commuinty networks among users. In particular, it
 acquires <strong>set of users which some of them connected to each others</strong> to
 form a <strong>graph network</strong> (see below figures).</p>
-<div class="figure align-default" id="id15">
+<div class="figure align-default" id="id3">
 <img alt="graph\_example" src="https://i.imgur.com/IxqBzxn.gif" />
-<p class="caption"><span class="caption-text">graph_example</span><a class="headerlink" href="#id15" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">graph_example</span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
 <p>Therfore, our AF score is assumpted to formulated by <em>user’s
 attributes</em>, <em>user’s relationship</em> and <em>the corresponding posts</em>: *
@@ -274,16 +272,14 @@ user and the others in a network.</p></li>
 <li><p><strong>User’s posts</strong> are the content of previous posts has been submited.</p></li>
 </ul>
 <div class="line-block">
-<div class="line">The figure below visualizes the dependence of AF on user’s
-relationship (user’s attributes) and posts.</div>
-<div class="line"><a href="#id17"><span class="problematic" id="id18">|AF\_assumption|</span></a></div>
+<div class="line">The figure below visualizes the dependence of AF on user’s</div>
 </div>
+<p>relationship (user’s attributes) and posts.
+| <a href="#id5"><span class="problematic" id="id6">|AF\_assumption|</span></a></p>
 <p>Since we defined our problem as a knowledge graph which handles the
 relationship among users, there are <span class="math notranslate nohighlight">\(3\)</span> things need to be
 concerened: <em>users’ attributes</em>, <em>users’ relationship</em> and <em>their
 corresponding posts</em>.</p>
-<div class="section" id="user-s-attributes">
-<h3>User’s attributes<a class="headerlink" href="#user-s-attributes" title="Permalink to this headline">¶</a></h3>
 <p>Users’ attributes contains <strong>their public information</strong> and <strong>behavior</strong>
 in an social network. For a specific social context, these attributes
 can vary depends on the supplied services of that social network</p>
@@ -305,161 +301,69 @@ private)</p></li>
 </ul>
 </li>
 </ul>
-</div>
-<div class="section" id="user-s-relationship">
-<h3>User’s relationship<a class="headerlink" href="#user-s-relationship" title="Permalink to this headline">¶</a></h3>
 <p>Is the way we define the relationship among users depending on specific
 social network.</p>
 <ul>
 <li><div class="line-block">
 <div class="line">version 4.0:</div>
-<div class="line">The current version is being experimented on Facebook social
-network. As a result, <strong>we define the relationship when a user
-reacts, comments or shares on any post from other user</strong> (detail in
-below figures). Then, we calculate the <strong>weight of relationship</strong>
-by</div>
+<div class="line">The current version is being experimented on Facebook social</div>
 </div>
+<p>network. As a result, <strong>we define the relationship when a user
+reacts, comments or shares on any post from other user</strong> (detail in
+below figures). Then, we calculate the <strong>weight of relationship</strong> by</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">weights</span> <span class="o">=</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">number</span> <span class="n">of</span> <span class="n">reactions</span> <span class="o">+</span> <span class="mf">0.3</span><span class="o">*</span><span class="n">number</span> <span class="n">of</span> <span class="n">comments</span> <span class="o">+</span> <span class="mf">0.6</span><span class="o">*</span><span class="n">number</span> <span class="n">of</span> <span class="n">shares</span>
 </pre></div>
 </div>
 </li>
 </ul>
-<div class="figure align-default" id="id16">
+<div class="figure align-default" id="id4">
 <img alt="edge\_definition" src="https://i.imgur.com/l0iqTKO.png" />
-<p class="caption"><span class="caption-text">edge_definition</span><a class="headerlink" href="#id16" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text">edge_definition</span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
-</div>
-<div class="section" id="user-s-posts">
-<h3>User’s posts<a class="headerlink" href="#user-s-posts" title="Permalink to this headline">¶</a></h3>
 <div class="line-block">
-<div class="line">Are all the attributes of a specific user’s posts depending on
-specific social netork. <strong>By crawling posts of users, we are able to
-analyse useful features such as which topics user interested in,
-writing style of user, etc</strong>. This also helps us know which style of
-post that user can be easily influenced, since each user will prefer a
-specific one. * version 4.0:</div>
-<div class="line">We currently focus on posts’ contents that user submited</div>
+<div class="line">Are all the attributes of a specific user’s posts depending on</div>
 </div>
-</div>
-</div>
+<p>specific social netork. <strong>By crawling posts of users, we are able to
+analyse useful features such as which topics user interested in, writing
+style of user, etc</strong>. This also helps us know which style of post that
+user can be easily influenced, since each user will prefer a specific
+one. * version 4.0:
+| We currently focus on posts’ contents that user submited</p>
 </div>
 <div class="section" id="scope">
-<h1>3. Scope<a class="headerlink" href="#scope" title="Permalink to this headline">¶</a></h1>
+<h2>3. Scope<a class="headerlink" href="#scope" title="Permalink to this headline">¶</a></h2>
 <p>Below is all attributes requirements and their corresponding scope</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
+<col style="width: 8%" />
+<col style="width: 37%" />
+<col style="width: 55%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Name</p></th>
 <th class="head"><p>Scope</p></th>
-<th class="head"><p>Requirem
-ent</p></th>
+<th class="head"><p>Requirement</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Number
-of users</p></td>
-<td><dl class="simple">
-<dt>:math:<a href="#id1"><span class="problematic" id="id2">`</span></a>&gt;</dt><dd><p>100`</p>
-</dd>
-</dl>
-</td>
+<tr class="row-even"><td><p>Number of users</p></td>
+<td><p><span class="math notranslate nohighlight">\(&gt; 100\)</span></p></td>
 <td><ul class="simple">
-<li></li>
+<li><p>Including KOLs and users who interact with them. - All users must have at least <span class="math notranslate nohighlight">\(1\)</span> connection with other user (avoid isolated user)</p></li>
 </ul>
-<p>Includin
-g
-KOLs and
-users
-who
-interact
-with
-them. -
-All
-users
-must
-have at
-least
-:math:<a href="#id3"><span class="problematic" id="id4">`</span></a>1
-`
-connecti
-on
-with
-other
-user
-(avoid
-isolated
-user)</p>
 </td>
 </tr>
-<tr class="row-odd"><td><p>User
-attribut
-es</p></td>
-<td><p>:math:<a href="#id5"><span class="problematic" id="id6">`</span></a>7
-`
-attribut
-es:
-total_f
-ollowers
-,
-total_f
-riends,
-books_c
-ount,
-films_c
-ount,
-music_c
-ount,
-restaura
-nts_cou
-nt,
-sex</p></td>
+<tr class="row-odd"><td><p>User attributes</p></td>
+<td><p><span class="math notranslate nohighlight">\(7\)</span> attributes: total_followers, total_friends, books_count, films_count, music_count, restaurants_count, sex</p></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><p>Number
-of posts
-per user</p></td>
-<td><dl class="simple">
-<dt>:math:<a href="#id7"><span class="problematic" id="id8">`</span></a>&gt;</dt><dd><p>10`</p>
-</dd>
-</dl>
-</td>
-<td><p>Posts
-have: -
-Content
-- Number
-of
-reaction
-s,
-shares,
-comments
-- Range
-of time:
-at least
-:math:<a href="#id9"><span class="problematic" id="id10">`</span></a>&gt;</p>
-<blockquote>
-<div><p>10`</p>
-</div></blockquote>
-<p>posts
-:math:<a href="#id11"><span class="problematic" id="id12">`</span></a>1
-`
-latest
-month -
-Informat
-ion
-of
-corrspon
-ding
-user ids
-who
-interact</p>
-</td>
+<tr class="row-even"><td><p>Number of posts per user</p></td>
+<td><p><span class="math notranslate nohighlight">\(&gt; 10\)</span></p></td>
+<td><p>Posts have: - Content - Number of reactions, shares, comments - Range of time: at least <span class="math notranslate nohighlight">\(&gt; 10\)</span> posts <span class="math notranslate nohighlight">\(1\)</span> latest month - Information of corrsponding user ids who interact</p></td>
 </tr>
 </tbody>
 </table>
+</div>
 <div class="section" id="scenarios">
 <h2>4. Scenarios<a class="headerlink" href="#scenarios" title="Permalink to this headline">¶</a></h2>
 <p>Due to the variance of data provided by customers in compagins that they
@@ -531,6 +435,10 @@ preprocessing method.</em></p></li>
 network.</p></li>
 <li><p>User’s attributes reach affordable number of attributes.</p></li>
 </ul>
+</div>
+</div>
+<div class="section" id="transform-from-raw-data-into-structural-knowledge-graph-data">
+<h1>Transform from raw data into structural knowledge graph data<a class="headerlink" href="#transform-from-raw-data-into-structural-knowledge-graph-data" title="Permalink to this headline">¶</a></h1>
 <p>R: QuanTran</p>
 <dl class="simple">
 <dt>Modification date:</dt><dd><ul class="simple">
@@ -540,41 +448,43 @@ network.</p></li>
 </dd>
 </dl>
 <p><em>Transfrom from raw data into structural knowledge graph data</em></p>
-</div>
-</div>
 <hr class="docutils" />
-<div class="section" id="id13">
-<h1>Agenda<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h1>
-<ol class="arabic simple">
-<li><p><cite>Prerequisite &lt;#prerequisite&gt;</cite></p></li>
-<li><dl class="simple">
-<dt><cite>Knowledge graph data structure &lt;#knowledge_graph_data_structure&gt;</cite></dt><dd><p>2.1. <cite>Edge list &lt;#edge_list&gt;</cite>
-2.2. <cite>User attribute (Node attribute) &lt;#node_attribute&gt;</cite>
-2.3. <cite>Edge attribute &lt;#edge_attribute&gt;</cite></p>
+<div class="section" id="id1">
+<h2>Agenda<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic">
+<li><p><a class="reference external" href="#prerequisite">Prerequisite</a></p></li>
+<li><dl>
+<dt><a class="reference external" href="#knowledge_graph_data_structure">Knowledge graph data structure</a></dt><dd><div class="line-block">
+<div class="line">2.1. <a class="reference external" href="#edge_list">Edge list</a></div>
+<div class="line">2.2. <a class="reference external" href="#node_attribute">User attribute (Node attribute)</a></div>
+<div class="line">2.3. <a class="reference external" href="#edge_attribute">Edge attribute</a></div>
+</div>
 </dd>
 </dl>
 </li>
-<li><dl class="simple">
-<dt><cite>Transformation process &lt;#transformation&gt;</cite></dt><dd><p>3.1. <cite>Building edge list &lt;#building_edge_list&gt;</cite>
-3.2. <cite>Building node attribute &lt;#building_node_attribute&gt;</cite>
-3.3. <cite>Building edge attribute &lt;#building_edge_attribute&gt;</cite></p>
+<li><dl>
+<dt><a class="reference external" href="#transformation">Transformation process</a></dt><dd><div class="line-block">
+<div class="line">3.1. <a class="reference external" href="#building_edge_list">Building edge list</a></div>
+<div class="line">3.2. <a class="reference external" href="#building_node_attribute">Building node attribute</a></div>
+<div class="line">3.3. <a class="reference external" href="#building_edge_attribute">Building edge attribute</a></div>
+</div>
 </dd>
 </dl>
 </li>
 <li><p><a class="reference external" href="#code">Code</a></p></li>
 </ol>
-</div>
 <div class="section" id="nextstep">
-<h1>Nextstep:<a class="headerlink" href="#nextstep" title="Permalink to this headline">¶</a></h1>
+<h3>Nextstep:<a class="headerlink" href="#nextstep" title="Permalink to this headline">¶</a></h3>
 <p>Two options for Node Embedding * <a class="reference external" href="http://14.161.9.65:9012/tree/Quan/Advosights/adv/sources/AF_scire_GG.ipynb">Node2vec embedding with
 Pytorch</a>
 (<em>Temporary official</em>) * <a class="reference external" href="http://14.161.9.65:9012/notebooks/Quan/Advosights/adv/sources/AF_score%20graph%20autoencoder.ipynb">Graph auto-encoder with
 Pytorch</a>
 (<em>On-going research</em>) —</p>
 </div>
+</div>
 <hr class="docutils" />
 <div class="section" id="prerequisite">
-<h1>1. Prerequisite<a class="headerlink" href="#prerequisite" title="Permalink to this headline">¶</a></h1>
+<h2>1. Prerequisite<a class="headerlink" href="#prerequisite" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">chosen_users.csv</span></code>: Pandas Dataframe of concerned users for graph</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">chosen_post_2.csv</span></code>: Pandas Dataframe of concerend posts</p></li>
@@ -588,7 +498,7 @@ script &lt;http://14.161.9.65:9012/notebooks/Quan/Advosights/adv/sources/AF_scor
 </div>
 <hr class="docutils" />
 <div class="section" id="knowledge-graph-data-structure">
-<h1>2. Knowledge graph data structure<a class="headerlink" href="#knowledge-graph-data-structure" title="Permalink to this headline">¶</a></h1>
+<h2>2. Knowledge graph data structure<a class="headerlink" href="#knowledge-graph-data-structure" title="Permalink to this headline">¶</a></h2>
 <p>Building graph data contains the following data structures: <strong>edge list,
 node attribute, edge attribute</strong>. All are structured by Python
 dictionary type.</p>
@@ -655,7 +565,7 @@ numpy array belongs to ``user_id_1``, the second one belones to
 </div>
 <hr class="docutils" />
 <div class="section" id="transformation-process">
-<h1>3. Transformation process<a class="headerlink" href="#transformation-process" title="Permalink to this headline">¶</a></h1>
+<h2>3. Transformation process<a class="headerlink" href="#transformation-process" title="Permalink to this headline">¶</a></h2>
 <p>All prerequisited files are csv, the idea to transfer is
 straight-forward as bellows:</p>
 <p>which means we are going to group our post ids by user ids. In other
@@ -750,10 +660,14 @@ films_count, music_count, restaurants_count, sex</strong>.</p>
 <p>We build <span class="math notranslate nohighlight">\(3\)</span> data structures: <code class="docutils literal notranslate"><span class="pre">edge_share</span></code>, <code class="docutils literal notranslate"><span class="pre">edge_comment</span></code>,
 <code class="docutils literal notranslate"><span class="pre">edge_react</span></code></p>
 <blockquote>
-<div><p>The main idea to execute: 1. Loop through key- values <code class="docutils literal notranslate"><span class="pre">k,v</span></code> in
-<code class="docutils literal notranslate"><span class="pre">edge_list</span></code> 2. Get all post ids of <code class="docutils literal notranslate"><span class="pre">k</span></code> in <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">id</span> <span class="pre">-</span> <span class="pre">post</span> <span class="pre">ids</span></code>
-3. Query in data frame: depends on particular dataframe (share,
-comment, react), represented by Python dictionary</p>
+<div><dl>
+<dt>The main idea to execute:</dt><dd><div class="line-block">
+<div class="line">1. Loop through key- values <code class="docutils literal notranslate"><span class="pre">k,v</span></code> in <code class="docutils literal notranslate"><span class="pre">edge_list</span></code></div>
+<div class="line">2. Get all post ids of <code class="docutils literal notranslate"><span class="pre">k</span></code> in <code class="docutils literal notranslate"><span class="pre">user</span> <span class="pre">id</span> <span class="pre">-</span> <span class="pre">post</span> <span class="pre">ids</span></code></div>
+<div class="line">3. Query in data frame: depends on particular dataframe (share, comment, react), represented by Python dictionary</div>
+</div>
+</dd>
+</dl>
 </div></blockquote>
 <p>Data structure:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
@@ -772,6 +686,7 @@ in ``post ids``, group by from user on post id, count</em></p>
 is in ``post ids``, group by from user id on fid, count</em></p>
 <p>From above dictionaries, concatente share, comment and reaction based on
 their indices</p>
+</div>
 </div>
 
 

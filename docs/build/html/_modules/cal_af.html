@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cal_af &mdash; Amplification factor score  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> Amplification factor score
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Readme</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html">AF score specification - version 4.</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../.readme.html#transform-from-raw-data-into-structural-knowledge-graph-data">Transform from raw data into structural knowledge graph data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../docstring/transforms.html">Transforms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docstring/models.html">Node Embedding Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../docstring/utils.html">Utils</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Index</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../indices.html">Indices and tables</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Amplification factor score</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>cal_af</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cal_af</h1><div class="highlight"><pre>
+<span></span><span class="sd">&#39;&#39;&#39;Calculation AF score&#39;&#39;&#39;</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">from</span> <span class="nn">utils.predict</span> <span class="k">import</span> <span class="n">get_similarity_2</span><span class="p">,</span> <span class="n">cal_af_2</span> 
+<span class="kn">import</span> <span class="nn">pickle</span>
+
+<div class="viewcode-block" id="cal_af"><a class="viewcode-back" href="../docstring/cal_af.html#cal_af.cal_af">[docs]</a><span class="k">def</span> <span class="nf">cal_af</span><span class="p">(</span><span class="n">uid</span><span class="p">,</span> <span class="n">edge_list</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">node_dict</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">output</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">uid</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="n">uid</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">uid</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">edge_list</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">edge_list</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">edge_list</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">z</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">z</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span> 
+    <span class="c1"># z = z.cpu().detach().numpy()</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">node_dict</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">node_dict</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">node_dict</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+
+    <span class="n">dirs</span><span class="p">,</span> <span class="n">probs</span><span class="p">,</span> <span class="n">degs</span> <span class="o">=</span> <span class="n">get_similarity_2</span><span class="p">(</span><span class="n">uid</span><span class="p">,</span> <span class="n">edge_list</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">node_dict</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">limit</span><span class="p">)</span>
+    <span class="n">af_score</span> <span class="o">=</span> <span class="n">cal_af_2</span><span class="p">(</span><span class="n">uid</span><span class="p">,</span> <span class="n">dirs</span><span class="p">,</span> <span class="n">probs</span><span class="p">,</span> <span class="n">degs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">output</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dt</span><span class="p">:</span>
+            <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">af_score</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">af_score</span></div>
+    
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Calculate AF from given node embedding&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-uid&#39;</span><span class="p">,</span> <span class="s1">&#39;--uid&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;user id&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-el&#39;</span><span class="p">,</span> <span class="s1">&#39;--edgelist&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;./files/user_edge_list_3.hdf5&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;user edge list file store the interaction among users or can be path&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-emb&#39;</span><span class="p">,</span> <span class="s1">&#39;--embedding&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;./files/nVGAE5_128_emb.hdf5&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;embedding vector or can be path to file&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-ndict&#39;</span><span class="p">,</span> <span class="s1">&#39;--nodedict&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;./files/node_dict_5.hdf5&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;node dictionary mapping uids into orders, or can be path&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-th&#39;</span><span class="p">,</span> <span class="s1">&#39;--threshold&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;threshold to confirm influence (0 to 1)&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-lm&#39;</span><span class="p">,</span> <span class="s1">&#39;--limit&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;limit tracking level&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="s1">&#39;--output&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;ouput file to save&#39;</span><span class="p">)</span>
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">uid</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">uid</span>
+    <span class="n">edge_list</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">edgelist</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">embedding</span>
+    <span class="n">node_dict</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">nodedict</span>
+    <span class="n">threshold</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">threshold</span>
+    <span class="n">limit</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">limit</span>
+
+    <span class="n">af_score</span> <span class="o">=</span> <span class="n">cal_af</span><span class="p">(</span><span class="n">uid</span><span class="p">,</span> <span class="n">edge_list</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">node_dict</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">limit</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">uid</span><span class="p">,</span> <span class="s1">&#39; : &#39;</span><span class="p">,</span> <span class="n">af_score</span><span class="p">)</span>
+
+    <span class="c1"># if not type(uid) is str:</span>
+    <span class="c1">#     uid = str(uid)</span>
+
+    <span class="c1"># if type(edge_list) is str:</span>
+    <span class="c1">#     with open(edge_list, &#39;rb&#39;) as dt:</span>
+    <span class="c1">#         edge_list = pickle.load(dt)</span>
+
+    <span class="c1"># if type(z) is str:</span>
+    <span class="c1">#     with open(z, &#39;rb&#39;) as dt:</span>
+    <span class="c1">#         z = pickle.load(dt) </span>
+    <span class="c1"># # z = z.cpu().detach().numpy()</span>
+
+    <span class="c1"># if type(node_dict) is str:</span>
+    <span class="c1">#     with open(node_dict, &#39;rb&#39;) as dt:</span>
+    <span class="c1">#         node_dict = pickle.load(dt)</span>
+
+    <span class="c1"># dirs, probs, degs = get_similarity_2(uid, edge_list, z, node_dict, threshold, limit)</span>
+    <span class="c1"># af_score = cal_af_2(uid, dirs, probs, degs)</span>
+
+    <span class="c1"># if not args.output is None:</span>
+    <span class="c1">#     with open(args.output, &#39;wb&#39;) as dt:</span>
+    <span class="c1">#         pickle.dump(af_score, dt)</span>
+
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Quan Tran
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -7,6 +7,7 @@ import sklearn
 from sklearn import impute
 import torch
 from torch_geometric.data import Data
+from collections import OrderedDict
 
 def group_post_by_user(df_post='../files/chosen_post_2.csv', save_path=None):
     r'''
@@ -228,7 +229,7 @@ def count_by_user_share(df_path,
     for i,df in enumerate(pd.read_csv(df_path, dtype = {'fid':str, 'from_user':str, 'parent_id': str}, chunksize=chunksize)):
         for k,v in user_edge_list.items():
                           
-            pids = user_post_dict[int(k)]
+            pids = user_post_dict[str(k)]
             _dict = dict(df[df.from_user.isin(v) & df.parent_id.isin(pids)].groupby('from_user')['fid'].count())
 
             if not k in edge_count:
@@ -261,7 +262,7 @@ def count_by_user_comment(df_path,
                                       chunksize=chunksize)):
         for k,v in user_edge_list.items():
                           
-            pids = user_post_dict[int(k)]
+            pids = user_post_dict[str(k)]
             _dict = dict(df[df.from_user.isin(v) & df.post_id.isin(pids)].groupby('from_user')['post_id'].count())
 
             if not k in edge_count:
@@ -294,7 +295,7 @@ def count_by_user_react(df_path,
                                       chunksize=chunksize)):
         for k,v in user_edge_list.items():
                           
-            pids = user_post_dict[int(k)]
+            pids = user_post_dict[str(k)]
             _dict = dict(df[df.from_user_id.isin(v) & df.fid.isin(pids)].groupby('from_user_id')['fid'].count())
 
             if not k in edge_count:
@@ -384,15 +385,14 @@ def generate_node_attribute(user_edge_list='../files/user_edge_list_3.hdf5',
     unique_uid_keys = np.unique(list(user_edge_list.keys()))
     unique_uid_values = np.unique(np.concatenate(list(user_edge_list.values())))
     uids = np.unique(np.concatenate([unique_uid_keys, unique_uid_values]))
-    
+
     # filtered in df_user
     df_filtered_user = df_user[df_user.fid.isin(uids)]
     print(len(df_user))
-            
+
     if 'sex' in attrs:
         df_filtered_user.sex = df_filtered_user.sex.fillna(0.0)
         df_filtered_user.sex = df_filtered_user.sex.map({'Nam': 1.0, 'Nữ': 2.0, 'Gay': 3.0, 'Mộc Nhiên': 2.0, 'Đàn Ông (Tính Thì Đàn Bà)': 1.0})
-    
 
     # fillna series
     for att in attrs:

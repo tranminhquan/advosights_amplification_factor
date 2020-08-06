@@ -1,5 +1,6 @@
+******************************************
 AF score specification - version 4.
--------------------------------------
+******************************************
 
 R: Quan Tran
 
@@ -34,7 +35,6 @@ structural data called **Directed Knowledge Graph**.
    :alt: af\_input\_output
 
    af\_input\_output
-
 For a brand
 -----------
 
@@ -79,7 +79,6 @@ form a **graph network** (see below figures).
    :alt: graph\_example
 
    graph\_example
-
 Therfore, our AF score is assumpted to formulated by *user's
 attributes*, *user's relationship* and *the corresponding posts*: \*
 **User's attributes** are behavior of a user, these includes their
@@ -92,7 +91,7 @@ networks in our purpose.
 -  **User's posts** are the content of previous posts has been submited.
 
 | The figure below visualizes the dependence of AF on user's
-  relationship (user's attributes) and posts.
+relationship (user's attributes) and posts.
 | |AF\_assumption|
 
 Since we defined our problem as a knowledge graph which handles the
@@ -130,10 +129,9 @@ social network.
 
 -  | version 4.0:
    | The current version is being experimented on Facebook social
-     network. As a result, **we define the relationship when a user
-     reacts, comments or shares on any post from other user** (detail in
-     below figures). Then, we calculate the **weight of relationship**
-     by
+   network. As a result, **we define the relationship when a user
+   reacts, comments or shares on any post from other user** (detail in
+   below figures). Then, we calculate the **weight of relationship** by
 
    ::
 
@@ -143,100 +141,31 @@ social network.
    :alt: edge\_definition
 
    edge\_definition
-
 User's posts
 ~~~~~~~~~~~~
 
 | Are all the attributes of a specific user's posts depending on
-  specific social netork. **By crawling posts of users, we are able to
-  analyse useful features such as which topics user interested in,
-  writing style of user, etc**. This also helps us know which style of
-  post that user can be easily influenced, since each user will prefer a
-  specific one. \* version 4.0:
+specific social netork. **By crawling posts of users, we are able to
+analyse useful features such as which topics user interested in, writing
+style of user, etc**. This also helps us know which style of post that
+user can be easily influenced, since each user will prefer a specific
+one. \* version 4.0:
 | We currently focus on posts' contents that user submited
 
 3. Scope 
----------
+=========
 
 Below is all attributes requirements and their corresponding scope
 
-+----------+----------+----------+
-| Name     | Scope    | Requirem |
-|          |          | ent      |
-+==========+==========+==========+
-| Number   | :math:`> | -        |
-| of users |  100`    | Includin |
-|          |          | g        |
-|          |          | KOLs and |
-|          |          | users    |
-|          |          | who      |
-|          |          | interact |
-|          |          | with     |
-|          |          | them. -  |
-|          |          | All      |
-|          |          | users    |
-|          |          | must     |
-|          |          | have at  |
-|          |          | least    |
-|          |          | :math:`1 |
-|          |          | `        |
-|          |          | connecti |
-|          |          | on       |
-|          |          | with     |
-|          |          | other    |
-|          |          | user     |
-|          |          | (avoid   |
-|          |          | isolated |
-|          |          | user)    |
-+----------+----------+----------+
-| User     | :math:`7 |          |
-| attribut | `        |          |
-| es       | attribut |          |
-|          | es:      |          |
-|          | total\_f |          |
-|          | ollowers |          |
-|          | ,        |          |
-|          | total\_f |          |
-|          | riends,  |          |
-|          | books\_c |          |
-|          | ount,    |          |
-|          | films\_c |          |
-|          | ount,    |          |
-|          | music\_c |          |
-|          | ount,    |          |
-|          | restaura |          |
-|          | nts\_cou |          |
-|          | nt,      |          |
-|          | sex      |          |
-+----------+----------+----------+
-| Number   | :math:`> | Posts    |
-| of posts |  10`     | have: -  |
-| per user |          | Content  |
-|          |          | - Number |
-|          |          | of       |
-|          |          | reaction |
-|          |          | s,       |
-|          |          | shares,  |
-|          |          | comments |
-|          |          | - Range  |
-|          |          | of time: |
-|          |          | at least |
-|          |          | :math:`> |
-|          |          |  10`     |
-|          |          | posts    |
-|          |          | :math:`1 |
-|          |          | `        |
-|          |          | latest   |
-|          |          | month -  |
-|          |          | Informat |
-|          |          | ion      |
-|          |          | of       |
-|          |          | corrspon |
-|          |          | ding     |
-|          |          | user ids |
-|          |          | who      |
-|          |          | interact |
-+----------+----------+----------+
++----------------------------+-----------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Name                       | Scope                                                                                                                       | Requirement                                                                                                                                                                             |
++============================+=============================================================================================================================+=========================================================================================================================================================================================+
+| Number of users            | :math:`> 100`                                                                                                               | - Including KOLs and users who interact with them. - All users must have at least :math:`1` connection with other user (avoid isolated user)                                            |
++----------------------------+-----------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| User attributes            | :math:`7` attributes: total\_followers, total\_friends, books\_count, films\_count, music\_count, restaurants\_count, sex   |                                                                                                                                                                                         |
++----------------------------+-----------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Number of posts per user   | :math:`> 10`                                                                                                                | Posts have: - Content - Number of reactions, shares, comments - Range of time: at least :math:`> 10` posts :math:`1` latest month - Information of corrsponding user ids who interact   |
++----------------------------+-----------------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 4. Scenarios
 ============
@@ -282,5 +211,6 @@ provide in detail:
    network.
 -  User's attributes reach affordable number of attributes.
 
-.. |AF\_assumption| image:: https://i.imgur.com/Ob1a8Q5.png
+.. code:: python
 
+.. |AF\_assumption| image:: https://i.imgur.com/Ob1a8Q5.png
