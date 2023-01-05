@@ -3,18 +3,18 @@ This is the summary of experiment on detecting and measuring influencer on Socia
 
 The original paper is [Measuring the influence and amplification of users on social network with unsupervised behaviors learning and efficient interaction-based knowledge graph](https://link.springer.com/article/10.1007/s10878-021-00815-0)
 
-## Overview
+# Overview
 To identify and measure the influence, users are represented as knowledge graph structure based on their behaviors on social media network. An **Amplified Graph Convolution (AGC)** is proposed to learn the representation. Our approach has advatanges:
 * No labelling effort: by leveraging Variational Graph Auto-encoder (VGAE)
 * Dealing with multi-dimensional edge attributes with AGC
 * Outperform popular GNN such as Graph Convolution Network (GCN), GraphSAGE, Graph Attention Network (GAT)
 
-## Approach
-### Construct knowledge graph
+# Approach
+## Construct knowledge graph
 
 <img src="figures/interaction_based_graph_construction.png" width=500/>
 
-### Amplified Graph Convolution (AGC)
+## Amplified Graph Convolution (AGC)
 
 Follow the Message Passing mechanism
 
@@ -24,8 +24,8 @@ The detail of message function is illustrated as
 
 <img src="figures/message_function_v2.png" width=500/>
 
-## Experimental results
-### Benchmark
+# Experimental results
+## Benchmark
 $9225$ users on Facebook are collected, each user is a vertex contains information about
 * total followers
 * total friends
@@ -47,7 +47,7 @@ For other Graph Convolution Networks that are unable to handle multi-dimensional
 
 <img src="figures/result_1.png" width=500/>
 
-### Visualization of representation
+## Visualization of representation
 
 <img src="https://i.imgur.com/Nqx8f8I.png" width=500/>
 
@@ -60,3 +60,17 @@ Each user is denoted as a circle. We apply DBSCAN to cluster the users.
 
 
 * **Nodes themselves are clustered into the specific sub-community**: based on the similarity, our model can automatically cluster all nodes into many sub-communities by their behaviors. Each sub-community has its own coverage and top influencers calculated by AF score. It helps to monitor and identify who has most influence in their community.  
+
+# Citation
+```
+@article{tran2022-agc,
+  title={Measuring the influence and amplification of users on social network with unsupervised behaviors learning and efficient interaction-based knowledge graph},
+  author={Tran, Quan M and Nguyen, Hien D and Huynh, Tai and Nguyen, Kha V and Hoang, Suong N and Pham, Vuong T},
+  journal={Journal of Combinatorial Optimization},
+  volume={44},
+  number={4},
+  pages={2919--2945},
+  year={2022},
+  publisher={Springer}
+}
+```
