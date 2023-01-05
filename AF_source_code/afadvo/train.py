@@ -2,6 +2,7 @@
 import argparse
 import torch
 from nn.models.vgae import VGAEEmb
+from nn.models.vae_agc import VGAEAGCEmb
 from nn.models.gae import GAEEmb
 from nn.models.node2vec import Node2VecEmb
 import pickle
@@ -29,12 +30,19 @@ def train(model_type, data, savepath, dim, gpu, epochs, optimizer, learningrate,
     if model_type == 'vgae':
         model = VGAEEmb(data, dim, savepath)
         history = model.train(int(epochs), device, optimizer, lr=learningrate, monitor=monitor)
+
     elif model_type == 'gae':
         model = GAEEmb(data, dim, savepath)
         history = model.train(int(epochs), device, optimizer, lr=learningrate, monitor=monitor)
+
+    elif model_type == 'agc':
+        model = VGAEAGCEmb(data, dim, savepath)
+        history = model.train(int(epochs), device, optimizer, lr=learningrate, monitor=monitor)
+
     elif model_type == 'node2vec' or model_type == 'n2v':
         print('Node2vec model havent been implemented yet, stop the training.')
         return 
+        
     else:
         print('No matched mode type found')
 

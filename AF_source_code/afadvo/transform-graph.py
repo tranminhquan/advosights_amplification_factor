@@ -56,10 +56,10 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Tranform from raw MongoDB data to knowledge graph data')
     
     parser.add_argument('-db', '--database', default='kapi', help='type of database')
-    parser.add_argument('-users', '--users', default='./files/chosen_users_2.csv' ,help='path to user csv file')
-    parser.add_argument('-posts', '--posts', default='./files/chosen_post_2.csv' ,help='path to posts csv file')
-    parser.add_argument('-comments', '--comments', default='./files/chosen_comment.csv' ,help='path to user comments file')
-    parser.add_argument('-reactions', '--reactions', default='./files/chosen_react.csv' ,help='path to user reactions file')
+    parser.add_argument('-users', '--users', default='/tf/data/adv/node_embedding/chosen_users_2.csv' ,help='path to user csv file')
+    parser.add_argument('-posts', '--posts', default='/tf/data/adv/node_embedding/chosen_post_2.csv' ,help='path to posts csv file')
+    parser.add_argument('-comments', '--comments', default='/tf/data/adv/node_embedding/chosen_comment.csv' ,help='path to user comments file')
+    parser.add_argument('-reactions', '--reactions', default='/tf/data/adv/node_embedding/chosen_react.csv' ,help='path to user reactions file')
 
     parser.add_argument('-edgelist', '--edgelist', default=None, help='path to save edge list')
     parser.add_argument('-nodeattr', '--nodeattr', default=None, help='path to save node attribute')
